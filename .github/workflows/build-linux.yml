@@ -1,0 +1,200 @@
+# Linux release build. Runs only on manual dispatch and on v* tags (never on pull requests).
+# No secrets are used. Default token permission is read-only; only the final `release` job
+# (tag pushes only) gets contents: write, and it creates a DRAFT release with UNSIGNED artefacts.
+# Signing (minisign) stays offline, see packaging/release/RELEASE.md.
+name: Build Linux Packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_override:
+        description: "Optional version override (defaults to root package.json)"
+        required: false
+        default: ""
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-linux-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-linux:
+    name: Linux (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86_64
+            runner: ubuntu-22.04
+          # GitHub-hosted arm64 Linux runner (public repos / Team+ plans).
+          # Replace with a self-hosted arm64 runner label if needed.
+          - arch: aarch64
+            runner: ubuntu-24.04-arm
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Set up Node.js (build host)
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "24"
+          cache: "npm"
+
+      - name: Cache upstream Linux binaries (Node LTS + Foundry)
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: ~/.cache/cmc-packaging
+          key: cmc-linux-upstream-${{ matrix.arch }}-${{ hashFiles('packaging/linux/build-tarball.sh') }}
+
+      - name: Install workspace dependencies and run unit tests
+        run: |
+          npm ci
+          npm test
+
+      - name: Build Linux tarball (${{ matrix.arch }})
+        env:
+          OUT_DIR: ${{ github.workspace }}/out/packaging
+          # passed through the environment, never interpolated into the script (workflow_dispatch input is untrusted text)
+          VERSION_OVERRIDE: ${{ inputs.version_override }}
+        run: |
+          EXTRA_ARGS=()
+          if [ -n "$VERSION_OVERRIDE" ]; then
+            EXTRA_ARGS=(--version "$VERSION_OVERRIDE")
+          fi
+          packaging/linux/build-tarball.sh "${{ matrix.arch }}" --out-dir "$OUT_DIR" --cache-dir "$HOME/.cache/cmc-packaging" "${EXTRA_ARGS[@]}"
+
+      - name: Wrap self-extracting .bin bundle (${{ matrix.arch }})
+        env:
+          OUT_DIR: ${{ github.workspace }}/out/packaging
+        run: |
+          TARBALL="$(ls "$OUT_DIR"/cmc-*-linux-${{ matrix.arch }}.tar.gz)"
+          packaging/linux/make-run.sh "$TARBALL"
+
+      - name: Smoke-test tarball launcher on native runner
+        env:
+          OUT_DIR: ${{ github.workspace }}/out/packaging
+        run: |
+          set -euo pipefail
+          TEST_DIR="$(mktemp -d)"
+          trap 'rm -rf "$TEST_DIR"' EXIT
+          tar -xzf "$OUT_DIR"/cmc-*-linux-${{ matrix.arch }}.tar.gz -C "$TEST_DIR"
+          CMC_DIR="$(find "$TEST_DIR" -maxdepth 1 -mindepth 1 -type d | head -n 1)"
+          "$CMC_DIR/cmc" --version
+          "$CMC_DIR/cmc" --check-runtime || true
+
+          # Launch with --no-open, verify /healthz with Bearer token, then SIGTERM and confirm clean exit
+          "$CMC_DIR/cmc" --no-open --data-dir "$TEST_DIR/data" --config-dir "$TEST_DIR/config" --log-dir "$TEST_DIR/logs" >"$TEST_DIR/launch.out" 2>"$TEST_DIR/launch.err" &
+          LPID=$!
+          URL=""
+          TOKEN=""
+          for _ in $(seq 1 30); do
+            URL="$(grep -Eo 'http://127\.0\.0\.1:[0-9]+' "$TEST_DIR/launch.out" | head -n 1 || true)"
+            TOKEN="$(awk '/Bearer token:/ {print $NF; exit}' "$TEST_DIR/launch.out" || true)"
+            [ -n "$URL" ] && break
+            sleep 0.5
+          done
+          cat "$TEST_DIR/launch.err"
+          test -n "$URL"
+          if [ -n "$TOKEN" ]; then
+            curl -fsS -H "Authorization: Bearer ${TOKEN}" "${URL}/healthz" | grep -qx "ok"
+          else
+            curl -fsS "${URL}/healthz" | grep -qx "ok"
+          fi
+          kill -TERM "$LPID"
+          wait "$LPID" || true
+
+      - name: Smoke-test .bin --extract-only
+        env:
+          OUT_DIR: ${{ github.workspace }}/out/packaging
+        run: |
+          set -euo pipefail
+          BIN_FILE="$(ls "$OUT_DIR"/cmc-*-linux-${{ matrix.arch }}.bin)"
+          TEST_TARGET="$(mktemp -d)/extracted"
+          "$BIN_FILE" --extract-only --target "$TEST_TARGET"
+          "$TEST_TARGET/cmc" --version
+          rm -rf "$(dirname "$TEST_TARGET")"
+
+      - name: Generate per-arch checksums
+        run: |
+          packaging/release/checksums.sh out/packaging --output "out/packaging/SHA256SUMS-${{ matrix.arch }}"
+
+      - name: Upload Linux artefacts (${{ matrix.arch }})
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: cmc-linux-${{ matrix.arch }}
+          path: |
+            out/packaging/cmc-*-linux-${{ matrix.arch }}.tar.gz
+            out/packaging/cmc-*-linux-${{ matrix.arch }}.bin
+            out/packaging/SHA256SUMS-${{ matrix.arch }}
+          if-no-files-found: error
+
+  sbom-and-sums:
+    name: Aggregate Checksums & CycloneDX SBOM
+    needs: [build-linux]
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "24"
+          cache: "npm"
+
+      - name: Download built Linux artefacts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          path: out/packaging
+          pattern: cmc-linux-*
+          merge-multiple: true
+
+      - name: Generate CycloneDX SBOM
+        run: |
+          rm -f out/packaging/SHA256SUMS-*
+          packaging/release/sbom.sh --out-dir out/packaging
+
+      - name: Generate combined SHA256SUMS
+        run: |
+          packaging/release/checksums.sh out/packaging
+          packaging/release/checksums.sh --verify out/packaging
+
+      - name: Upload combined Linux release bundle (unsigned)
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: cmc-linux-release-unsigned
+          path: out/packaging/
+          if-no-files-found: error
+
+  release:
+    name: Draft GitHub Release (tags only)
+    needs: [sbom-and-sums]
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - name: Download unsigned release bundle
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: cmc-linux-release-unsigned
+          path: out/packaging
+
+      - name: Create draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          gh release create "$TAG" --repo "$REPO" --draft --verify-tag \
+            --title "CloneMyContracts ${TAG#v}" \
+            --notes "Unsigned CI build. Verify SHA256SUMS; the maintainer signs SHA256SUMS offline before publishing." \
+            out/packaging/*

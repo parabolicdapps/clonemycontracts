@@ -1,0 +1,17 @@
+MOVE (APTOS) PRIMER for writing function BODIES. The module header, `use` lines, structs, `State`, events, error constants, the function signature, `acquires`, and a prologue are already generated; you write only the statements inside the function.
+
+Language (Move is NOT Rust; every item below was a real compile error in earlier attempts):
+- Locals: `let x = 0;` then `x = x + 1;`. There is no `let mut`, no `mut`, no `Self`, no `impl`, no traits, no `&&=`, no `?` operator, no `return Ok(..)`. Statements end with `;`. The LAST expression of a view body has no `;` and is the return value (or use `return v;`). Entry functions return nothing.
+- Integers: u8 u16 u32 u64 u128 u256, no implicit widening and no mixing: `(a as u256) * b` where `b: u256`; compare/add only equal types. Literals adapt to the type. Overflow, underflow and division by zero abort (like Solidity 0.8). `x % y`, `x / y`, `x << n` exist. Booleans: `&&`, `||`, `!`.
+- Control flow are expressions: `if (c) { a } else { b }`, `while (c) { ... }`, `loop { ... break; }`. Conditions are in parentheses. Early exit: `return;` / `abort E_NAME;`.
+- Checks: `assert!(cond, E_NAME);` with a constant from the list you are given. A Solidity `require(cond, "msg")` is `assert!(cond, E_MSG)`; keep the order of checks and effects exactly as in the Solidity.
+- Addresses: `@0x0` is the zero address (`address(0)`). The caller (msg.sender) is `signer::address_of(caller)` (`caller: &signer` is a parameter of every entry function). `address(this)` is `state_addr()`.
+- Structs: build with `Tx { to: a, value: v }`; read fields with `t.value`; a struct you got from a getter is a COPY: change a field on the local (`t.executed = true;`) and write it back with the setter. Struct literals must list every field.
+- Vectors: `vector[]`, `vector::length(&v)`, `vector::push_back(&mut v, x)`, `vector::borrow(&v, i)` (i is u64), `vector::contains(&v, &x)`. Strings: `string::utf8(b"text")`, `string::append(&mut s, t)`.
+- Events: `event::emit(Name { field: value, ... });` with the event structs listed for the function (all fields, in any order).
+- Do NOT write: `borrow_global`, `borrow_global_mut`, `move_to`, `move_from`, `exists`, `use`, `acquires`, `fun`, `table::*`. State, mappings, arrays, tokens and APT are reached ONLY through the listed helper functions (they are generated and correct). Do not invent other framework functions: if a needed operation is not in the helper list, say so in a `// DEVIATION:` comment and implement the closest behaviour with plain Move.
+- Helpers never need a `&signer` except `*_pull(caller, amount)` and `native_pull`. Read with a getter into a local (`let b = get_balances(who);`), compute, then write with the setter (`set_balances(who, b - amount);`).
+- Token transfers (`*_pull`, `*_push`) abort on failure and return nothing: translate `require(token.transfer(..), "..")` to just the helper call. There is no approve/allowance step on Aptos: the caller's signer moves its own funds, so a Solidity `transferFrom(msg.sender, address(this), amount)` is `<token>_pull(caller, amount)`.
+- Native value: `msg.value` is the `value` parameter (octas) and has already been moved to the contract by the prologue. Paying out (`payable(x).transfer(v)`, `x.call{value: v}("")`) is `native_push(x, v)`; there is no bool result to `require`.
+- Timestamps: `now_secs()` is u64; `(now_secs() as u256)` for uint256 math.
+- A name you declare must not be a Move keyword or one of the helper names. Keep Solidity names in snake_case.

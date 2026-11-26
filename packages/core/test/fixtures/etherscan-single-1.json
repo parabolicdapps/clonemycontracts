@@ -1,0 +1,21 @@
+{
+ "status": "1",
+ "message": "OK",
+ "result": [
+  {
+   "SourceCode": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.19;\ncontract Counter {\n    uint256 public count;\n    address public immutable owner;\n    constructor(address _owner) { owner = _owner; }\n    function inc() external { count += 1; }\n}\n",
+   "ABI": "[{\"type\": \"constructor\", \"inputs\": [{\"name\": \"_owner\", \"type\": \"address\"}], \"stateMutability\": \"nonpayable\"}, {\"type\": \"function\", \"name\": \"count\", \"inputs\": [], \"outputs\": [{\"name\": \"\", \"type\": \"uint256\"}], \"stateMutability\": \"view\"}, {\"type\": \"function\", \"name\": \"inc\", \"inputs\": [], \"outputs\": [], \"stateMutability\": \"nonpayable\"}, {\"type\": \"function\", \"name\": \"owner\", \"inputs\": [], \"outputs\": [{\"name\": \"\", \"type\": \"address\"}], \"stateMutability\": \"view\"}]",
+   "ContractName": "Counter",
+   "CompilerVersion": "v0.8.19+commit.7dd6d404",
+   "OptimizationUsed": "1",
+   "Runs": "200",
+   "ConstructorArguments": "0000000000000000000000005c69bee701ef814a2b6a3edd4b1652cb9cc5aa6f",
+   "EVMVersion": "paris",
+   "Library": "",
+   "LicenseType": "MIT License (MIT)",
+   "Proxy": "0",
+   "Implementation": "",
+   "SwarmSource": ""
+  }
+ ]
+}

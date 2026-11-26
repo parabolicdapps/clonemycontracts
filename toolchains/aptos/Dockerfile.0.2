@@ -1,0 +1,19 @@
+# cmc-toolchain-aptos:0.2 = 0.1 + the framework's `tests` directories (0.1 deleted them to save space, but the
+# framework's #[test_only] code references modules in them, so `aptos move test` could not compile) + entries `compile` and `test`.
+# Build:  docker build -t cmc-toolchain-aptos:0.2 -f aptos/Dockerfile.0.2 aptos
+FROM cmc-toolchain-aptos:0.1 AS fw
+ARG APTOS_CORE_TAG=aptos-cli-v9.6.0
+USER root
+RUN git clone -q --depth 1 --branch ${APTOS_CORE_TAG} --filter=blob:none --sparse https://github.com/aptos-labs/aptos-core.git /tmp/core \
+ && cd /tmp/core && git sparse-checkout set aptos-move/framework/aptos-framework aptos-move/framework/aptos-stdlib aptos-move/framework/move-stdlib aptos-move/framework/aptos-token aptos-move/framework/aptos-token-objects \
+ && cd aptos-move/framework && mkdir /tests && find . -type d -name tests -prune -print | while read d; do mkdir -p "/tests/$d" && cp -r "$d"/. "/tests/$d"/; done
+
+FROM cmc-toolchain-aptos:0.1
+LABEL org.opencontainers.image.source="https://github.com/parabolicdapps/clonemycontracts" \
+      org.opencontainers.image.licenses="Apache-2.0" \
+      org.opencontainers.image.description="CloneMyContracts sandbox toolchain"
+COPY --from=fw /tests/ /opt/aptos-framework/
+COPY entry.sh /usr/local/bin/cmc-entry
+WORKDIR /work
+ENTRYPOINT ["/usr/local/bin/cmc-entry"]
+CMD ["compile"]

@@ -1,0 +1,15 @@
+# cmc-toolchain-tezos:0.2 = 0.1 (SmartPy 0.25.3, offline) + the scenario runner and a new entry (compile with per-unit variants, run-plan).
+# Build from this directory:  docker build -f Dockerfile.0.2 -t cmc-toolchain-tezos:0.2 .
+FROM cmc-toolchain-tezos:0.1
+LABEL org.opencontainers.image.source="https://github.com/parabolicdapps/clonemycontracts" \
+      org.opencontainers.image.licenses="Apache-2.0" \
+      org.opencontainers.image.description="CloneMyContracts sandbox toolchain"
+USER root
+RUN id cmc >/dev/null 2>&1 || useradd -u 10001 -m cmc
+COPY runner/cmc_runner.py /usr/local/lib/cmc/cmc_runner.py
+COPY entry.sh /usr/local/bin/cmc-entry
+RUN chmod 755 /usr/local/bin/cmc-entry && chmod 644 /usr/local/lib/cmc/cmc_runner.py
+USER cmc
+WORKDIR /work
+ENTRYPOINT ["/usr/local/bin/cmc-entry"]
+CMD ["compile"]

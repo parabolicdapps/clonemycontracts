@@ -1,0 +1,19 @@
+[package]
+name = "app"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.81"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[profile.release]
+opt-level = "s"
+lto = true
+panic = "abort"
+codegen-units = 1
+overflow-checks = true
+
+[dependencies]
+cosmwasm-std = "=2.2.2"
+cw721-base = { path = "vendor/cw721-base", features = ["library"] }

@@ -1,0 +1,388 @@
+{
+ "version": 1,
+ "clock_start": 1700000000,
+ "actors": [
+  "deployer",
+  "alice",
+  "bob"
+ ],
+ "scenarios": [
+  {
+   "id": "vault",
+   "steps": [
+    {
+     "id": "mint",
+     "op": "spl_create_mint",
+     "name": "mintA",
+     "decimals": 6,
+     "authority": "actor:deployer",
+     "freeze": null,
+     "payer": "actor:deployer"
+    },
+    {
+     "id": "ata_alice",
+     "op": "spl_create_ata",
+     "owner": "actor:alice",
+     "mint": "name:mintA",
+     "payer": "actor:deployer"
+    },
+    {
+     "id": "fund",
+     "op": "spl_mint_to",
+     "mint": "name:mintA",
+     "to": {
+      "ata": {
+       "owner": "actor:alice",
+       "mint": "name:mintA"
+      }
+     },
+     "amount": "1000",
+     "authority": "actor:deployer"
+    },
+    {
+     "id": "init",
+     "op": "ix",
+     "name": "initialize",
+     "args": {},
+     "accounts": {
+      "mint": "name:mintA",
+      "admin": "actor:deployer"
+     },
+     "signers": [
+      "actor:deployer"
+     ]
+    },
+    {
+     "id": "init_user",
+     "op": "ix",
+     "name": "init_user",
+     "args": {},
+     "accounts": {
+      "user": "actor:alice"
+     },
+     "signers": [
+      "actor:alice"
+     ]
+    },
+    {
+     "id": "item",
+     "op": "ix",
+     "name": "create_item",
+     "args": {
+      "id": "7",
+      "value": 99
+     },
+     "accounts": {
+      "user": "actor:alice"
+     },
+     "signers": [
+      "actor:alice"
+     ]
+    },
+    {
+     "id": "vault",
+     "op": "ix",
+     "name": "init_vault",
+     "args": {},
+     "accounts": {
+      "mint": "name:mintA",
+      "payer": "actor:deployer",
+      "token_program": "token_program"
+     },
+     "signers": [
+      "actor:deployer"
+     ]
+    },
+    {
+     "id": "deposit",
+     "op": "ix",
+     "name": "deposit",
+     "args": {
+      "amount": "400"
+     },
+     "accounts": {
+      "user": "actor:alice",
+      "owner": "actor:alice",
+      "mint": "name:mintA",
+      "token_program": "token_program"
+     },
+     "signers": [
+      "actor:alice"
+     ]
+    },
+    {
+     "id": "r_config",
+     "op": "read_account",
+     "account": {
+      "pda": {
+       "seeds": [
+        {
+         "str": "config"
+        }
+       ]
+      }
+     },
+     "as": "config",
+     "type": "Config"
+    },
+    {
+     "id": "r_user",
+     "op": "read_account",
+     "account": {
+      "pda": {
+       "seeds": [
+        {
+         "str": "user"
+        },
+        {
+         "ref": "actor:alice"
+        }
+       ]
+      }
+     },
+     "as": "user_state",
+     "type": "UserState"
+    },
+    {
+     "id": "r_item",
+     "op": "read_account",
+     "account": {
+      "pda": {
+       "seeds": [
+        {
+         "str": "item"
+        },
+        {
+         "u64": "7"
+        }
+       ]
+      }
+     },
+     "as": "item",
+     "type": "Item"
+    },
+    {
+     "id": "r_field_mint",
+     "op": "read_account",
+     "account": {
+      "field": {
+       "account": {
+        "pda": {
+         "seeds": [
+          {
+           "str": "config"
+          }
+         ]
+        }
+       },
+       "type": "Config",
+       "path": "mint"
+      }
+     },
+     "as": "mint",
+     "type": "mint"
+    },
+    {
+     "id": "r_field_bad",
+     "op": "read_account",
+     "account": {
+      "field": {
+       "account": {
+        "pda": {
+         "seeds": [
+          {
+           "str": "config"
+          }
+         ]
+        }
+       },
+       "type": "Config",
+       "path": "nope"
+      }
+     },
+     "as": "x",
+     "type": "mint"
+    },
+    {
+     "id": "r_field_ata",
+     "op": "read_account",
+     "account": {
+      "ata": {
+       "owner": "actor:alice",
+       "mint": {
+        "field": {
+         "account": {
+          "pda": {
+           "seeds": [
+            {
+             "str": "config"
+            }
+           ]
+          }
+         },
+         "type": "Config",
+         "path": "mint"
+        }
+       }
+      }
+     },
+     "as": "alice_ata",
+     "type": "token"
+    },
+    {
+     "id": "r_vault",
+     "op": "read_account",
+     "account": {
+      "ata": {
+       "owner": {
+        "pda": {
+         "seeds": [
+          {
+           "str": "vault_auth"
+          }
+         ]
+        }
+       },
+       "mint": "name:mintA"
+      }
+     },
+     "as": "vault",
+     "type": "token"
+    },
+    {
+     "id": "withdraw",
+     "op": "ix",
+     "name": "withdraw",
+     "args": {
+      "amount": "150"
+     },
+     "accounts": {
+      "user": "actor:alice",
+      "mint": "name:mintA",
+      "token_program": "token_program"
+     },
+     "signers": [
+      "actor:alice"
+     ]
+    },
+    {
+     "id": "r_alice_ata",
+     "op": "read_account",
+     "account": {
+      "ata": {
+       "owner": "actor:alice",
+       "mint": "name:mintA"
+      }
+     },
+     "as": "alice_ata",
+     "type": "token"
+    },
+    {
+     "id": "r_vault2",
+     "op": "read_account",
+     "account": {
+      "ata": {
+       "owner": {
+        "pda": {
+         "seeds": [
+          {
+           "str": "vault_auth"
+          }
+         ]
+        }
+       },
+       "mint": "name:mintA"
+      }
+     },
+     "as": "vault",
+     "type": "token"
+    },
+    {
+     "id": "withdraw_too_much",
+     "op": "ix",
+     "name": "withdraw",
+     "args": {
+      "amount": "1000"
+     },
+     "accounts": {
+      "user": "actor:alice",
+      "mint": "name:mintA",
+      "token_program": "token_program"
+     },
+     "signers": [
+      "actor:alice"
+     ]
+    },
+    {
+     "id": "unauth_unlock",
+     "op": "ix",
+     "name": "set_unlock",
+     "args": {
+      "delay": 3600
+     },
+     "accounts": {
+      "admin": "actor:bob"
+     },
+     "signers": [
+      "actor:bob"
+     ]
+    },
+    {
+     "id": "set_unlock",
+     "op": "ix",
+     "name": "set_unlock",
+     "args": {
+      "delay": 3600
+     },
+     "accounts": {
+      "admin": "actor:deployer"
+     },
+     "signers": [
+      "actor:deployer"
+     ]
+    },
+    {
+     "id": "r_config2",
+     "op": "read_account",
+     "account": {
+      "pda": {
+       "seeds": [
+        {
+         "str": "config"
+        }
+       ]
+      }
+     },
+     "as": "config",
+     "type": "Config"
+    },
+    {
+     "id": "claim_early",
+     "op": "ix",
+     "name": "claim",
+     "args": {},
+     "accounts": {
+      "user": "actor:alice"
+     },
+     "signers": [
+      "actor:alice"
+     ]
+    },
+    {
+     "id": "unresolved",
+     "op": "ix",
+     "name": "deposit",
+     "args": {
+      "amount": "1"
+     },
+     "accounts": {
+      "user": "actor:alice"
+     },
+     "signers": [
+      "actor:alice"
+     ]
+    }
+   ]
+  }
+ ]
+}

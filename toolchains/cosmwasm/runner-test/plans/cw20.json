@@ -1,0 +1,26 @@
+{
+  "version": 1, "clock_start": 1700000000,
+  "actors": ["deployer", "alice", "bob", "carol"],
+  "scenarios": [
+    { "id": "cw20", "steps": [
+      {"op":"instantiate","id":"tok","code":"cw20-base","name":"tok","sender":"actor:deployer",
+       "msg":{"name":"Test Token","symbol":"TST","decimals":6,
+              "initial_balances":[{"address":"actor:alice","amount":"1000"}],
+              "mint":{"minter":"actor:deployer","cap":"1000000"},
+              "marketing":{"project":"cmc","description":"d","marketing":"actor:deployer"}}},
+      {"op":"query","id":"info","contract":"name:tok","msg":{"token_info":{}}},
+      {"op":"execute","id":"xfer","contract":"name:tok","sender":"actor:alice","msg":{"transfer":{"recipient":"actor:bob","amount":"300"}}},
+      {"op":"query","id":"bal_bob","contract":"name:tok","msg":{"balance":{"address":"actor:bob"}}},
+      {"op":"execute","id":"approve","contract":"name:tok","sender":"actor:alice","msg":{"increase_allowance":{"spender":"actor:carol","amount":"200"}}},
+      {"op":"execute","id":"xferfrom","contract":"name:tok","sender":"actor:carol","msg":{"transfer_from":{"owner":"actor:alice","recipient":"actor:carol","amount":"150"}}},
+      {"op":"execute","id":"xferfrom_over","contract":"name:tok","sender":"actor:carol","msg":{"transfer_from":{"owner":"actor:alice","recipient":"actor:carol","amount":"150"}}},
+      {"op":"execute","id":"burn","contract":"name:tok","sender":"actor:bob","msg":{"burn":{"amount":"100"}}},
+      {"op":"execute","id":"mint","contract":"name:tok","sender":"actor:deployer","msg":{"mint":{"recipient":"actor:bob","amount":"50"}}},
+      {"op":"execute","id":"mint_bad","contract":"name:tok","sender":"actor:alice","msg":{"mint":{"recipient":"actor:alice","amount":"50"}}},
+      {"op":"query","id":"bal_alice","contract":"name:tok","msg":{"balance":{"address":"actor:alice"}}},
+      {"op":"query","id":"bal_bob2","contract":"name:tok","msg":{"balance":{"address":"actor:bob"}}},
+      {"op":"query","id":"bal_carol","contract":"name:tok","msg":{"balance":{"address":"actor:carol"}}},
+      {"op":"query","id":"supply","contract":"name:tok","msg":{"token_info":{}}}
+    ]}
+  ]
+}

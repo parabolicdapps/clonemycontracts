@@ -1,0 +1,20 @@
+// usage: vite-node recheck.ts <rewrite-out-dir>: re-runs compile + all scenarios on the saved project with the current design/adapter (no model calls)
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { SolanaPack } from '../src/targets/solana/pack.js';
+import { buildDesign } from '../src/targets/solana/design.js';
+import { readTree } from '../src/pipeline/container.js';
+const dir = process.argv[2]!;
+const spec = JSON.parse(readFileSync(join(dir, 'spec.json'), 'utf8'));
+const set = JSON.parse(readFileSync(join(dir, 'scenarios.json'), 'utf8'));
+const design = buildDesign(spec);
+const files = Object.fromEntries(Object.entries(readTree(join(dir, 'project'))).map(([k, v]) => [k, v.toString('utf8')]));
+const pack = new SolanaPack();
+const c = await pack.compile(files);
+console.log('compiles:', c.ok);
+const run = await pack.runScenarios(files, c, design, spec, set);
+console.log('conformance:', run.conformance);
+const n = (s: string) => run.outcomes.filter((o) => o.status === s).length;
+console.log(`scenarios ${run.outcomes.length}: passed ${n('passed')}, failed ${n('failed')}, not runnable ${n('not-runnable')}, documented ${n('documented-difference')}`);
+for (const f of run.outcomes.filter((o) => o.status === 'failed').slice(0, 6)) console.log('FAILED', f.id, JSON.stringify(f.mismatches[0]).slice(0, 250));
+for (const f of run.outcomes.filter((o) => o.status === 'not-runnable').slice(0, 3)) console.log('NR', f.id, f.notRunnable[0]);

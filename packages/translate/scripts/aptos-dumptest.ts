@@ -1,0 +1,20 @@
+// usage: vite-node scripts/aptos-dumptest.ts <rewrite-out-dir> [raw]: rebuild the test module for a saved rewrite, run it, print raw results (no model)
+import { readFileSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { AptosPack } from '../src/targets/aptos/pack.js';
+import { buildTestPlan, parseTestOutput } from '../src/targets/aptos/adapter.js';
+import { readTree, runToolchain } from '../src/pipeline/container.js';
+import { APTOS_CONTAINER } from '../src/targets/aptos/pack.js';
+const dir = process.argv[2]!;
+const spec = JSON.parse(readFileSync(join(dir, 'spec.json'), 'utf8'));
+const set = JSON.parse(readFileSync(join(dir, 'scenarios.json'), 'utf8'));
+const pack = new AptosPack();
+const design = JSON.parse(readFileSync(join(dir, 'design.json'), 'utf8'));
+const files = Object.fromEntries(Object.entries(readTree(join(dir, 'project'))).filter(([k]) => !k.startsWith('tests/')).map(([k, v]) => [k, v.toString('utf8')]));
+const plan = buildTestPlan({ design, set });
+writeFileSync('/tmp/aptos-tests.move', plan.source);
+const r = await runToolchain(APTOS_CONTAINER, 'test', { ...files, 'tests/cmc_tests.move': plan.source });
+writeFileSync('/tmp/aptos-test.log', r.log);
+const p = parseTestOutput(r.log);
+console.log('tests', plan.tests.length, 'results', p.results.size, p.summary, 'compileError', p.compileError);
+void pack; void spec;

@@ -1,0 +1,705 @@
+#!/usr/bin/env bash
+# CloneMyContracts Linux launcher
+# Starts the bundled Node.js runtime and local engine, parses the JSON startup handshake
+# ({"port":N,"token":"<64 hex>"}), mints a 30-second single-use sign-in code via
+# POST /api/auth/code, opens http://127.0.0.1:N/auth/exchange?code=<code> (unless --no-open),
+# writes engine logs to $XDG_STATE_HOME/clonemycontracts/, and cleanly stops all children on exit.
+set -euo pipefail
+
+# --- Resolve install root (following symlinks) ---
+resolve_self() {
+  local src="${BASH_SOURCE[0]}"
+  if command -v readlink >/dev/null 2>&1; then
+    local resolved
+    if resolved="$(readlink -f "$src" 2>/dev/null)"; then
+      printf '%s\n' "$resolved"
+      return 0
+    fi
+  fi
+  while [[ -L "$src" ]]; do
+    local dir target
+    dir="$(cd -P "$(dirname "$src")" && pwd)"
+    target="$(readlink "$src")"
+    [[ "$target" == /* ]] && src="$target" || src="$dir/$target"
+  done
+  printf '%s/%s\n' "$(cd -P "$(dirname "$src")" && pwd)" "$(basename "$src")"
+}
+
+SELF_PATH="$(resolve_self)"
+ROOT="$(dirname "$SELF_PATH")"
+NODE_BIN="$ROOT/bin/node"
+ANVIL_BIN="$ROOT/bin/anvil"
+ENGINE_MAIN="$ROOT/engine/apps/api/dist/main.js"
+WEB_DIR="$ROOT/engine/apps/web/dist"
+VERSION_FILE="$ROOT/VERSION"
+CMC_VERSION="unknown"
+[[ -f "$VERSION_FILE" ]] && CMC_VERSION="$(tr -d '[:space:]' < "$VERSION_FILE")"
+
+# --- Defaults & CLI options ---
+NO_OPEN="${CMC_NO_OPEN:-0}"
+CHECK_RUNTIME_ONLY=0
+OPT_PORT="${CMC_PORT:-}"
+OPT_DATA_DIR="${CMC_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/clonemycontracts}"
+OPT_CONFIG_DIR="${CMC_CONFIG_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/clonemycontracts}"
+OPT_LOG_DIR="${CMC_LOG_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/clonemycontracts}"
+
+usage() {
+  cat <<EOF
+CloneMyContracts ($CMC_VERSION) — local Linux launcher
+
+Usage: $(basename "$0") [options]
+
+Options:
+  --no-open           Print URLs instead of launching the default browser
+  --port <port>       TCP port override for development (default: random loopback port)
+  --data-dir <dir>    Data directory (default: \$XDG_DATA_HOME/clonemycontracts
+                      or ~/.local/share/clonemycontracts)
+  --config-dir <dir>  Config directory (default: \$XDG_CONFIG_HOME/clonemycontracts
+                      or ~/.config/clonemycontracts)
+  --log-dir <dir>     Log directory (default: \$XDG_STATE_HOME/clonemycontracts
+                      or ~/.local/state/clonemycontracts)
+  --check-runtime     Check bundled binaries and container runtime, then exit
+  --version           Print version information and exit
+  -h, --help          Show this help message
+
+Environment:
+  CMC_PORT, CMC_DATA_DIR, CMC_CONFIG_DIR, CMC_LOG_DIR, CMC_NO_OPEN,
+  CMC_SECRET_STORE (default: auto = libsecret via secret-tool, else 0600 file),
+  CMC_IMAGE_REGISTRY, CMC_IMAGE_TAG
+EOF
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --no-open)
+      NO_OPEN=1
+      shift
+      ;;
+    --port)
+      [[ $# -ge 2 ]] || { echo "[cmc] error: --port requires a value" >&2; exit 2; }
+      OPT_PORT="$2"
+      shift 2
+      ;;
+    --port=*)
+      OPT_PORT="${1#*=}"
+      shift
+      ;;
+    --data-dir)
+      [[ $# -ge 2 ]] || { echo "[cmc] error: --data-dir requires a value" >&2; exit 2; }
+      OPT_DATA_DIR="$2"
+      shift 2
+      ;;
+    --data-dir=*)
+      OPT_DATA_DIR="${1#*=}"
+      shift
+      ;;
+    --config-dir)
+      [[ $# -ge 2 ]] || { echo "[cmc] error: --config-dir requires a value" >&2; exit 2; }
+      OPT_CONFIG_DIR="$2"
+      shift 2
+      ;;
+    --config-dir=*)
+      OPT_CONFIG_DIR="${1#*=}"
+      shift
+      ;;
+    --log-dir)
+      [[ $# -ge 2 ]] || { echo "[cmc] error: --log-dir requires a value" >&2; exit 2; }
+      OPT_LOG_DIR="$2"
+      shift 2
+      ;;
+    --log-dir=*)
+      OPT_LOG_DIR="${1#*=}"
+      shift
+      ;;
+    --check-runtime)
+      CHECK_RUNTIME_ONLY=1
+      shift
+      ;;
+    --version)
+      printf 'CloneMyContracts %s\n' "$CMC_VERSION"
+      [[ -x "$NODE_BIN" ]] && printf 'Bundled Node:  %s\n' "$("$NODE_BIN" -v 2>/dev/null || echo unavailable)"
+      [[ -x "$ANVIL_BIN" ]] && printf 'Bundled Anvil: %s\n' "$("$ANVIL_BIN" --version 2>/dev/null | head -n 1 || echo unavailable)"
+      exit 0
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "[cmc] error: unknown option: $1 (try --help)" >&2
+      exit 2
+      ;;
+  esac
+done
+
+# --- Verify bundled components ---
+verify_bundle() {
+  local missing=0
+  if [[ ! -x "$NODE_BIN" ]]; then
+    echo "[cmc] error: bundled Node binary missing or not executable: $NODE_BIN" >&2
+    missing=1
+  fi
+  if [[ ! -x "$ANVIL_BIN" ]]; then
+    echo "[cmc] warning: bundled anvil binary missing or not executable: $ANVIL_BIN" >&2
+  fi
+  if [[ ! -f "$ENGINE_MAIN" ]]; then
+    echo "[cmc] error: bundled engine entrypoint missing: $ENGINE_MAIN" >&2
+    missing=1
+  fi
+  if [[ ! -d "$WEB_DIR" ]]; then
+    echo "[cmc] warning: bundled web UI directory missing: $WEB_DIR" >&2
+  fi
+  return "$missing"
+}
+
+# --- Container runtime detection (never uses sudo) ---
+DETECTED_RUNTIME=""
+run_with_timeout() {
+  local secs="$1"; shift
+  if command -v timeout >/dev/null 2>&1; then
+    timeout "$secs" "$@"
+  else
+    "$@"
+  fi
+}
+
+detect_container_runtime() {
+  local err=""
+  local docker_seen=0
+  local podman_seen=0
+
+  if command -v docker >/dev/null 2>&1; then
+    docker_seen=1
+    if err="$(run_with_timeout 6 docker info 2>&1 >/dev/null)"; then
+      DETECTED_RUNTIME="docker"
+      echo "[cmc] Container runtime: Docker Engine (ready)" >&2
+      return 0
+    fi
+    if printf '%s' "$err" | grep -qiE 'permission denied|connect: permission denied'; then
+      cat >&2 <<'EOF'
+[cmc] Docker is installed, but your user does not have permission to access the Docker socket.
+      To grant access without running CloneMyContracts with sudo:
+        1. Add your user to the docker group:
+             sudo usermod -aG docker "$USER"
+        2. Log out and log back in (or start a new shell with `newgrp docker`).
+      Security note: membership in the `docker` group is effectively root-equivalent on Linux.
+      For better isolation, consider rootless Docker (https://docs.docker.com/engine/security/rootless/)
+      or rootless Podman (https://podman.io/).
+EOF
+    elif printf '%s' "$err" | grep -qiE 'cannot connect to the docker daemon|is the docker daemon running|connection refused|no such file or directory'; then
+      cat >&2 <<'EOF'
+[cmc] Docker is installed, but the Docker daemon does not appear to be running.
+      Start the daemon (without running cmc as root):
+        - System Docker Engine: sudo systemctl start docker
+        - Rootless Docker:      systemctl --user start docker
+EOF
+    else
+      echo "[cmc] Docker is installed, but 'docker info' failed: $(printf '%s' "$err" | head -n 1)" >&2
+    fi
+  fi
+
+  if command -v podman >/dev/null 2>&1; then
+    podman_seen=1
+    if err="$(run_with_timeout 6 podman info 2>&1 >/dev/null)"; then
+      DETECTED_RUNTIME="podman"
+      echo "[cmc] Container runtime: Podman (ready)" >&2
+      if [[ -r /sys/fs/selinux/enforce ]] && [[ "$(cat /sys/fs/selinux/enforce 2>/dev/null || true)" == "1" ]]; then
+        echo "[cmc] Note: SELinux is Enforcing. The engine automatically adds ':Z' to Podman bind mounts for per-job scratch dirs." >&2
+      fi
+      return 0
+    fi
+    echo "[cmc] Podman is installed, but 'podman info' failed: $(printf '%s' "$err" | head -n 1)" >&2
+    cat >&2 <<'EOF'
+      For rootless Podman, ensure /etc/subuid and /etc/subgid contain ranges for your user
+      and run `podman system migrate` if needed.
+EOF
+  fi
+
+  if [[ "$docker_seen" -eq 0 && "$podman_seen" -eq 0 ]]; then
+    cat >&2 <<'EOF'
+[cmc] No container runtime found (checked `docker info`, then `podman info`).
+      EVM-to-EVM cloning, planning, and local Anvil simulations work without containers.
+      Cross-chain rewrites (Solana, CosmWasm, Aptos, Tezos) require Docker Engine or rootless Podman:
+        - Docker Engine:   https://docs.docker.com/engine/install/
+        - Rootless Podman: https://podman.io/docs/installation
+EOF
+  else
+    cat >&2 <<'EOF'
+[cmc] Continuing without an active container runtime.
+      EVM-to-EVM cloning, planning, and Anvil simulations will work; cross-chain rewrites
+      require a working Docker Engine or rootless Podman runtime (you can re-check in Settings).
+EOF
+  fi
+  return 1
+}
+
+verify_bundle || exit 1
+
+if [[ "$CHECK_RUNTIME_ONLY" -eq 1 ]]; then
+  echo "[cmc] Bundle:  $ROOT (version $CMC_VERSION)"
+  echo "[cmc] Node:    $("$NODE_BIN" -v)"
+  [[ -x "$ANVIL_BIN" ]] && echo "[cmc] Anvil:   $("$ANVIL_BIN" --version | head -n 1)"
+  if detect_container_runtime; then
+    exit 0
+  else
+    exit 2
+  fi
+fi
+
+# Non-fatal container runtime detection on normal launch
+detect_container_runtime || true
+
+# --- Prepare XDG data, config, and state/log directories ---
+mkdir -p "$OPT_DATA_DIR" "$OPT_CONFIG_DIR" "$OPT_LOG_DIR"
+chmod 700 "$OPT_DATA_DIR" "$OPT_CONFIG_DIR" "$OPT_LOG_DIR" 2>/dev/null || true
+
+LOG_FILE="$OPT_LOG_DIR/cmc-$(date +%Y%m%d-%H%M%S)-$$.log"
+: > "$LOG_FILE"
+chmod 600 "$LOG_FILE" 2>/dev/null || true
+ln -sfn "$(basename "$LOG_FILE")" "$OPT_LOG_DIR/latest.log" 2>/dev/null || true
+
+TMP_RUN_DIR="$(mktemp -d "${TMPDIR:-/tmp}/cmc-run.XXXXXX")"
+chmod 700 "$TMP_RUN_DIR"
+STDOUT_FIFO="$TMP_RUN_DIR/engine.stdout"
+STDIN_FIFO="$TMP_RUN_DIR/engine.stdin"
+mkfifo "$STDOUT_FIFO" "$STDIN_FIFO"
+
+ENGINE_PID=""
+ENGINE_PGID=""
+DRAINER_PID=""
+STDIN_FD_OPEN=0
+CLEANED_UP=0
+SHUTDOWN_SIGNAL=""
+
+# --- Helpers for process tree & container cleanup ---
+list_descendants() {
+  local root_pid="$1"
+  ps -eo pid=,ppid= 2>/dev/null | awk -v root="$root_pid" '
+    { kids[$2] = kids[$2] " " $1 }
+    END {
+      q[1] = root; head = 1; tail = 1
+      while (head <= tail) {
+        p = q[head++]
+        n = split(kids[p], arr, " ")
+        for (i = 1; i <= n; i++) {
+          if (arr[i] != "" && !seen[arr[i]]++) {
+            print arr[i]
+            q[++tail] = arr[i]
+          }
+        }
+      }
+    }
+  '
+}
+
+collect_child_container_names() {
+  local root_pid="$1"
+  local p cmdline
+  while IFS= read -r p; do
+    [[ -n "$p" && -r "/proc/$p/cmdline" ]] || continue
+    cmdline="$(tr '\0' '\n' < "/proc/$p/cmdline" 2>/dev/null || true)"
+    if printf '%s\n' "$cmdline" | head -n 1 | grep -qE '(^|/)(docker|podman)$'; then
+      printf '%s\n' "$cmdline" | awk '
+        $0 == "--name" { getline; if ($0 != "") print; next }
+        /^--name=/ { sub(/^--name=/, ""); if ($0 != "") print }
+      '
+    fi
+  done < <(list_descendants "$root_pid")
+}
+
+kill_owned_containers() {
+  local engine_pid="$1"
+  shift
+  local extra_names=("$@")
+  local rt="${DETECTED_RUNTIME:-}"
+  if [[ -z "$rt" ]]; then
+    if command -v docker >/dev/null 2>&1; then rt="docker"
+    elif command -v podman >/dev/null 2>&1; then rt="podman"
+    else return 0
+    fi
+  fi
+
+  # The engine names its containers cmc-job-<engine pid>-<time>-<seq> (packages/translate/src/pipeline/container.ts),
+  # so the engine's own pid in the name keeps this from touching anyone else's containers.
+  local cnames=()
+  local n
+  if [[ -n "$engine_pid" ]]; then
+    while IFS= read -r n; do
+      [[ -n "$n" ]] && cnames+=("$n")
+    done < <(run_with_timeout 5 "$rt" ps --format '{{.Names}}' 2>/dev/null | grep -E "^cmc-job-${engine_pid}-" || true)
+  fi
+  for n in "${extra_names[@]}"; do
+    [[ -n "$n" ]] && cnames+=("$n")
+  done
+
+  if [[ ${#cnames[@]} -gt 0 ]]; then
+    local unique
+    unique="$(printf '%s\n' "${cnames[@]}" | sort -u)"
+    while IFS= read -r n; do
+      [[ -n "$n" ]] && run_with_timeout 5 "$rt" kill "$n" >/dev/null 2>&1 || true
+    done <<< "$unique"
+  fi
+}
+
+cleanup() {
+  if [[ "$CLEANED_UP" -eq 1 ]]; then
+    return 0
+  fi
+  CLEANED_UP=1
+
+  local container_names=()
+  local descendants=()
+  local d cname
+
+  if [[ "$STDIN_FD_OPEN" -eq 1 ]]; then
+    exec 4>&- 2>/dev/null || true
+    STDIN_FD_OPEN=0
+  fi
+
+  if [[ -n "$ENGINE_PID" ]]; then
+    while IFS= read -r cname; do
+      [[ -n "$cname" ]] && container_names+=("$cname")
+    done < <(collect_child_container_names "$ENGINE_PID")
+
+    while IFS= read -r d; do
+      [[ -n "$d" ]] && descendants+=("$d")
+    done < <(list_descendants "$ENGINE_PID")
+
+    if kill -0 "$ENGINE_PID" 2>/dev/null; then
+      echo "" >&2
+      echo "[cmc] Stopping CloneMyContracts (PID $ENGINE_PID)..." >&2
+      kill -TERM "$ENGINE_PID" 2>/dev/null || true
+
+      # Wait up to 8 seconds for graceful shutdown (closes HTTP, stops anvil, kills active containers)
+      local i=0
+      while kill -0 "$ENGINE_PID" 2>/dev/null && [[ $i -lt 40 ]]; do
+        sleep 0.2
+        i=$((i + 1))
+      done
+    fi
+
+    # Terminate any remaining processes in the engine's process group (node, anvil, docker/podman CLI)
+    if [[ -n "$ENGINE_PGID" ]]; then
+      kill -TERM -- "-$ENGINE_PGID" 2>/dev/null || true
+      sleep 0.3
+      kill -KILL -- "-$ENGINE_PGID" 2>/dev/null || true
+    fi
+
+    if kill -0 "$ENGINE_PID" 2>/dev/null; then
+      kill -KILL "$ENGINE_PID" 2>/dev/null || true
+    fi
+
+    # Catch any surviving descendants that escaped the process group
+    while IFS= read -r d; do
+      [[ -n "$d" ]] && descendants+=("$d")
+    done < <(list_descendants "$ENGINE_PID")
+
+    for d in "${descendants[@]}"; do
+      if [[ -n "$d" ]] && kill -0 "$d" 2>/dev/null; then
+        kill -TERM "$d" 2>/dev/null || true
+      fi
+    done
+    sleep 0.2
+    for d in "${descendants[@]}"; do
+      if [[ -n "$d" ]] && kill -0 "$d" 2>/dev/null; then
+        kill -KILL "$d" 2>/dev/null || true
+      fi
+    done
+
+    # Kill any toolchain containers still alive for this engine instance
+    kill_owned_containers "$ENGINE_PID" "${container_names[@]}"
+  fi
+
+  if [[ -n "$DRAINER_PID" ]] && kill -0 "$DRAINER_PID" 2>/dev/null; then
+    kill "$DRAINER_PID" 2>/dev/null || true
+    wait "$DRAINER_PID" 2>/dev/null || true
+  fi
+
+  rm -rf "$TMP_RUN_DIR" 2>/dev/null || true
+}
+
+on_signal() {
+  SHUTDOWN_SIGNAL="$1"
+  cleanup
+  exit 0
+}
+
+trap 'on_signal INT' INT
+trap 'on_signal TERM' TERM
+trap 'on_signal HUP' HUP
+trap 'cleanup' EXIT
+
+# --- Helper: redact sensitive fields before writing any stdout line to logs ---
+redact_line() {
+  local line="$1"
+  if [[ "$line" == *'"token"'* || "$line" == *'"code"'* || "$line" == *'"value"'* ]]; then
+    printf '%s' "$line" | sed -E 's/"(token|code|value)"[[:space:]]*:[[:space:]]*"[^"]*"/"\1":"[REDACTED]"/g'
+  else
+    printf '%s' "$line"
+  fi
+}
+
+# --- Helper: discover actual bound listening port for a PID when legacy engine prints :0 ---
+discover_pid_listen_port() {
+  local target_pid="$1"
+  "$NODE_BIN" -e '
+    const fs = require("node:fs");
+    const pid = process.argv[1];
+    const inodes = new Set();
+    try {
+      for (const fd of fs.readdirSync(`/proc/${pid}/fd`)) {
+        try {
+          const link = fs.readlinkSync(`/proc/${pid}/fd/${fd}`);
+          const m = /^socket:\[(\d+)\]$/.exec(link);
+          if (m) inodes.add(m[1]);
+        } catch {}
+      }
+    } catch {}
+    for (const table of ["/proc/net/tcp", "/proc/net/tcp6"]) {
+      let text = "";
+      try { text = fs.readFileSync(table, "utf8"); } catch { continue; }
+      for (const line of text.split("\n").slice(1)) {
+        const cols = line.trim().split(/\s+/);
+        if (cols.length < 10) continue;
+        if (cols[3] !== "0A") continue;
+        if (!inodes.has(cols[9])) continue;
+        const portHex = cols[1].split(":")[1];
+        if (portHex) {
+          const port = parseInt(portHex, 16);
+          if (port > 0 && port < 65536) {
+            process.stdout.write(String(port));
+            process.exit(0);
+          }
+        }
+      }
+    }
+    process.exit(1);
+  ' "$target_pid" 2>/dev/null || true
+}
+
+# --- Helper: parse JSON handshake line safely via stdin (never passes token on argv) ---
+parse_handshake_json() {
+  "$NODE_BIN" -e '
+    const fs = require("node:fs");
+    const raw = fs.readFileSync(0, "utf8").trim();
+    if (!raw.startsWith("{") || !raw.endsWith("}")) process.exit(1);
+    let obj;
+    try { obj = JSON.parse(raw); } catch { process.exit(1); }
+    if (!obj || typeof obj !== "object" || Array.isArray(obj)) process.exit(1);
+    const port = Number(obj.port);
+    if (!Number.isInteger(port) || port < 1 || port > 65535) process.exit(1);
+    const token = typeof obj.token === "string" ? obj.token : "";
+    if (/[\r\n\x00-\x1f]/.test(token)) process.exit(1);
+    process.stdout.write(`${port}\t${token}\n`);
+  ' 2>/dev/null
+}
+
+# --- Helper: mint a 30s single-use browser login code via POST /api/auth/code ---
+# Reads the bearer token from stdin so it is never visible in process argv.
+# Outputs "<http_status>\t<code>\t<expiresInSeconds>"
+mint_auth_code() {
+  local port="$1"
+  "$NODE_BIN" -e '
+    const fs = require("node:fs");
+    const token = fs.readFileSync(0, "utf8").trim();
+    const port = process.argv[1];
+    fetch(`http://127.0.0.1:${port}/api/auth/code`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      signal: AbortSignal.timeout(5000),
+    })
+      .then(async (r) => {
+        if (!r.ok) {
+          process.stdout.write(`${r.status}\t\t\n`);
+          return;
+        }
+        const j = await r.json().catch(() => ({}));
+        const code = typeof j.code === "string" ? j.code : "";
+        const exp = typeof j.expiresInSeconds === "number" ? String(j.expiresInSeconds) : "30";
+        process.stdout.write(`${r.status}\t${code}\t${exp}\n`);
+      })
+      .catch(() => {
+        process.stdout.write("0\t\t\n");
+      });
+  ' "$port" 2>/dev/null || printf '0\t\t\n'
+}
+
+# --- Launch bundled engine ---
+# Local mode binds 127.0.0.1 on a random port unless CMC_PORT is explicitly passed.
+# Leave CMC_SECRET_STORE on auto (libsecret via secret-tool on Linux, else 0600 file).
+if [[ -n "$OPT_PORT" ]]; then
+  export CMC_PORT="$OPT_PORT"
+else
+  unset CMC_PORT 2>/dev/null || true
+fi
+export CMC_DATA_DIR="$OPT_DATA_DIR"
+export CMC_CONFIG_DIR="$OPT_CONFIG_DIR"
+export CMC_WEB_DIR="$WEB_DIR"
+export CMC_ANVIL="$ANVIL_BIN"
+export CMC_EXIT_ON_STDIN_CLOSE=1
+export PATH="$ROOT/bin:$PATH"
+
+echo "[cmc] Starting CloneMyContracts $CMC_VERSION..." >&2
+echo "[cmc] Data directory:   $OPT_DATA_DIR" >&2
+echo "[cmc] Config directory: $OPT_CONFIG_DIR" >&2
+echo "[cmc] Log file:         $LOG_FILE" >&2
+
+# Keep engine stdin open via FIFO so closing it (or launcher crash) signals clean engine shutdown
+exec 4<>"$STDIN_FIFO"
+STDIN_FD_OPEN=1
+
+if command -v setsid >/dev/null 2>&1; then
+  setsid "$NODE_BIN" "$ENGINE_MAIN" <"$STDIN_FIFO" >"$STDOUT_FIFO" 2>>"$LOG_FILE" &
+  ENGINE_PID=$!
+  ENGINE_PGID="$ENGINE_PID"
+else
+  "$NODE_BIN" "$ENGINE_MAIN" <"$STDIN_FIFO" >"$STDOUT_FIFO" 2>>"$LOG_FILE" &
+  ENGINE_PID=$!
+fi
+
+# Open stdout FIFO for reading the handshake
+exec 3<"$STDOUT_FIFO"
+
+BOUND_PORT=""
+HANDSHAKE_TOKEN=""
+HANDSHAKE_KIND=""
+DEADLINE=$(( $(date +%s) + 30 ))
+
+while [[ -z "$BOUND_PORT" ]]; do
+  if ! kill -0 "$ENGINE_PID" 2>/dev/null; then
+    echo "[cmc] error: engine exited before completing startup handshake." >&2
+    if [[ -s "$LOG_FILE" ]]; then
+      echo "[cmc] Last log lines ($LOG_FILE):" >&2
+      tail -n 20 "$LOG_FILE" >&2
+    fi
+    exit 1
+  fi
+  if [[ $(date +%s) -ge $DEADLINE ]]; then
+    echo "[cmc] error: timed out waiting for engine startup handshake (30s)." >&2
+    if [[ -s "$LOG_FILE" ]]; then
+      tail -n 20 "$LOG_FILE" >&2
+    fi
+    exit 1
+  fi
+
+  if IFS= read -r -t 1 line <&3; then
+    printf '%s\n' "$(redact_line "$line")" >> "$LOG_FILE"
+
+    # 1. Standard local-engine contract: {"port":N,"token":"<64 hex>"}
+    if [[ "$line" == \{*\"port\"*\} ]]; then
+      if parsed="$(printf '%s\n' "$line" | parse_handshake_json)"; then
+        IFS=$'\t' read -r BOUND_PORT HANDSHAKE_TOKEN <<< "$parsed"
+        HANDSHAKE_KIND="json"
+        break
+      fi
+    fi
+
+    # 2. Legacy fallback: "CloneMyContracts ... listening on http://<host>:<port>/"
+    if [[ "$line" =~ listening[[:space:]]+on[[:space:]]+https?://[^/:]+:([0-9]+) ]]; then
+      legacy_port="${BASH_REMATCH[1]}"
+      if [[ "$legacy_port" == "0" ]]; then
+        sleep 0.1
+        BOUND_PORT="$(discover_pid_listen_port "$ENGINE_PID")"
+      else
+        BOUND_PORT="$legacy_port"
+      fi
+      if [[ -n "$BOUND_PORT" ]]; then
+        HANDSHAKE_KIND="legacy"
+        break
+      fi
+    fi
+  fi
+done
+
+if [[ -z "$BOUND_PORT" ]]; then
+  echo "[cmc] error: could not determine listening port from engine output." >&2
+  exit 1
+fi
+
+# Drain any subsequent stdout lines (redacted) in the background so the main shell can
+# block in `wait` and react immediately to SIGINT/SIGTERM.
+(
+  while IFS= read -r log_line <&3; do
+    if [[ "$log_line" == *'"token"'* || "$log_line" == *'"code"'* || "$log_line" == *'"value"'* ]]; then
+      printf '%s\n' "$log_line" | sed -E 's/"(token|code|value)"[[:space:]]*:[[:space:]]*"[^"]*"/"\1":"[REDACTED]"/g' >> "$LOG_FILE"
+    else
+      printf '%s\n' "$log_line" >> "$LOG_FILE"
+    fi
+  done
+) &
+DRAINER_PID=$!
+exec 3<&-
+
+# --- Exchange launch token for a 30s single-use browser code (never put launch token in a URL) ---
+BASE_URL="http://127.0.0.1:${BOUND_PORT}/"
+EXCHANGE_URL=""
+CODE_EXPIRES="30"
+AUTH_MODE="none"
+
+if [[ -n "$HANDSHAKE_TOKEN" ]]; then
+  mint_res="$(printf '%s' "$HANDSHAKE_TOKEN" | mint_auth_code "$BOUND_PORT")"
+  IFS=$'\t' read -r mint_status minted_code minted_exp <<< "$mint_res"
+  if [[ "$mint_status" == "200" && -n "$minted_code" ]]; then
+    EXCHANGE_URL="http://127.0.0.1:${BOUND_PORT}/auth/exchange?code=${minted_code}"
+    CODE_EXPIRES="${minted_exp:-30}"
+    AUTH_MODE="exchange"
+  else
+    # Fallback when /api/auth/code is unavailable: never put the long-lived token in a URL
+    AUTH_MODE="separate"
+  fi
+fi
+
+# --- Print URL / open browser ---
+open_browser() {
+  local target_url="$1"
+  if [[ "$NO_OPEN" == "1" ]]; then
+    return 1
+  fi
+  if [[ -z "${DISPLAY:-}" && -z "${WAYLAND_DISPLAY:-}" ]]; then
+    echo "[cmc] No GUI display detected (DISPLAY/WAYLAND_DISPLAY unset); not opening browser." >&2
+    return 1
+  fi
+  if ! command -v xdg-open >/dev/null 2>&1; then
+    echo "[cmc] xdg-open not found; open the URL below manually in your browser." >&2
+    return 1
+  fi
+  (xdg-open "$target_url" >/dev/null 2>&1 &)
+  return 0
+}
+
+TARGET_BROWSER_URL="${EXCHANGE_URL:-$BASE_URL}"
+
+if open_browser "$TARGET_BROWSER_URL"; then
+  echo "[cmc] CloneMyContracts is running at $BASE_URL"
+  if [[ "$AUTH_MODE" == "separate" ]]; then
+    echo "[cmc] Token: $HANDSHAKE_TOKEN"
+    echo "[cmc] Note:  /api/auth/code is not available on this build; token was NOT placed in the URL."
+  fi
+else
+  if [[ "$AUTH_MODE" == "exchange" ]]; then
+    echo "[cmc] Base URL:     $BASE_URL"
+    echo "[cmc] Sign-in URL:  $EXCHANGE_URL  (one-time code, valid ${CODE_EXPIRES}s)"
+    echo "[cmc] Bearer token: $HANDSHAKE_TOKEN"
+  elif [[ "$AUTH_MODE" == "separate" ]]; then
+    echo "[cmc] Base URL:     $BASE_URL"
+    echo "[cmc] Bearer token: $HANDSHAKE_TOKEN"
+    echo "[cmc] Note:         /api/auth/code is not available on this build; token is printed separately (never placed in a URL)."
+  else
+    echo "[cmc] Base URL:     $BASE_URL"
+    if [[ "$HANDSHAKE_KIND" == "legacy" ]]; then
+      echo "[cmc] Note:         Engine used legacy startup line (JSON handshake not present in this build)."
+    fi
+  fi
+fi
+echo "[cmc] Press Ctrl-C to stop."
+
+# Keep running in foreground; `wait` returns immediately on trapped signals.
+ENGINE_EXIT=0
+wait "$ENGINE_PID" || ENGINE_EXIT=$?
+
+if [[ -n "$SHUTDOWN_SIGNAL" ]]; then
+  exit 0
+fi
+
+echo "[cmc] Engine exited with status $ENGINE_EXIT (see $LOG_FILE)." >&2
+exit "$ENGINE_EXIT"

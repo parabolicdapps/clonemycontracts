@@ -1,0 +1,17 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "packages/core"
+    },
+    {
+      "path": "packages/translate"
+    },
+    {
+      "path": "packages/cli"
+    },
+    {
+      "path": "apps/api"
+    }
+  ]
+}

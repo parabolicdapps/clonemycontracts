@@ -1,0 +1,13 @@
+{
+  "name": "@cmc/cli",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": {
+    "cmc": "dist/main.js"
+  },
+  "dependencies": {
+    "@cmc/core": "0.1.0",
+    "@cmc/translate": "0.1.0"
+  }
+}

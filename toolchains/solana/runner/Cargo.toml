@@ -1,0 +1,28 @@
+[package]
+name = "cmc-runner"
+version = "0.1.0"
+edition = "2021"
+description = "In-process (litesvm) behaviour-test harness for Anchor programs, driven by a JSON plan"
+
+[dependencies]
+litesvm = "=0.18.2"
+solana-address = { version = "2", features = ["curve25519", "sha2"] }
+solana-keypair = "3"
+solana-signer = "3"
+solana-message = "4"
+solana-transaction = "4"
+solana-instruction = "3"
+solana-clock = "3"
+solana-transaction-error = "3"
+solana-instruction-error = "2"
+solana-signature = "3"
+solana-hash = "4"
+serde_json = "1"
+sha2 = "0.10"
+base64 = "0.22"
+
+[profile.release]
+opt-level = 2
+codegen-units = 4
+lto = "thin"
+strip = true

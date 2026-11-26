@@ -1,0 +1,6 @@
+const RESERVED = new Set(['abort', 'acquires', 'as', 'break', 'const', 'continue', 'copy', 'drop', 'else', 'enum', 'entry', 'false', 'friend', 'fun', 'has', 'if', 'inline', 'invariant', 'key', 'let', 'loop', 'module', 'move', 'mut', 'native', 'public', 'return', 'script', 'spec', 'store', 'struct', 'true', 'use', 'while', 'for', 'match', 'phantom', 'package', 'self', 'type', 'where', 'caller', 'state', 'cap', 'address', 'signer', 'bool', 'vector', 'u8', 'u16', 'u32', 'u64', 'u128', 'u256', 'assert', 'exists', 'global', 'old', 'result', 'schema', 'pragma', 'include', 'apply', 'define', 'axiom', 'ensures', 'requires', 'modifies', 'post', 'pure']);
+const base = (s: string) => s.replace(/^_+/, '').replace(/([a-z0-9])([A-Z])/g, '$1_$2').replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2').replace(/[^A-Za-z0-9_]/g, '_').toLowerCase();
+/** snake_case Move identifier; Move keywords and names the generated code owns get a trailing underscore */
+export const ident = (s: string): string => { const r = base(s) || 'x'; const t = /^\d/.test(r) ? `x${r}` : r; return RESERVED.has(t) ? `${t}_` : t; };
+export const pascal = (s: string): string => base(s).split('_').filter(Boolean).map((w) => w[0]!.toUpperCase() + w.slice(1)).join('') || 'X';
+export const upperSnake = (s: string): string => base(s).toUpperCase();

@@ -1,0 +1,46 @@
+name: CloneMyContracts
+options:
+  bundleIdPrefix: com.parabolicdapps
+  # Minimum macOS: 14 gives the SwiftUI/WebKit APIs used here (WKDownload, Observation-free ObservableObject code works on 13 too).
+  deploymentTarget:
+    macOS: "14.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    CODE_SIGN_IDENTITY: "-"
+    CODE_SIGN_STYLE: Manual
+    # Hardened runtime ON from the start so local ad-hoc tests behave like the notarised build.
+    ENABLE_HARDENED_RUNTIME: YES
+    # No sandbox: the app must spawn the bundled engine, docker/podman and optionally the user's `claude` binary.
+    ENABLE_APP_SANDBOX: NO
+    # Apple silicon first. Intel needs an x64 node + anvil in the bundle and ARCHS "arm64 x86_64" (see README).
+    ARCHS: arm64
+    ONLY_ACTIVE_ARCH: NO
+  configs:
+    Release:
+      # No build-machine paths in the shipped binary: strip symbols/debug map after linking (dSYM is kept out of the app), remap source paths.
+      DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+      DEPLOYMENT_POSTPROCESSING: YES
+      STRIP_INSTALLED_PRODUCT: YES
+      STRIP_STYLE: all
+      COPY_PHASE_STRIP: YES
+      OTHER_SWIFT_FLAGS: "$(inherited) -Xfrontend -no-serialize-debugging-options -debug-prefix-map $(SRCROOT)=."
+      OTHER_CFLAGS: "$(inherited) -fdebug-prefix-map=$(SRCROOT)=."
+targets:
+  CloneMyContracts:
+    type: application
+    platform: macOS
+    sources:
+      - Sources
+      - Resources/Assets.xcassets
+    settings:
+      base:
+        PRODUCT_NAME: CloneMyContracts
+        PRODUCT_BUNDLE_IDENTIFIER: com.parabolicdapps.clonemycontracts
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: CloneMyContracts
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.developer-tools
+        INFOPLIST_KEY_NSHumanReadableCopyright: "Apache-2.0. Unaudited software, use at your own risk."

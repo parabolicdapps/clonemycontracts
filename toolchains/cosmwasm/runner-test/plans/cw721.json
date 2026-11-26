@@ -1,0 +1,23 @@
+{
+  "version": 1, "clock_start": 1700000000,
+  "actors": ["deployer", "alice", "bob", "carol"],
+  "scenarios": [
+    { "id": "cw721", "steps": [
+      {"op":"instantiate","id":"nft","code":"cw721-base","name":"nft","sender":"actor:deployer",
+       "msg":{"name":"Test NFT","symbol":"TNFT","collection_info_extension":null,"minter":"actor:deployer","creator":"actor:deployer","withdraw_address":null}},
+      {"op":"execute","id":"mint1","contract":"name:nft","sender":"actor:deployer","msg":{"mint":{"token_id":"1","owner":"actor:alice","token_uri":"ipfs://x","extension":null}}},
+      {"op":"execute","id":"mint2","contract":"name:nft","sender":"actor:deployer","msg":{"mint":{"token_id":"2","owner":"actor:alice","token_uri":null,"extension":null}}},
+      {"op":"execute","id":"mint_bad","contract":"name:nft","sender":"actor:alice","msg":{"mint":{"token_id":"3","owner":"actor:alice","token_uri":null,"extension":null}}},
+      {"op":"query","id":"owner1","contract":"name:nft","msg":{"owner_of":{"token_id":"1","include_expired":null}}},
+      {"op":"execute","id":"xfer","contract":"name:nft","sender":"actor:alice","msg":{"transfer_nft":{"recipient":"actor:bob","token_id":"1"}}},
+      {"op":"execute","id":"approve","contract":"name:nft","sender":"actor:alice","msg":{"approve":{"spender":"actor:carol","token_id":"2","expires":null}}},
+      {"op":"execute","id":"xferfrom","contract":"name:nft","sender":"actor:carol","msg":{"transfer_nft":{"recipient":"actor:carol","token_id":"2"}}},
+      {"op":"execute","id":"xfer_notowner","contract":"name:nft","sender":"actor:alice","msg":{"transfer_nft":{"recipient":"actor:alice","token_id":"2"}}},
+      {"op":"execute","id":"burn","contract":"name:nft","sender":"actor:bob","msg":{"burn":{"token_id":"1"}}},
+      {"op":"query","id":"owner1_gone","contract":"name:nft","msg":{"owner_of":{"token_id":"1","include_expired":null}}},
+      {"op":"query","id":"owner2","contract":"name:nft","msg":{"owner_of":{"token_id":"2","include_expired":null}}},
+      {"op":"query","id":"tokens_carol","contract":"name:nft","msg":{"tokens":{"owner":"actor:carol","start_after":null,"limit":null}}},
+      {"op":"query","id":"count","contract":"name:nft","msg":{"num_tokens":{}}}
+    ]}
+  ]
+}

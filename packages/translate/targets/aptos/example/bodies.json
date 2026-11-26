@@ -1,0 +1,7 @@
+{
+  "initialize": "assert!(arbiter != @0x0, E_ZERO_ARBITER);\nset_token(token);\nset_arbiter(arbiter);\nset_release_at(release_at);",
+  "deposit": "assert!(amount > 0, E_ZERO_AMOUNT);\ntoken_pull(caller, amount);\nlet who = signer::address_of(caller);\nlet d = get_deposits(who);\nset_deposits(who, d + amount);\nset_total(get_total() + amount);\nevent::emit(Deposited { who, amount });",
+  "claim": "assert!((now_secs() as u256) >= get_release_at(), E_TOO_EARLY);\nlet who = signer::address_of(caller);\nlet d = get_deposits(who);\nassert!(d > 0, E_NOTHING_TO_CLAIM);\nset_deposits(who, 0);\nset_total(get_total() - d);\ntoken_push(who, d);\nevent::emit(Claimed { who, amount: d });",
+  "sweep": "assert!(signer::address_of(caller) == get_arbiter(), E_NOT_ARBITER);\nlet bal = get_total();\nset_total(0);\ntoken_push(to, bal);",
+  "share_bps": "let total = get_total();\nif (total == 0) { return 0 };\n(get_deposits(who) * 10000) / total"
+}

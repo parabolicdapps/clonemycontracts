@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "actors": ["deployer", "alice", "bob", "carol"],
+  "scenarios": [
+    {
+      "id": "spl",
+      "steps": [
+        {"id": "mint", "op": "spl_create_mint", "name": "mintA", "decimals": 9, "authority": "actor:deployer", "freeze": "actor:deployer", "payer": "actor:deployer"},
+        {"id": "ata_alice", "op": "spl_create_ata", "owner": "actor:alice", "mint": "name:mintA", "payer": "actor:deployer"},
+        {"id": "ata_bob", "op": "spl_create_ata", "owner": "actor:bob", "mint": "name:mintA", "payer": "actor:deployer"},
+        {"id": "ata_bob_again", "op": "spl_create_ata", "owner": "actor:bob", "mint": "name:mintA", "payer": "actor:deployer"},
+        {"id": "ata_pda", "op": "spl_create_ata", "owner": {"pda": {"program": "ata_program", "seeds": [{"str": "off-curve"}]}}, "mint": "name:mintA", "payer": "actor:deployer"},
+        {"id": "mint_to", "op": "spl_mint_to", "mint": "name:mintA", "to": {"ata": {"owner": "actor:alice", "mint": "name:mintA"}}, "amount": "1000000000000", "authority": "actor:deployer"},
+        {"id": "mint_to_wrong_auth", "op": "spl_mint_to", "mint": "name:mintA", "to": {"ata": {"owner": "actor:alice", "mint": "name:mintA"}}, "amount": "1", "authority": "actor:bob"},
+        {"id": "approve", "op": "spl_approve", "account": {"ata": {"owner": "actor:alice", "mint": "name:mintA"}}, "delegate": "actor:carol", "amount": "300", "owner": "actor:alice"},
+        {"id": "r_alice1", "op": "read_account", "account": {"ata": {"owner": "actor:alice", "mint": "name:mintA"}}, "as": "alice", "type": "token"},
+        {"id": "delegate_transfer", "op": "spl_transfer", "from": {"ata": {"owner": "actor:alice", "mint": "name:mintA"}}, "to": {"ata": {"owner": "actor:bob", "mint": "name:mintA"}}, "amount": "200", "authority": "actor:carol"},
+        {"id": "delegate_overspend", "op": "spl_transfer", "from": {"ata": {"owner": "actor:alice", "mint": "name:mintA"}}, "to": {"ata": {"owner": "actor:bob", "mint": "name:mintA"}}, "amount": "200", "authority": "actor:carol"},
+        {"id": "transfer_too_much", "op": "spl_transfer", "from": {"ata": {"owner": "actor:bob", "mint": "name:mintA"}}, "to": {"ata": {"owner": "actor:alice", "mint": "name:mintA"}}, "amount": "999", "authority": "actor:bob"},
+        {"id": "burn", "op": "spl_burn", "account": {"ata": {"owner": "actor:bob", "mint": "name:mintA"}}, "mint": "name:mintA", "amount": "50", "authority": "actor:bob"},
+        {"id": "set_auth", "op": "spl_set_authority", "target": "name:mintA", "authority_type": "mint", "new": null, "current": "actor:deployer"},
+        {"id": "mint_after_renounce", "op": "spl_mint_to", "mint": "name:mintA", "to": {"ata": {"owner": "actor:alice", "mint": "name:mintA"}}, "amount": "1", "authority": "actor:deployer"},
+        {"id": "r_alice", "op": "read_account", "account": {"ata": {"owner": "actor:alice", "mint": "name:mintA"}}, "as": "alice", "type": "token"},
+        {"id": "r_bob", "op": "read_account", "account": {"ata": {"owner": "actor:bob", "mint": "name:mintA"}}, "as": "bob", "type": "token"},
+        {"id": "r_mint", "op": "read_account", "account": "name:mintA", "as": "mint", "type": "mint"},
+        {"id": "r_lamports", "op": "read_account", "account": "actor:alice", "as": "sol", "type": "lamports"},
+        {"id": "r_missing", "op": "read_account", "account": {"pda": {"program": "system", "seeds": [{"str": "nothing"}]}}, "as": "x", "type": "token"},
+        {"id": "airdrop", "op": "airdrop", "to": "actor:carol", "lamports": "5"}
+      ]
+    }
+  ]
+}

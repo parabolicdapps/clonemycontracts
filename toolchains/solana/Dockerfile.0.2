@@ -1,0 +1,21 @@
+# cmc-toolchain-solana:0.2 = 0.1 + cmc-runner (litesvm harness) + test/run-plan entry commands.
+# Build:  docker build -t cmc-toolchain-solana:0.2 -f solana/Dockerfile.0.2 solana
+FROM cmc-toolchain-solana:0.1 AS builder
+ARG RUNNER_RUST=1.97.1
+USER cmc
+# litesvm 0.18.x needs a newer rustc than the 0.1 toolchain (1.90); install it in this throwaway stage only.
+RUN rustup toolchain install ${RUNNER_RUST} --profile minimal
+COPY --chown=cmc runner /tmp/runner
+RUN cd /tmp/runner && CARGO_TARGET_DIR=/tmp/runner-target cargo +${RUNNER_RUST} build --release --locked \
+ && cp /tmp/runner-target/release/cmc-runner /tmp/cmc-runner
+
+FROM cmc-toolchain-solana:0.1
+LABEL org.opencontainers.image.source="https://github.com/parabolicdapps/clonemycontracts" \
+      org.opencontainers.image.licenses="Apache-2.0" \
+      org.opencontainers.image.description="CloneMyContracts sandbox toolchain"
+COPY --from=builder /tmp/cmc-runner /usr/local/bin/cmc-runner
+COPY entry.sh /usr/local/bin/cmc-entry
+RUN cmc-runner --version
+WORKDIR /work
+ENTRYPOINT ["/usr/local/bin/cmc-entry"]
+CMD ["compile"]

@@ -1,0 +1,3795 @@
+{
+ "aptos_framework::account": {
+  "create_signer_for_test": {
+   "sig": "fun create_signer_for_test(addr: address): signer",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "grant_key_rotation_permission": {
+   "sig": "fun grant_key_rotation_permission(_master: &signer, _permissioned_signer: &signer)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "grant_key_offering_permission": {
+   "sig": "fun grant_key_offering_permission(_master: &signer, _permissioned_signer: &signer)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "create_account_if_does_not_exist": {
+   "sig": "fun create_account_if_does_not_exist(account_address: address)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "exists_at": {
+   "sig": "fun exists_at(addr: address): bool",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "get_guid_next_creation_num": {
+   "sig": "fun get_guid_next_creation_num(addr: address): u64",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "get_sequence_number": {
+   "sig": "fun get_sequence_number(addr: address): u64",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "originating_address": {
+   "sig": "fun originating_address(auth_key: address): Option<address>",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "get_authentication_key": {
+   "sig": "fun get_authentication_key(addr: address): vector<u8>",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "get_encrypted_dk": {
+   "sig": "fun get_encrypted_dk(addr: address): EncryptedDK",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "encrypted_dk_exists": {
+   "sig": "fun encrypted_dk_exists(addr: address): bool",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "rotate_authentication_key": {
+   "sig": "fun rotate_authentication_key(account: &signer, from_scheme: u8, from_public_key_bytes: vector<u8>, to_scheme: u8, to_public_key_bytes: vector<u8>, cap_rotate_key: vector<u8>, cap_update_table: vector<u8>)",
+   "arity": 7,
+   "entry": true,
+   "view": false
+  },
+  "rotate_authentication_key_with_rotation_capability": {
+   "sig": "fun rotate_authentication_key_with_rotation_capability(delegate_signer: &signer, rotation_cap_offerer_address: address, new_scheme: u8, new_public_key_bytes: vector<u8>, cap_update_table: vector<u8>)",
+   "arity": 5,
+   "entry": true,
+   "view": false
+  },
+  "offer_rotation_capability": {
+   "sig": "fun offer_rotation_capability(account: &signer, rotation_capability_sig_bytes: vector<u8>, account_scheme: u8, account_public_key_bytes: vector<u8>, recipient_address: address)",
+   "arity": 5,
+   "entry": true,
+   "view": false
+  },
+  "is_rotation_capability_offered": {
+   "sig": "fun is_rotation_capability_offered(account_addr: address): bool",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "get_rotation_capability_offer_for": {
+   "sig": "fun get_rotation_capability_offer_for(account_addr: address): address",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "revoke_rotation_capability": {
+   "sig": "fun revoke_rotation_capability(account: &signer, to_be_revoked_address: address)",
+   "arity": 2,
+   "entry": true,
+   "view": false
+  },
+  "revoke_any_rotation_capability": {
+   "sig": "fun revoke_any_rotation_capability(account: &signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false
+  },
+  "offer_signer_capability": {
+   "sig": "fun offer_signer_capability(account: &signer, signer_capability_sig_bytes: vector<u8>, account_scheme: u8, account_public_key_bytes: vector<u8>, recipient_address: address)",
+   "arity": 5,
+   "entry": true,
+   "view": false
+  },
+  "is_signer_capability_offered": {
+   "sig": "fun is_signer_capability_offered(account_addr: address): bool",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "get_signer_capability_offer_for": {
+   "sig": "fun get_signer_capability_offer_for(account_addr: address): address",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "revoke_signer_capability": {
+   "sig": "fun revoke_signer_capability(account: &signer, to_be_revoked_address: address)",
+   "arity": 2,
+   "entry": true,
+   "view": false
+  },
+  "revoke_any_signer_capability": {
+   "sig": "fun revoke_any_signer_capability(account: &signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false
+  },
+  "create_authorized_signer": {
+   "sig": "fun create_authorized_signer(account: &signer, offerer_address: address): signer",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "create_resource_address": {
+   "sig": "fun create_resource_address(source: &address, seed: vector<u8>): address",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "create_resource_account": {
+   "sig": "fun create_resource_account(source: &signer, seed: vector<u8>): (signer, SignerCapability)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "create_guid": {
+   "sig": "fun create_guid(account_signer: &signer): guid::GUID",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "new_event_handle": {
+   "sig": "fun new_event_handle<T: drop + store>(account: &signer): EventHandle<T>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "get_signer_capability_offer_proof_challenge_v2": {
+   "sig": "fun get_signer_capability_offer_proof_challenge_v2(source_address: address, recipient_address: address): SignerCapabilityOfferProofChallengeV2",
+   "arity": 2,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "create_signer_with_capability": {
+   "sig": "fun create_signer_with_capability(capability: &SignerCapability): signer",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "get_signer_capability_address": {
+   "sig": "fun get_signer_capability_address(capability: &SignerCapability): address",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "verify_signed_message": {
+   "sig": "fun verify_signed_message<T: drop>(account: address, account_scheme: u8, account_public_key: vector<u8>, signed_message_bytes: vector<u8>, message: T)",
+   "arity": 5,
+   "entry": false,
+   "view": false
+  },
+  "create_account_for_test": {
+   "sig": "fun create_account_for_test(new_address: address): signer",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "test_create_resource_account": {
+   "sig": "fun test_create_resource_account(user: signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_cannot_control_resource_account_via_auth_key": {
+   "sig": "fun test_cannot_control_resource_account_via_auth_key()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_module_capability": {
+   "sig": "fun test_module_capability(user: signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_resource_account_and_create_account": {
+   "sig": "fun test_resource_account_and_create_account(user: signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_duplice_create_resource_account": {
+   "sig": "fun test_duplice_create_resource_account(user: signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "increment_sequence_number_for_test": {
+   "sig": "fun increment_sequence_number_for_test(addr: address)",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "set_sequence_number": {
+   "sig": "fun set_sequence_number(addr: address, s: u64)",
+   "arity": 2,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "create_test_signer_cap": {
+   "sig": "fun create_test_signer_cap(account: address): SignerCapability",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "set_signer_capability_offer": {
+   "sig": "fun set_signer_capability_offer(offerer: address, receiver: address)",
+   "arity": 2,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "set_rotation_capability_offer": {
+   "sig": "fun set_rotation_capability_offer(offerer: address, receiver: address)",
+   "arity": 2,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "mock_sequence_numbers": {
+   "sig": "fun mock_sequence_numbers()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_empty_public_key": {
+   "sig": "fun test_empty_public_key(alice: signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_empty_signature": {
+   "sig": "fun test_empty_signature(alice: signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "create_account_from_ed25519_public_key": {
+   "sig": "fun create_account_from_ed25519_public_key(pk_bytes: vector<u8>): signer",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "test_invalid_offer_signer_capability": {
+   "sig": "fun test_invalid_offer_signer_capability(bob: signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_valid_check_signer_capability_and_create_authorized_signer": {
+   "sig": "fun test_valid_check_signer_capability_and_create_authorized_signer(bob: signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_get_signer_cap_and_is_signer_cap": {
+   "sig": "fun test_get_signer_cap_and_is_signer_cap(bob: signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_invalid_check_signer_capability_and_create_authorized_signer": {
+   "sig": "fun test_invalid_check_signer_capability_and_create_authorized_signer(bob: signer, charlie: signer)",
+   "arity": 2,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_valid_revoke_signer_capability": {
+   "sig": "fun test_valid_revoke_signer_capability(bob: signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_invalid_revoke_signer_capability": {
+   "sig": "fun test_invalid_revoke_signer_capability(bob: signer, charlie: signer)",
+   "arity": 2,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_valid_offer_rotation_capability": {
+   "sig": "fun test_valid_offer_rotation_capability(bob: signer, framework: signer)",
+   "arity": 2,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_invalid_offer_rotation_capability": {
+   "sig": "fun test_invalid_offer_rotation_capability(bob: signer, framework: signer)",
+   "arity": 2,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_valid_revoke_rotation_capability": {
+   "sig": "fun test_valid_revoke_rotation_capability(bob: signer, framework: signer)",
+   "arity": 2,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_invalid_revoke_rotation_capability": {
+   "sig": "fun test_invalid_revoke_rotation_capability(bob: signer, charlie: signer, framework: signer)",
+   "arity": 3,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_valid_rotate_authentication_key_multi_ed25519_to_multi_ed25519": {
+   "sig": "fun test_valid_rotate_authentication_key_multi_ed25519_to_multi_ed25519(account: signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_valid_rotate_authentication_key_multi_ed25519_to_ed25519": {
+   "sig": "fun test_valid_rotate_authentication_key_multi_ed25519_to_ed25519(account: signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_add_ed25519_backup_key_to_keyless_account": {
+   "sig": "fun test_add_ed25519_backup_key_to_keyless_account(account: signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_simple_rotation": {
+   "sig": "fun test_simple_rotation(account: &signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_max_guid": {
+   "sig": "fun test_max_guid(account: &signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  }
+ },
+ "aptos_framework::aptos_account": {
+  "create_account": {
+   "sig": "fun create_account(auth_key: address)",
+   "arity": 1,
+   "entry": true,
+   "view": false
+  },
+  "batch_transfer": {
+   "sig": "fun batch_transfer(source: &signer, recipients: vector<address>, amounts: vector<u64>)",
+   "arity": 3,
+   "entry": true,
+   "view": false
+  },
+  "transfer": {
+   "sig": "fun transfer(source: &signer, to: address, amount: u64)",
+   "arity": 3,
+   "entry": true,
+   "view": false
+  },
+  "batch_transfer_coins": {
+   "sig": "fun batch_transfer_coins<CoinType>(from: &signer, recipients: vector<address>, amounts: vector<u64>)",
+   "arity": 3,
+   "entry": true,
+   "view": false
+  },
+  "transfer_coins": {
+   "sig": "fun transfer_coins<CoinType>(from: &signer, to: address, amount: u64)",
+   "arity": 3,
+   "entry": true,
+   "view": false
+  },
+  "deposit_coins": {
+   "sig": "fun deposit_coins<CoinType>(to: address, coins: Coin<CoinType>)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "batch_transfer_fungible_assets": {
+   "sig": "fun batch_transfer_fungible_assets(from: &signer, metadata: Object<Metadata>, recipients: vector<address>, amounts: vector<u64>)",
+   "arity": 4,
+   "entry": true,
+   "view": false
+  },
+  "transfer_fungible_assets": {
+   "sig": "fun transfer_fungible_assets(from: &signer, metadata: Object<Metadata>, to: address, amount: u64)",
+   "arity": 4,
+   "entry": true,
+   "view": false
+  },
+  "deposit_fungible_assets": {
+   "sig": "fun deposit_fungible_assets(to: address, fa: FungibleAsset)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "assert_account_exists": {
+   "sig": "fun assert_account_exists(addr: address)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "assert_account_is_registered_for_apt": {
+   "sig": "fun assert_account_is_registered_for_apt(addr: address)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "set_allow_direct_coin_transfers": {
+   "sig": "fun set_allow_direct_coin_transfers(account: &signer, allow: bool)",
+   "arity": 2,
+   "entry": true,
+   "view": false
+  },
+  "can_receive_direct_coin_transfers": {
+   "sig": "fun can_receive_direct_coin_transfers(account: address): bool",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "test_transfer": {
+   "sig": "fun test_transfer(alice: &signer, core: &signer)",
+   "arity": 2,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "test_transfer_to_resource_account": {
+   "sig": "fun test_transfer_to_resource_account(alice: &signer, core: &signer)",
+   "arity": 2,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "test_batch_transfer": {
+   "sig": "fun test_batch_transfer(from: &signer, core: &signer, recipient_1: &signer, recipient_2: &signer)",
+   "arity": 4,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "test_direct_coin_transfers": {
+   "sig": "fun test_direct_coin_transfers(from: &signer, to: &signer)",
+   "arity": 2,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "test_batch_transfer_coins": {
+   "sig": "fun test_batch_transfer_coins(from: &signer, recipient_1: &signer, recipient_2: &signer)",
+   "arity": 3,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "test_set_allow_direct_coin_transfers": {
+   "sig": "fun test_set_allow_direct_coin_transfers(user: &signer)",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "test_direct_coin_transfers_with_explicit_direct_coin_transfer_config": {
+   "sig": "fun test_direct_coin_transfers_with_explicit_direct_coin_transfer_config(from: &signer, to: &signer)",
+   "arity": 2,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  }
+ },
+ "aptos_framework::aptos_coin": {
+  "has_mint_capability": {
+   "sig": "fun has_mint_capability(account: &signer): bool",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "mint": {
+   "sig": "fun mint(account: &signer, dst_addr: address, amount: u64)",
+   "arity": 3,
+   "entry": true,
+   "view": false
+  },
+  "delegate_mint_capability": {
+   "sig": "fun delegate_mint_capability(account: signer, to: address)",
+   "arity": 2,
+   "entry": true,
+   "view": false
+  },
+  "claim_mint_capability": {
+   "sig": "fun claim_mint_capability(account: &signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false
+  },
+  "mint_apt_fa_for_test": {
+   "sig": "fun mint_apt_fa_for_test(amount: u64): FungibleAsset",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "ensure_initialized_with_apt_fa_metadata_for_test": {
+   "sig": "fun ensure_initialized_with_apt_fa_metadata_for_test()",
+   "arity": 0,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "initialize_for_test": {
+   "sig": "fun initialize_for_test(aptos_framework: &signer): (BurnCapability<AptosCoin>, MintCapability<AptosCoin>)",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "initialize_for_test_without_aggregator_factory": {
+   "sig": "fun initialize_for_test_without_aggregator_factory(aptos_framework: &signer): (BurnCapability<AptosCoin>, MintCapability<AptosCoin>)",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  }
+ },
+ "aptos_framework::coin": {
+  "paired_metadata": {
+   "sig": "fun paired_metadata<CoinType>(): Option<Object<Metadata>>",
+   "arity": 0,
+   "entry": false,
+   "view": true
+  },
+  "create_coin_conversion_map": {
+   "sig": "fun create_coin_conversion_map(aptos_framework: &signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false
+  },
+  "create_pairing": {
+   "sig": "fun create_pairing<CoinType>(aptos_framework: &signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false
+  },
+  "paired_coin": {
+   "sig": "fun paired_coin(metadata: Object<Metadata>): Option<TypeInfo>",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "coin_to_fungible_asset": {
+   "sig": "fun coin_to_fungible_asset<CoinType>(coin: Coin<CoinType>): FungibleAsset",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "paired_mint_ref_exists": {
+   "sig": "fun paired_mint_ref_exists<CoinType>(): bool",
+   "arity": 0,
+   "entry": false,
+   "view": true
+  },
+  "get_paired_mint_ref": {
+   "sig": "fun get_paired_mint_ref<CoinType>(_: &MintCapability<CoinType>): (MintRef, MintRefReceipt)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "return_paired_mint_ref": {
+   "sig": "fun return_paired_mint_ref(mint_ref: MintRef, receipt: MintRefReceipt)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "paired_transfer_ref_exists": {
+   "sig": "fun paired_transfer_ref_exists<CoinType>(): bool",
+   "arity": 0,
+   "entry": false,
+   "view": true
+  },
+  "get_paired_transfer_ref": {
+   "sig": "fun get_paired_transfer_ref<CoinType>(_: &FreezeCapability<CoinType>): (TransferRef, TransferRefReceipt)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "return_paired_transfer_ref": {
+   "sig": "fun return_paired_transfer_ref(transfer_ref: TransferRef, receipt: TransferRefReceipt)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "paired_burn_ref_exists": {
+   "sig": "fun paired_burn_ref_exists<CoinType>(): bool",
+   "arity": 0,
+   "entry": false,
+   "view": true
+  },
+  "get_paired_burn_ref": {
+   "sig": "fun get_paired_burn_ref<CoinType>(_: &BurnCapability<CoinType>): (BurnRef, BurnRefReceipt)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "convert_and_take_paired_burn_ref": {
+   "sig": "fun convert_and_take_paired_burn_ref<CoinType>(burn_cap: BurnCapability<CoinType>): BurnRef",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "return_paired_burn_ref": {
+   "sig": "fun return_paired_burn_ref(burn_ref: BurnRef, receipt: BurnRefReceipt)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "allow_supply_upgrades": {
+   "sig": "fun allow_supply_upgrades(_aptos_framework: &signer, _allowed: bool)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "migrate_to_fungible_store": {
+   "sig": "fun migrate_to_fungible_store<CoinType>(account: &signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false
+  },
+  "migrate_coin_store_to_fungible_store": {
+   "sig": "fun migrate_coin_store_to_fungible_store<CoinType>(accounts: vector<address>)",
+   "arity": 1,
+   "entry": true,
+   "view": false
+  },
+  "balance": {
+   "sig": "fun balance<CoinType>(owner: address): u64",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "is_balance_at_least": {
+   "sig": "fun is_balance_at_least<CoinType>(owner: address, amount: u64): bool",
+   "arity": 2,
+   "entry": false,
+   "view": true
+  },
+  "is_coin_initialized": {
+   "sig": "fun is_coin_initialized<CoinType>(): bool",
+   "arity": 0,
+   "entry": false,
+   "view": true
+  },
+  "is_coin_store_frozen": {
+   "sig": "fun is_coin_store_frozen<CoinType>(account_addr: address): bool",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "is_account_registered": {
+   "sig": "fun is_account_registered<CoinType>(_account_addr: address): bool",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "name": {
+   "sig": "fun name<CoinType>(): string::String",
+   "arity": 0,
+   "entry": false,
+   "view": true
+  },
+  "symbol": {
+   "sig": "fun symbol<CoinType>(): string::String",
+   "arity": 0,
+   "entry": false,
+   "view": true
+  },
+  "decimals": {
+   "sig": "fun decimals<CoinType>(): u8",
+   "arity": 0,
+   "entry": false,
+   "view": true
+  },
+  "supply": {
+   "sig": "fun supply<CoinType>(): Option<u128>",
+   "arity": 0,
+   "entry": false,
+   "view": true
+  },
+  "coin_supply": {
+   "sig": "fun coin_supply<CoinType>(): Option<u128>",
+   "arity": 0,
+   "entry": false,
+   "view": true
+  },
+  "burn": {
+   "sig": "fun burn<CoinType>(coin: Coin<CoinType>, _cap: &BurnCapability<CoinType>)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "burn_from": {
+   "sig": "fun burn_from<CoinType>(account_addr: address, amount: u64, burn_cap: &BurnCapability<CoinType>)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "deposit": {
+   "sig": "fun deposit<CoinType>(account_addr: address, coin: Coin<CoinType>)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "deposit_with_signer": {
+   "sig": "fun deposit_with_signer<CoinType>(account: &signer, coin: Coin<CoinType>)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "destroy_zero": {
+   "sig": "fun destroy_zero<CoinType>(zero_coin: Coin<CoinType>)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "extract": {
+   "sig": "fun extract<CoinType>(coin: &mut Coin<CoinType>, amount: u64): Coin<CoinType>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "extract_all": {
+   "sig": "fun extract_all<CoinType>(coin: &mut Coin<CoinType>): Coin<CoinType>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "freeze_coin_store": {
+   "sig": "fun freeze_coin_store<CoinType>(account_addr: address, _freeze_cap: &FreezeCapability<CoinType>)",
+   "arity": 2,
+   "entry": true,
+   "view": false
+  },
+  "unfreeze_coin_store": {
+   "sig": "fun unfreeze_coin_store<CoinType>(account_addr: address, _freeze_cap: &FreezeCapability<CoinType>)",
+   "arity": 2,
+   "entry": true,
+   "view": false
+  },
+  "upgrade_supply": {
+   "sig": "fun upgrade_supply<CoinType>(account: &signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false
+  },
+  "initialize": {
+   "sig": "fun initialize<CoinType>(account: &signer, name: string::String, symbol: string::String, decimals: u8, monitor_supply: bool): (BurnCapability<CoinType>, FreezeCapability<CoinType>, MintCapability<CoinType>)",
+   "arity": 5,
+   "entry": false,
+   "view": false
+  },
+  "merge": {
+   "sig": "fun merge<CoinType>(dst_coin: &mut Coin<CoinType>, source_coin: Coin<CoinType>)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "mint": {
+   "sig": "fun mint<CoinType>(amount: u64, _cap: &MintCapability<CoinType>): Coin<CoinType>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "register": {
+   "sig": "fun register<CoinType>(account: &signer)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "transfer": {
+   "sig": "fun transfer<CoinType>(from: &signer, to: address, amount: u64)",
+   "arity": 3,
+   "entry": true,
+   "view": false
+  },
+  "value": {
+   "sig": "fun value<CoinType>(coin: &Coin<CoinType>): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "withdraw": {
+   "sig": "fun withdraw<CoinType>(account: &signer, amount: u64): Coin<CoinType>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "zero": {
+   "sig": "fun zero<CoinType>(): Coin<CoinType>",
+   "arity": 0,
+   "entry": false,
+   "view": false
+  },
+  "destroy_freeze_cap": {
+   "sig": "fun destroy_freeze_cap<CoinType>(freeze_cap: FreezeCapability<CoinType>)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "destroy_mint_cap": {
+   "sig": "fun destroy_mint_cap<CoinType>(mint_cap: MintCapability<CoinType>)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "destroy_burn_cap": {
+   "sig": "fun destroy_burn_cap<CoinType>(burn_cap: BurnCapability<CoinType>)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "initialize_and_register_fake_money": {
+   "sig": "fun initialize_and_register_fake_money(account: &signer, decimals: u8, monitor_supply: bool): (BurnCapability<FakeMoney>, FreezeCapability<FakeMoney>, MintCapability<FakeMoney>)",
+   "arity": 3,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "create_fake_money": {
+   "sig": "fun create_fake_money(source: &signer, amount: u64)",
+   "arity": 2,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "end_to_end": {
+   "sig": "fun end_to_end(source: signer, destination: signer)",
+   "arity": 2,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "end_to_end_no_supply": {
+   "sig": "fun end_to_end_no_supply(source: signer, destination: signer)",
+   "arity": 2,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "fail_initialize": {
+   "sig": "fun fail_initialize(source: signer, framework: signer)",
+   "arity": 2,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "test_burn_from_with_capability": {
+   "sig": "fun test_burn_from_with_capability(source: signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_destroy_non_zero": {
+   "sig": "fun test_destroy_non_zero(source: signer)",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "test_extract": {
+   "sig": "fun test_extract(source: signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_is_coin_initialized": {
+   "sig": "fun test_is_coin_initialized(source: signer)",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "burn_frozen": {
+   "sig": "fun burn_frozen(account: signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "withdraw_frozen": {
+   "sig": "fun withdraw_frozen(account: signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "deposit_frozen": {
+   "sig": "fun deposit_frozen(account: signer)",
+   "arity": 1,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  }
+ },
+ "aptos_framework::event": {
+  "emit": {
+   "sig": "fun emit<T: store + drop>(msg: T)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "emitted_events": {
+   "sig": "fun emitted_events<T: drop + store>(): vector<T>",
+   "arity": 0,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "was_event_emitted": {
+   "sig": "fun was_event_emitted<T: drop + store>(msg: &T): bool",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "emit_event": {
+   "sig": "fun emit_event<T: drop + store>(handle_ref: &mut EventHandle<T>, msg: T)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "guid": {
+   "sig": "fun guid<T: drop + store>(handle_ref: &EventHandle<T>): &GUID",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "counter": {
+   "sig": "fun counter<T: drop + store>(handle_ref: &EventHandle<T>): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "destroy_handle": {
+   "sig": "fun destroy_handle<T: drop + store>(handle: EventHandle<T>)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "emitted_events_by_handle": {
+   "sig": "fun emitted_events_by_handle<T: drop + store>(handle: &EventHandle<T>): vector<T>",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "was_event_emitted_by_handle": {
+   "sig": "fun was_event_emitted_by_handle<T: drop + store>(handle: &EventHandle<T>, msg: &T): bool",
+   "arity": 2,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  }
+ },
+ "aptos_framework::fungible_asset": {
+  "add_fungibility": {
+   "sig": "fun add_fungibility(constructor_ref: &ConstructorRef, maximum_supply: Option<u128>, name: String, symbol: String, decimals: u8, icon_uri: String, project_uri: String): Object<Metadata>",
+   "arity": 7,
+   "entry": false,
+   "view": false
+  },
+  "set_untransferable": {
+   "sig": "fun set_untransferable(constructor_ref: &ConstructorRef)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "is_untransferable": {
+   "sig": "fun is_untransferable<T: key>(metadata: Object<T>): bool",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "generate_mint_ref": {
+   "sig": "fun generate_mint_ref(constructor_ref: &ConstructorRef): MintRef",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "generate_burn_ref": {
+   "sig": "fun generate_burn_ref(constructor_ref: &ConstructorRef): BurnRef",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "generate_transfer_ref": {
+   "sig": "fun generate_transfer_ref(constructor_ref: &ConstructorRef): TransferRef",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "generate_raw_balance_ref": {
+   "sig": "fun generate_raw_balance_ref(constructor_ref: &ConstructorRef): RawBalanceRef",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "generate_raw_supply_ref": {
+   "sig": "fun generate_raw_supply_ref(constructor_ref: &ConstructorRef): RawSupplyRef",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "generate_mutate_metadata_ref": {
+   "sig": "fun generate_mutate_metadata_ref(constructor_ref: &ConstructorRef): MutateMetadataRef",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "supply": {
+   "sig": "fun supply<T: key>(metadata: Object<T>): Option<u128>",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "maximum": {
+   "sig": "fun maximum<T: key>(metadata: Object<T>): Option<u128>",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "name": {
+   "sig": "fun name<T: key>(metadata: Object<T>): String",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "symbol": {
+   "sig": "fun symbol<T: key>(metadata: Object<T>): String",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "decimals": {
+   "sig": "fun decimals<T: key>(metadata: Object<T>): u8",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "icon_uri": {
+   "sig": "fun icon_uri<T: key>(metadata: Object<T>): String",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "project_uri": {
+   "sig": "fun project_uri<T: key>(metadata: Object<T>): String",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "metadata": {
+   "sig": "fun metadata<T: key>(metadata: Object<T>): Metadata",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "store_exists": {
+   "sig": "fun store_exists(store: address): bool",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "store_metadata": {
+   "sig": "fun store_metadata<T: key>(store: Object<T>): Object<Metadata>",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "balance": {
+   "sig": "fun balance<T: key>(store: Object<T>): u64",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "balance_snapshot": {
+   "sig": "fun balance_snapshot<T: key>(store: Object<T>): AggregatorSnapshot<u64>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "is_balance_at_least": {
+   "sig": "fun is_balance_at_least<T: key>(store: Object<T>, amount: u64): bool",
+   "arity": 2,
+   "entry": false,
+   "view": true
+  },
+  "is_frozen": {
+   "sig": "fun is_frozen<T: key>(store: Object<T>): bool",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "is_store_dispatchable": {
+   "sig": "fun is_store_dispatchable<T: key>(store: Object<T>): bool",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "is_asset_type_dispatchable": {
+   "sig": "fun is_asset_type_dispatchable(metadata: Object<Metadata>): bool",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "deposit_dispatch_function": {
+   "sig": "fun deposit_dispatch_function<T: key>(store: Object<T>): Option<FunctionInfo>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "withdraw_dispatch_function": {
+   "sig": "fun withdraw_dispatch_function<T: key>(store: Object<T>): Option<FunctionInfo>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "amount": {
+   "sig": "fun amount(self: &FungibleAsset): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "metadata_from_asset": {
+   "sig": "fun metadata_from_asset(self: &FungibleAsset): Object<Metadata>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "asset_metadata": {
+   "sig": "fun asset_metadata(self: &FungibleAsset): Object<Metadata>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "mint_ref_metadata": {
+   "sig": "fun mint_ref_metadata(self: &MintRef): Object<Metadata>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "transfer_ref_metadata": {
+   "sig": "fun transfer_ref_metadata(self: &TransferRef): Object<Metadata>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "burn_ref_metadata": {
+   "sig": "fun burn_ref_metadata(self: &BurnRef): Object<Metadata>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "object_from_metadata_ref": {
+   "sig": "fun object_from_metadata_ref(self: &MutateMetadataRef): Object<Metadata>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "transfer": {
+   "sig": "fun transfer<T: key>(sender: &signer, from: Object<T>, to: Object<T>, amount: u64)",
+   "arity": 4,
+   "entry": true,
+   "view": false
+  },
+  "create_store": {
+   "sig": "fun create_store<T: key>(constructor_ref: &ConstructorRef, metadata: Object<T>): Object<FungibleStore>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "remove_store": {
+   "sig": "fun remove_store(delete_ref: &DeleteRef)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "withdraw": {
+   "sig": "fun withdraw<T: key>(owner: &signer, store: Object<T>, amount: u64): FungibleAsset",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "deposit_sanity_check": {
+   "sig": "fun deposit_sanity_check<T: key>(store: Object<T>, abort_on_dispatch: bool)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "deposit": {
+   "sig": "fun deposit<T: key>(store: Object<T>, fa: FungibleAsset)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "mint": {
+   "sig": "fun mint(self: &MintRef, amount: u64): FungibleAsset",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "mint_to": {
+   "sig": "fun mint_to<T: key>(self: &MintRef, store: Object<T>, amount: u64)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "set_frozen_flag": {
+   "sig": "fun set_frozen_flag<T: key>(self: &TransferRef, store: Object<T>, frozen: bool)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "burn": {
+   "sig": "fun burn(self: &BurnRef, fa: FungibleAsset)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "burn_from": {
+   "sig": "fun burn_from<T: key>(self: &BurnRef, store: Object<T>, amount: u64)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "withdraw_with_ref": {
+   "sig": "fun withdraw_with_ref<T: key>(self: &TransferRef, store: Object<T>, amount: u64): FungibleAsset",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "deposit_with_ref": {
+   "sig": "fun deposit_with_ref<T: key>(self: &TransferRef, store: Object<T>, fa: FungibleAsset)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "transfer_with_ref": {
+   "sig": "fun transfer_with_ref<T: key>(self: &TransferRef, from: Object<T>, to: Object<T>, amount: u64)",
+   "arity": 4,
+   "entry": false,
+   "view": false
+  },
+  "balance_with_ref": {
+   "sig": "fun balance_with_ref<T: key>(self: &RawBalanceRef, store: Object<T>): u64",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "supply_with_ref": {
+   "sig": "fun supply_with_ref<T: key>(self: &RawSupplyRef, metadata: Object<T>): Option<u128>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "mutate_metadata": {
+   "sig": "fun mutate_metadata(self: &MutateMetadataRef, name: Option<String>, symbol: Option<String>, decimals: Option<u8>, icon_uri: Option<String>, project_uri: Option<String>)",
+   "arity": 6,
+   "entry": false,
+   "view": false
+  },
+  "zero": {
+   "sig": "fun zero<T: key>(metadata: Object<T>): FungibleAsset",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "extract": {
+   "sig": "fun extract(self: &mut FungibleAsset, amount: u64): FungibleAsset",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "merge": {
+   "sig": "fun merge(self: &mut FungibleAsset, src_fungible_asset: FungibleAsset)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "destroy_zero": {
+   "sig": "fun destroy_zero(self: FungibleAsset)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "upgrade_to_concurrent": {
+   "sig": "fun upgrade_to_concurrent(ref: &ExtendRef)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "is_concurrent": {
+   "sig": "fun is_concurrent<T: key>(store: Object<T>): bool",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "upgrade_store_to_concurrent": {
+   "sig": "fun upgrade_store_to_concurrent<T: key>(owner: &signer, store: Object<T>)",
+   "arity": 2,
+   "entry": true,
+   "view": false
+  },
+  "grant_permission_by_store": {
+   "sig": "fun grant_permission_by_store<T: key>(_master: &signer, _permissioned: &signer, _store: Object<T>, _amount: u64)",
+   "arity": 4,
+   "entry": false,
+   "view": false
+  },
+  "revoke_permission": {
+   "sig": "fun revoke_permission(_permissioned: &signer, _token_type: Object<Metadata>)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "create_test_token": {
+   "sig": "fun create_test_token(creator: &signer): (ConstructorRef, Object<TestToken>)",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "init_test_metadata": {
+   "sig": "fun init_test_metadata(constructor_ref: &ConstructorRef): (MintRef, TransferRef, BurnRef, MutateMetadataRef)",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "create_fungible_asset": {
+   "sig": "fun create_fungible_asset(creator: &signer): (MintRef, TransferRef, BurnRef, MutateMetadataRef, Object<Metadata>)",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "create_test_store": {
+   "sig": "fun create_test_store<T: key>(owner: &signer, metadata: Object<T>): Object<FungibleStore>",
+   "arity": 2,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  }
+ },
+ "aptos_framework::object": {
+  "is_untransferable": {
+   "sig": "fun is_untransferable<T: key>(self: Object<T>): bool",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "is_burnt": {
+   "sig": "fun is_burnt<T: key>(self: Object<T>): bool",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "address_to_object": {
+   "sig": "fun address_to_object<T: key>(object: address): Object<T>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "is_object": {
+   "sig": "fun is_object(object: address): bool",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "object_exists": {
+   "sig": "fun object_exists<T: key>(object: address): bool",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "create_object_address": {
+   "sig": "fun create_object_address(source: &address, seed: vector<u8>): address",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "create_user_derived_object_address": {
+   "sig": "fun create_user_derived_object_address(source: address, derive_from: address): address",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "create_guid_object_address": {
+   "sig": "fun create_guid_object_address(source: address, creation_num: u64): address",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "object_address": {
+   "sig": "fun object_address<T: key>(self: &Object<T>): address",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "convert": {
+   "sig": "fun convert<X: key, Y: key>(self: Object<X>): Object<Y>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "create_named_object": {
+   "sig": "fun create_named_object(creator: &signer, seed: vector<u8>): ConstructorRef",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "create_object": {
+   "sig": "fun create_object(owner_address: address): ConstructorRef",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "create_sticky_object": {
+   "sig": "fun create_sticky_object(owner_address: address): ConstructorRef",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "create_object_from_account": {
+   "sig": "fun create_object_from_account(creator: &signer): ConstructorRef",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "create_object_from_object": {
+   "sig": "fun create_object_from_object(creator: &signer): ConstructorRef",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "create_unique_onchain_signer": {
+   "sig": "fun create_unique_onchain_signer(): ExtendRef",
+   "arity": 0,
+   "entry": false,
+   "view": false
+  },
+  "create_named_unowned_onchain_signer": {
+   "sig": "fun create_named_unowned_onchain_signer(creator: &signer, name: vector<u8>): ExtendRef",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "generate_delete_ref": {
+   "sig": "fun generate_delete_ref(self: &ConstructorRef): DeleteRef",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "generate_extend_ref": {
+   "sig": "fun generate_extend_ref(self: &ConstructorRef): ExtendRef",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "generate_transfer_ref": {
+   "sig": "fun generate_transfer_ref(self: &ConstructorRef): TransferRef",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "generate_derive_ref": {
+   "sig": "fun generate_derive_ref(self: &ConstructorRef): DeriveRef",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "generate_signer": {
+   "sig": "fun generate_signer(self: &ConstructorRef): signer",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "address_from_constructor_ref": {
+   "sig": "fun address_from_constructor_ref(self: &ConstructorRef): address",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "object_from_constructor_ref": {
+   "sig": "fun object_from_constructor_ref<T: key>(self: &ConstructorRef): Object<T>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "can_generate_delete_ref": {
+   "sig": "fun can_generate_delete_ref(self: &ConstructorRef): bool",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "transfer_with_constructor_ref": {
+   "sig": "fun transfer_with_constructor_ref(self: &ConstructorRef, to: address)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "create_guid": {
+   "sig": "fun create_guid(object: &signer): guid::GUID",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "new_event_handle": {
+   "sig": "fun new_event_handle<T: drop + store>(object: &signer): event::EventHandle<T>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "address_from_delete_ref": {
+   "sig": "fun address_from_delete_ref(self: &DeleteRef): address",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "object_from_delete_ref": {
+   "sig": "fun object_from_delete_ref<T: key>(self: &DeleteRef): Object<T>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "delete": {
+   "sig": "fun delete(self: DeleteRef)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "generate_signer_for_extending": {
+   "sig": "fun generate_signer_for_extending(self: &ExtendRef): signer",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "address_from_extend_ref": {
+   "sig": "fun address_from_extend_ref(self: &ExtendRef): address",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "disable_ungated_transfer": {
+   "sig": "fun disable_ungated_transfer(self: &TransferRef)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "set_untransferable": {
+   "sig": "fun set_untransferable(self: &ConstructorRef)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "enable_ungated_transfer": {
+   "sig": "fun enable_ungated_transfer(self: &TransferRef)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "generate_linear_transfer_ref": {
+   "sig": "fun generate_linear_transfer_ref(self: &TransferRef): LinearTransferRef",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "transfer_with_ref": {
+   "sig": "fun transfer_with_ref(self: LinearTransferRef, to: address)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "transfer_call": {
+   "sig": "fun transfer_call(owner: &signer, object: address, to: address)",
+   "arity": 3,
+   "entry": true,
+   "view": false
+  },
+  "transfer": {
+   "sig": "fun transfer<T: key>(owner: &signer, object: Object<T>, to: address)",
+   "arity": 3,
+   "entry": true,
+   "view": false
+  },
+  "transfer_raw": {
+   "sig": "fun transfer_raw(owner: &signer, object: address, to: address)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "transfer_to_object": {
+   "sig": "fun transfer_to_object<O: key, T: key>(owner: &signer, object: Object<O>, to: Object<T>)",
+   "arity": 3,
+   "entry": true,
+   "view": false
+  },
+  "burn": {
+   "sig": "fun burn<T: key>(owner: &signer, object: Object<T>)",
+   "arity": 2,
+   "entry": true,
+   "view": false
+  },
+  "unburn": {
+   "sig": "fun unburn<T: key>(original_owner: &signer, object: Object<T>)",
+   "arity": 2,
+   "entry": true,
+   "view": false
+  },
+  "ungated_transfer_allowed": {
+   "sig": "fun ungated_transfer_allowed<T: key>(self: Object<T>): bool",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "owner": {
+   "sig": "fun owner<T: key>(self: Object<T>): address",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "is_owner": {
+   "sig": "fun is_owner<T: key>(object: Object<T>, owner: address): bool",
+   "arity": 2,
+   "entry": false,
+   "view": true
+  },
+  "owns": {
+   "sig": "fun owns<T: key>(object: Object<T>, owner: address): bool",
+   "arity": 2,
+   "entry": false,
+   "view": true
+  },
+  "root_owner": {
+   "sig": "fun root_owner<T: key>(self: Object<T>): address",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "grant_permission": {
+   "sig": "fun grant_permission<T>(_master: &signer, _permissioned_signer: &signer, _object: Object<T>)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "grant_permission_with_transfer_ref": {
+   "sig": "fun grant_permission_with_transfer_ref(_permissioned_signer: &signer, _ref: &TransferRef)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "burn_object_with_transfer": {
+   "sig": "fun burn_object_with_transfer<T: key>(owner: &signer, object: Object<T>)",
+   "arity": 2,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "create_hero": {
+   "sig": "fun create_hero(creator: &signer): (ConstructorRef, Object<Hero>)",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "create_weapon": {
+   "sig": "fun create_weapon(creator: &signer): (ConstructorRef, Object<Weapon>)",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "hero_equip": {
+   "sig": "fun hero_equip(owner: &signer, hero: Object<Hero>, weapon: Object<Weapon>)",
+   "arity": 3,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "hero_unequip": {
+   "sig": "fun hero_unequip(owner: &signer, hero: Object<Hero>, weapon: Object<Weapon>)",
+   "arity": 3,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  }
+ },
+ "aptos_framework::primary_fungible_store": {
+  "create_primary_store_enabled_fungible_asset": {
+   "sig": "fun create_primary_store_enabled_fungible_asset(constructor_ref: &ConstructorRef, maximum_supply: Option<u128>, name: String, symbol: String, decimals: u8, icon_uri: String, project_uri: String)",
+   "arity": 7,
+   "entry": false,
+   "view": false
+  },
+  "ensure_primary_store_exists": {
+   "sig": "fun ensure_primary_store_exists<T: key>(owner: address, metadata: Object<T>): Object<FungibleStore>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "create_primary_store": {
+   "sig": "fun create_primary_store<T: key>(owner_addr: address, metadata: Object<T>): Object<FungibleStore>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "primary_store_address": {
+   "sig": "fun primary_store_address<T: key>(owner: address, metadata: Object<T>): address",
+   "arity": 2,
+   "entry": false,
+   "view": true
+  },
+  "primary_store": {
+   "sig": "fun primary_store<T: key>(owner: address, metadata: Object<T>): Object<FungibleStore>",
+   "arity": 2,
+   "entry": false,
+   "view": true
+  },
+  "primary_store_exists": {
+   "sig": "fun primary_store_exists<T: key>(account: address, metadata: Object<T>): bool",
+   "arity": 2,
+   "entry": false,
+   "view": true
+  },
+  "primary_store_address_inlined": {
+   "sig": "fun primary_store_address_inlined<T: key>(owner: address, metadata: Object<T>): address",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "primary_store_inlined": {
+   "sig": "fun primary_store_inlined<T: key>(owner: address, metadata: Object<T>): Object<FungibleStore>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "primary_store_exists_inlined": {
+   "sig": "fun primary_store_exists_inlined<T: key>(account: address, metadata: Object<T>): bool",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "grant_permission": {
+   "sig": "fun grant_permission<T: key>(_master: &signer, _permissioned: &signer, _metadata: Object<T>, _amount: u64)",
+   "arity": 4,
+   "entry": false,
+   "view": false
+  },
+  "grant_apt_permission": {
+   "sig": "fun grant_apt_permission(_master: &signer, _permissioned: &signer, _amount: u64)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "balance": {
+   "sig": "fun balance<T: key>(account: address, metadata: Object<T>): u64",
+   "arity": 2,
+   "entry": false,
+   "view": true
+  },
+  "is_balance_at_least": {
+   "sig": "fun is_balance_at_least<T: key>(account: address, metadata: Object<T>, amount: u64): bool",
+   "arity": 3,
+   "entry": false,
+   "view": true
+  },
+  "is_frozen": {
+   "sig": "fun is_frozen<T: key>(account: address, metadata: Object<T>): bool",
+   "arity": 2,
+   "entry": false,
+   "view": true
+  },
+  "withdraw": {
+   "sig": "fun withdraw<T: key>(owner: &signer, metadata: Object<T>, amount: u64): FungibleAsset",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "deposit": {
+   "sig": "fun deposit(owner: address, fa: FungibleAsset)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "deposit_with_signer": {
+   "sig": "fun deposit_with_signer(owner: &signer, fa: FungibleAsset)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "transfer": {
+   "sig": "fun transfer<T: key>(sender: &signer, metadata: Object<T>, recipient: address, amount: u64)",
+   "arity": 4,
+   "entry": true,
+   "view": false
+  },
+  "transfer_assert_minimum_deposit": {
+   "sig": "fun transfer_assert_minimum_deposit<T: key>(sender: &signer, metadata: Object<T>, recipient: address, amount: u64, expected: u64)",
+   "arity": 5,
+   "entry": true,
+   "view": false
+  },
+  "mint": {
+   "sig": "fun mint(mint_ref: &MintRef, owner: address, amount: u64)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "burn": {
+   "sig": "fun burn(burn_ref: &BurnRef, owner: address, amount: u64)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "set_frozen_flag": {
+   "sig": "fun set_frozen_flag(transfer_ref: &TransferRef, owner: address, frozen: bool)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "withdraw_with_ref": {
+   "sig": "fun withdraw_with_ref(transfer_ref: &TransferRef, owner: address, amount: u64): FungibleAsset",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "deposit_with_ref": {
+   "sig": "fun deposit_with_ref(transfer_ref: &TransferRef, owner: address, fa: FungibleAsset)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "transfer_with_ref": {
+   "sig": "fun transfer_with_ref(transfer_ref: &TransferRef, from: address, to: address, amount: u64)",
+   "arity": 4,
+   "entry": false,
+   "view": false
+  },
+  "upgrade_to_concurrent": {
+   "sig": "fun upgrade_to_concurrent(owner: &signer, metadata: Object<Metadata>)",
+   "arity": 2,
+   "entry": true,
+   "view": false
+  },
+  "init_test_metadata_with_primary_store_enabled": {
+   "sig": "fun init_test_metadata_with_primary_store_enabled(constructor_ref: &ConstructorRef): (MintRef, TransferRef, BurnRef)",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  }
+ },
+ "aptos_framework::timestamp": {
+  "update_global_time": {
+   "sig": "fun update_global_time(account: &signer, proposer: address, timestamp: u64)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "set_time_has_started_for_testing": {
+   "sig": "fun set_time_has_started_for_testing(account: &signer)",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "now_microseconds": {
+   "sig": "fun now_microseconds(): u64",
+   "arity": 0,
+   "entry": false,
+   "view": true
+  },
+  "now_seconds": {
+   "sig": "fun now_seconds(): u64",
+   "arity": 0,
+   "entry": false,
+   "view": true
+  },
+  "update_global_time_for_test": {
+   "sig": "fun update_global_time_for_test(timestamp_microsecs: u64)",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "update_global_time_for_test_secs": {
+   "sig": "fun update_global_time_for_test_secs(timestamp_seconds: u64)",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "fast_forward_seconds": {
+   "sig": "fun fast_forward_seconds(timestamp_seconds: u64)",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  }
+ },
+ "aptos_std::smart_table": {
+  "new": {
+   "sig": "fun new<K: copy + drop + store, V: store>(): SmartTable<K, V>",
+   "arity": 0,
+   "entry": false,
+   "view": false
+  },
+  "new_with_config": {
+   "sig": "fun new_with_config<K: copy + drop + store, V: store>(num_initial_buckets: u64, split_load_threshold: u8, target_bucket_size: u64): SmartTable<K, V>",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "destroy_empty": {
+   "sig": "fun destroy_empty<K, V>(self: SmartTable<K, V>)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "destroy": {
+   "sig": "fun destroy<K: drop, V: drop>(self: SmartTable<K, V>)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "clear": {
+   "sig": "fun clear<K: drop, V: drop>(self: &mut SmartTable<K, V>)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "add": {
+   "sig": "fun add<K, V>(self: &mut SmartTable<K, V>, key: K, value: V)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "add_all": {
+   "sig": "fun add_all<K, V>(self: &mut SmartTable<K, V>, keys: vector<K>, values: vector<V>)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "to_simple_map": {
+   "sig": "fun to_simple_map<K: store + copy + drop, V: store + copy>(self: &SmartTable<K, V>): SimpleMap<K, V>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "keys": {
+   "sig": "fun keys<K: store + copy + drop, V: store + copy>(self: &SmartTable<K, V>): vector<K>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "keys_paginated": {
+   "sig": "fun keys_paginated<K: store + copy + drop, V: store + copy>(self: &SmartTable<K, V>, starting_bucket_index: u64, starting_vector_index: u64, num_keys_to_get: u64): ( vector<K>, Option<u64>, Option<u64>, )",
+   "arity": 4,
+   "entry": false,
+   "view": false
+  },
+  "borrow": {
+   "sig": "fun borrow<K: drop, V>(self: &SmartTable<K, V>, key: K): &V",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "borrow_with_default": {
+   "sig": "fun borrow_with_default<K: copy + drop, V>(self: &SmartTable<K, V>, key: K, default: &V): &V",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "borrow_mut": {
+   "sig": "fun borrow_mut<K: drop, V>(self: &mut SmartTable<K, V>, key: K): &mut V",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "borrow_mut_with_default": {
+   "sig": "fun borrow_mut_with_default<K: copy + drop, V: drop>(self: &mut SmartTable<K, V>, key: K, default: V): &mut V",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "contains": {
+   "sig": "fun contains<K: drop, V>(self: &SmartTable<K, V>, key: K): bool",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "remove": {
+   "sig": "fun remove<K: copy + drop, V>(self: &mut SmartTable<K, V>, key: K): V",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "upsert": {
+   "sig": "fun upsert<K: copy + drop, V: drop>(self: &mut SmartTable<K, V>, key: K, value: V)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "length": {
+   "sig": "fun length<K, V>(self: &SmartTable<K, V>): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "load_factor": {
+   "sig": "fun load_factor<K, V>(self: &SmartTable<K, V>): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "update_split_load_threshold": {
+   "sig": "fun update_split_load_threshold<K, V>(self: &mut SmartTable<K, V>, split_load_threshold: u8)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "update_target_bucket_size": {
+   "sig": "fun update_target_bucket_size<K, V>(self: &mut SmartTable<K, V>, target_bucket_size: u64)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "for_each_ref": {
+   "sig": "fun for_each_ref<K, V>(self: &SmartTable<K, V>, f: |&K, &V|)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "for_each_mut": {
+   "sig": "fun for_each_mut<K, V>(self: &mut SmartTable<K, V>, f: |&K, &mut V|)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "map_ref": {
+   "sig": "fun map_ref<K: copy + drop + store, V1, V2: store>(self: &SmartTable<K, V1>, f: |&V1|V2): SmartTable<K, V2>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "any": {
+   "sig": "fun any<K, V>(self: &SmartTable<K, V>, p: |&K, &V|bool): bool",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "borrow_kv": {
+   "sig": "fun borrow_kv<K, V>(self: &Entry<K, V>): (&K, &V)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "borrow_kv_mut": {
+   "sig": "fun borrow_kv_mut<K, V>(self: &mut Entry<K, V>): (&mut K, &mut V)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "num_buckets": {
+   "sig": "fun num_buckets<K, V>(self: &SmartTable<K, V>): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "borrow_buckets": {
+   "sig": "fun borrow_buckets<K, V>(self: &SmartTable<K, V>): &TableWithLength<u64, vector<Entry<K, V>>>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "borrow_buckets_mut": {
+   "sig": "fun borrow_buckets_mut<K, V>(self: &mut SmartTable<K, V>): &mut TableWithLength<u64, vector<Entry<K, V>>>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "smart_table_add_all_test": {
+   "sig": "fun smart_table_add_all_test()",
+   "arity": 0,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "smart_table_to_simple_map_test": {
+   "sig": "fun smart_table_to_simple_map_test()",
+   "arity": 0,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "smart_table_clear_test": {
+   "sig": "fun smart_table_clear_test()",
+   "arity": 0,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  }
+ },
+ "aptos_std::math128": {
+  "max": {
+   "sig": "fun max(a: u128, b: u128): u128",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "min": {
+   "sig": "fun min(a: u128, b: u128): u128",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "average": {
+   "sig": "fun average(a: u128, b: u128): u128",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "gcd": {
+   "sig": "fun gcd(a: u128, b: u128): u128",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "lcm": {
+   "sig": "fun lcm(a: u128, b: u128): u128",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "mul_div": {
+   "sig": "fun mul_div(a: u128, b: u128, c: u128): u128",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "clamp": {
+   "sig": "fun clamp(x: u128, lower: u128, upper: u128): u128",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "pow": {
+   "sig": "fun pow(n: u128, e: u128): u128",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "floor_log2": {
+   "sig": "fun floor_log2(x: u128): u8",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "log2": {
+   "sig": "fun log2(x: u128): FixedPoint32",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "log2_64": {
+   "sig": "fun log2_64(x: u128): FixedPoint64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "sqrt": {
+   "sig": "fun sqrt(x: u128): u128",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "ceil_div": {
+   "sig": "fun ceil_div(x: u128, y: u128): u128",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "test_ceil_div": {
+   "sig": "fun test_ceil_div()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_max": {
+   "sig": "fun test_max()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_min": {
+   "sig": "fun test_min()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_average": {
+   "sig": "fun test_average()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_pow": {
+   "sig": "fun test_pow()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_mul_div": {
+   "sig": "fun test_mul_div()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_mul_div_by_zero": {
+   "sig": "fun test_mul_div_by_zero()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_floor_log2": {
+   "sig": "fun test_floor_log2()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_log2": {
+   "sig": "fun test_log2()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_log2_64": {
+   "sig": "fun test_log2_64()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_sqrt": {
+   "sig": "fun test_sqrt()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  }
+ },
+ "aptos_std::math64": {
+  "max": {
+   "sig": "fun max(a: u64, b: u64): u64",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "min": {
+   "sig": "fun min(a: u64, b: u64): u64",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "average": {
+   "sig": "fun average(a: u64, b: u64): u64",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "gcd": {
+   "sig": "fun gcd(a: u64, b: u64): u64",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "lcm": {
+   "sig": "fun lcm(a: u64, b: u64): u64",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "mul_div": {
+   "sig": "fun mul_div(a: u64, b: u64, c: u64): u64",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "clamp": {
+   "sig": "fun clamp(x: u64, lower: u64, upper: u64): u64",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "pow": {
+   "sig": "fun pow(n: u64, e: u64): u64",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "floor_log2": {
+   "sig": "fun floor_log2(x: u64): u8",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "log2": {
+   "sig": "fun log2(x: u64): FixedPoint32",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "sqrt": {
+   "sig": "fun sqrt(x: u64): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "ceil_div": {
+   "sig": "fun ceil_div(x: u64, y: u64): u64",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "test_ceil_div": {
+   "sig": "fun test_ceil_div()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_max_64": {
+   "sig": "fun test_max_64()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_min": {
+   "sig": "fun test_min()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_average": {
+   "sig": "fun test_average()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_average_does_not_overflow": {
+   "sig": "fun test_average_does_not_overflow()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_pow": {
+   "sig": "fun test_pow()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_mul_div": {
+   "sig": "fun test_mul_div()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_mul_div_by_zero": {
+   "sig": "fun test_mul_div_by_zero()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_floor_lg2": {
+   "sig": "fun test_floor_lg2()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_log2": {
+   "sig": "fun test_log2()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  },
+  "test_sqrt": {
+   "sig": "fun test_sqrt()",
+   "arity": 0,
+   "entry": true,
+   "view": false,
+   "testOnly": true
+  }
+ },
+ "aptos_std::simple_map": {
+  "length": {
+   "sig": "fun length<Key: store, Value: store>(self: &SimpleMap<Key, Value>): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "new": {
+   "sig": "fun new<Key: store, Value: store>(): SimpleMap<Key, Value>",
+   "arity": 0,
+   "entry": false,
+   "view": false
+  },
+  "new_from": {
+   "sig": "fun new_from<Key: store, Value: store>(keys: vector<Key>, values: vector<Value>): SimpleMap<Key, Value>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "create": {
+   "sig": "fun create<Key: store, Value: store>(): SimpleMap<Key, Value>",
+   "arity": 0,
+   "entry": false,
+   "view": false
+  },
+  "borrow": {
+   "sig": "fun borrow<Key: store, Value: store>(self: &SimpleMap<Key, Value>, key: &Key): &Value",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "borrow_mut": {
+   "sig": "fun borrow_mut<Key: store, Value: store>(self: &mut SimpleMap<Key, Value>, key: &Key): &mut Value",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "contains_key": {
+   "sig": "fun contains_key<Key: store, Value: store>(self: &SimpleMap<Key, Value>, key: &Key): bool",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "destroy_empty": {
+   "sig": "fun destroy_empty<Key: store, Value: store>(self: SimpleMap<Key, Value>)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "add": {
+   "sig": "fun add<Key: store, Value: store>(self: &mut SimpleMap<Key, Value>, key: Key, value: Value)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "add_all": {
+   "sig": "fun add_all<Key: store, Value: store>(self: &mut SimpleMap<Key, Value>, keys: vector<Key>, values: vector<Value>)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "upsert": {
+   "sig": "fun upsert<Key: store, Value: store>(self: &mut SimpleMap<Key, Value>, key: Key, value: Value): (std::option::Option<Key>, std::option::Option<Value>)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "keys": {
+   "sig": "fun keys<Key: copy, Value>(self: &SimpleMap<Key, Value>): vector<Key>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "values": {
+   "sig": "fun values<Key, Value: copy>(self: &SimpleMap<Key, Value>): vector<Value>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "to_vec_pair": {
+   "sig": "fun to_vec_pair<Key: store, Value: store>(self: SimpleMap<Key, Value>): (vector<Key>, vector<Value>)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "destroy": {
+   "sig": "fun destroy<Key: store, Value: store>(self: SimpleMap<Key, Value>, dk: |Key|, dv: |Value|)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "remove": {
+   "sig": "fun remove<Key: store, Value: store>(self: &mut SimpleMap<Key, Value>, key: &Key): (Key, Value)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "test_add_remove_many": {
+   "sig": "fun test_add_remove_many()",
+   "arity": 0,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "test_add_all": {
+   "sig": "fun test_add_all()",
+   "arity": 0,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "test_keys": {
+   "sig": "fun test_keys()",
+   "arity": 0,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "test_values": {
+   "sig": "fun test_values()",
+   "arity": 0,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "test_add_twice": {
+   "sig": "fun test_add_twice()",
+   "arity": 0,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "test_remove_twice": {
+   "sig": "fun test_remove_twice()",
+   "arity": 0,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "test_upsert_test": {
+   "sig": "fun test_upsert_test()",
+   "arity": 0,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  }
+ },
+ "aptos_std::string_utils": {
+  "to_string": {
+   "sig": "fun to_string<T>(s: &T): String",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "to_string_with_canonical_addresses": {
+   "sig": "fun to_string_with_canonical_addresses<T>(s: &T): String",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "to_string_with_integer_types": {
+   "sig": "fun to_string_with_integer_types<T>(s: &T): String",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "debug_string": {
+   "sig": "fun debug_string<T>(s: &T): String",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "format1": {
+   "sig": "fun format1<T0: drop>(fmt: &vector<u8>, a: T0): String",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "format2": {
+   "sig": "fun format2<T0: drop, T1: drop>(fmt: &vector<u8>, a: T0, b: T1): String",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "format3": {
+   "sig": "fun format3<T0: drop, T1: drop, T2: drop>(fmt: &vector<u8>, a: T0, b: T1, c: T2): String",
+   "arity": 4,
+   "entry": false,
+   "view": false
+  },
+  "format4": {
+   "sig": "fun format4<T0: drop, T1: drop, T2: drop, T3: drop>(fmt: &vector<u8>, a: T0, b: T1, c: T2, d: T3): String",
+   "arity": 5,
+   "entry": false,
+   "view": false
+  }
+ },
+ "aptos_std::table": {
+  "new": {
+   "sig": "fun new<K: copy + drop, V: store>(): Table<K, V>",
+   "arity": 0,
+   "entry": false,
+   "view": false
+  },
+  "add": {
+   "sig": "fun add<K: copy + drop, V>(self: &mut Table<K, V>, key: K, val: V)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "borrow": {
+   "sig": "fun borrow<K: copy + drop, V>(self: &Table<K, V>, key: K): &V",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "borrow_with_default": {
+   "sig": "fun borrow_with_default<K: copy + drop, V>(self: &Table<K, V>, key: K, default: &V): &V",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "borrow_mut": {
+   "sig": "fun borrow_mut<K: copy + drop, V>(self: &mut Table<K, V>, key: K): &mut V",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "borrow_mut_with_default": {
+   "sig": "fun borrow_mut_with_default<K: copy + drop, V: drop>(self: &mut Table<K, V>, key: K, default: V): &mut V",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "upsert": {
+   "sig": "fun upsert<K: copy + drop, V: drop>(self: &mut Table<K, V>, key: K, value: V)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "remove": {
+   "sig": "fun remove<K: copy + drop, V>(self: &mut Table<K, V>, key: K): V",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "contains": {
+   "sig": "fun contains<K: copy + drop, V>(self: &Table<K, V>, key: K): bool",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "drop_unchecked": {
+   "sig": "fun drop_unchecked<K: copy + drop, V>(self: Table<K, V>)",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  }
+ },
+ "aptos_token_objects::collection": {
+  "create_fixed_collection": {
+   "sig": "fun create_fixed_collection(creator: &signer, description: String, max_supply: u64, name: String, royalty: Option<Royalty>, uri: String): ConstructorRef",
+   "arity": 6,
+   "entry": false,
+   "view": false
+  },
+  "create_fixed_collection_as_owner": {
+   "sig": "fun create_fixed_collection_as_owner(creator: &signer, description: String, max_supply: u64, name: String, royalty: Option<Royalty>, uri: String): ConstructorRef",
+   "arity": 6,
+   "entry": false,
+   "view": false
+  },
+  "create_unlimited_collection": {
+   "sig": "fun create_unlimited_collection(creator: &signer, description: String, name: String, royalty: Option<Royalty>, uri: String): ConstructorRef",
+   "arity": 5,
+   "entry": false,
+   "view": false
+  },
+  "create_unlimited_collection_as_owner": {
+   "sig": "fun create_unlimited_collection_as_owner(creator: &signer, description: String, name: String, royalty: Option<Royalty>, uri: String): ConstructorRef",
+   "arity": 5,
+   "entry": false,
+   "view": false
+  },
+  "create_collection_address": {
+   "sig": "fun create_collection_address(creator: &address, name: &String): address",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "create_collection_seed": {
+   "sig": "fun create_collection_seed(name: &String): vector<u8>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "generate_mutator_ref": {
+   "sig": "fun generate_mutator_ref(ref: &ConstructorRef): MutatorRef",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "upgrade_to_concurrent": {
+   "sig": "fun upgrade_to_concurrent(ref: &ExtendRef)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "count": {
+   "sig": "fun count<T: key>(collection: Object<T>): Option<u64>",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "creator": {
+   "sig": "fun creator<T: key>(collection: Object<T>): address",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "description": {
+   "sig": "fun description<T: key>(collection: Object<T>): String",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "name": {
+   "sig": "fun name<T: key>(collection: Object<T>): String",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "uri": {
+   "sig": "fun uri<T: key>(collection: Object<T>): String",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "set_name": {
+   "sig": "fun set_name(mutator_ref: &MutatorRef, name: String)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "set_description": {
+   "sig": "fun set_description(mutator_ref: &MutatorRef, description: String)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "set_uri": {
+   "sig": "fun set_uri(mutator_ref: &MutatorRef, uri: String)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "set_max_supply": {
+   "sig": "fun set_max_supply(mutator_ref: &MutatorRef, max_supply: u64)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "get_burn_event_data": {
+   "sig": "fun get_burn_event_data(event: &Burn): (address, u64, address, address)",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "get_mint_event_data": {
+   "sig": "fun get_mint_event_data(event: &Mint): (address, u64, address)",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  },
+  "get_set_max_supply_event_data": {
+   "sig": "fun get_set_max_supply_event_data(event: &SetMaxSupply): (Object<Collection>, u64, u64)",
+   "arity": 1,
+   "entry": false,
+   "view": false,
+   "testOnly": true
+  }
+ },
+ "aptos_token_objects::royalty": {
+  "init": {
+   "sig": "fun init(ref: &ConstructorRef, royalty: Royalty)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "update": {
+   "sig": "fun update(mutator_ref: &MutatorRef, royalty: Royalty)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "create": {
+   "sig": "fun create(numerator: u64, denominator: u64, payee_address: address): Royalty",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "generate_mutator_ref": {
+   "sig": "fun generate_mutator_ref(ref: ExtendRef): MutatorRef",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "exists_at": {
+   "sig": "fun exists_at(addr: address): bool",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "get": {
+   "sig": "fun get<T: key>(maybe_royalty: Object<T>): Option<Royalty>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "denominator": {
+   "sig": "fun denominator(royalty: &Royalty): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "numerator": {
+   "sig": "fun numerator(royalty: &Royalty): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "payee_address": {
+   "sig": "fun payee_address(royalty: &Royalty): address",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  }
+ },
+ "aptos_token_objects::token": {
+  "create_token": {
+   "sig": "fun create_token(creator: &signer, collection: Object<Collection>, description: String, name: String, royalty: Option<Royalty>, uri: String): ConstructorRef",
+   "arity": 6,
+   "entry": false,
+   "view": false
+  },
+  "create": {
+   "sig": "fun create(creator: &signer, collection_name: String, description: String, name: String, royalty: Option<Royalty>, uri: String): ConstructorRef",
+   "arity": 6,
+   "entry": false,
+   "view": false
+  },
+  "create_token_as_collection_owner": {
+   "sig": "fun create_token_as_collection_owner(creator: &signer, collection: Object<Collection>, description: String, name: String, royalty: Option<Royalty>, uri: String): ConstructorRef",
+   "arity": 6,
+   "entry": false,
+   "view": false
+  },
+  "create_numbered_token_object": {
+   "sig": "fun create_numbered_token_object(creator: &signer, collection: Object<Collection>, description: String, name_with_index_prefix: String, name_with_index_suffix: String, royalty: Option<Royalty>, uri: String): ConstructorRef",
+   "arity": 7,
+   "entry": false,
+   "view": false
+  },
+  "create_numbered_token": {
+   "sig": "fun create_numbered_token(creator: &signer, collection_name: String, description: String, name_with_index_prefix: String, name_with_index_suffix: String, royalty: Option<Royalty>, uri: String): ConstructorRef",
+   "arity": 7,
+   "entry": false,
+   "view": false
+  },
+  "create_numbered_token_as_collection_owner": {
+   "sig": "fun create_numbered_token_as_collection_owner(creator: &signer, collection: Object<Collection>, description: String, name_with_index_prefix: String, name_with_index_suffix: String, royalty: Option<Royalty>, uri: String): ConstructorRef",
+   "arity": 7,
+   "entry": false,
+   "view": false
+  },
+  "create_named_token_object": {
+   "sig": "fun create_named_token_object(creator: &signer, collection: Object<Collection>, description: String, name: String, royalty: Option<Royalty>, uri: String): ConstructorRef",
+   "arity": 6,
+   "entry": false,
+   "view": false
+  },
+  "create_named_token": {
+   "sig": "fun create_named_token(creator: &signer, collection_name: String, description: String, name: String, royalty: Option<Royalty>, uri: String): ConstructorRef",
+   "arity": 6,
+   "entry": false,
+   "view": false
+  },
+  "create_named_token_as_collection_owner": {
+   "sig": "fun create_named_token_as_collection_owner(creator: &signer, collection: Object<Collection>, description: String, name: String, royalty: Option<Royalty>, uri: String): ConstructorRef",
+   "arity": 6,
+   "entry": false,
+   "view": false
+  },
+  "create_named_token_from_seed": {
+   "sig": "fun create_named_token_from_seed(creator: &signer, collection: Object<Collection>, description: String, name: String, seed: String, royalty: Option<Royalty>, uri: String): ConstructorRef",
+   "arity": 7,
+   "entry": false,
+   "view": false
+  },
+  "create_named_token_from_seed_as_collection_owner": {
+   "sig": "fun create_named_token_from_seed_as_collection_owner(creator: &signer, collection: Object<Collection>, description: String, name: String, seed: String, royalty: Option<Royalty>, uri: String): ConstructorRef",
+   "arity": 7,
+   "entry": false,
+   "view": false
+  },
+  "create_from_account": {
+   "sig": "fun create_from_account(creator: &signer, collection_name: String, description: String, name: String, royalty: Option<Royalty>, uri: String): ConstructorRef",
+   "arity": 6,
+   "entry": false,
+   "view": false
+  },
+  "create_token_address": {
+   "sig": "fun create_token_address(creator: &address, collection: &String, name: &String): address",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "create_token_address_with_seed": {
+   "sig": "fun create_token_address_with_seed(creator: address, collection: String, name: String, seed: String): address",
+   "arity": 4,
+   "entry": false,
+   "view": true
+  },
+  "create_token_seed": {
+   "sig": "fun create_token_seed(collection: &String, name: &String): vector<u8>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "create_token_name_with_seed": {
+   "sig": "fun create_token_name_with_seed(collection: &String, name: &String, seed: &String): vector<u8>",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "generate_mutator_ref": {
+   "sig": "fun generate_mutator_ref(ref: &ConstructorRef): MutatorRef",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "generate_burn_ref": {
+   "sig": "fun generate_burn_ref(ref: &ConstructorRef): BurnRef",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "address_from_burn_ref": {
+   "sig": "fun address_from_burn_ref(ref: &BurnRef): address",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "creator": {
+   "sig": "fun creator<T: key>(token: Object<T>): address",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "collection_name": {
+   "sig": "fun collection_name<T: key>(token: Object<T>): String",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "collection_object": {
+   "sig": "fun collection_object<T: key>(token: Object<T>): Object<Collection>",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "description": {
+   "sig": "fun description<T: key>(token: Object<T>): String",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "name": {
+   "sig": "fun name<T: key>(token: Object<T>): String",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "uri": {
+   "sig": "fun uri<T: key>(token: Object<T>): String",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "royalty": {
+   "sig": "fun royalty<T: key>(token: Object<T>): Option<Royalty>",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "index": {
+   "sig": "fun index<T: key>(token: Object<T>): u64",
+   "arity": 1,
+   "entry": false,
+   "view": true
+  },
+  "burn": {
+   "sig": "fun burn(burn_ref: BurnRef)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "set_description": {
+   "sig": "fun set_description(mutator_ref: &MutatorRef, description: String)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "set_name": {
+   "sig": "fun set_name(mutator_ref: &MutatorRef, name: String)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "set_uri": {
+   "sig": "fun set_uri(mutator_ref: &MutatorRef, uri: String)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  }
+ },
+ "std::bcs": {
+  "to_bytes": {
+   "sig": "fun to_bytes<MoveValue>(v: &MoveValue): vector<u8>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "serialized_size": {
+   "sig": "fun serialized_size<MoveValue>(v: &MoveValue): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "constant_serialized_size": {
+   "sig": "fun constant_serialized_size<MoveValue>(): Option<u64>",
+   "arity": 0,
+   "entry": false,
+   "view": false
+  }
+ },
+ "std::error": {
+  "canonical": {
+   "sig": "fun canonical(category: u64, reason: u64): u64",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "invalid_argument": {
+   "sig": "fun invalid_argument(r: u64): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "out_of_range": {
+   "sig": "fun out_of_range(r: u64): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "invalid_state": {
+   "sig": "fun invalid_state(r: u64): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "unauthenticated": {
+   "sig": "fun unauthenticated(r: u64): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "permission_denied": {
+   "sig": "fun permission_denied(r: u64): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "not_found": {
+   "sig": "fun not_found(r: u64): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "aborted": {
+   "sig": "fun aborted(r: u64): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "already_exists": {
+   "sig": "fun already_exists(r: u64): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "resource_exhausted": {
+   "sig": "fun resource_exhausted(r: u64): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "internal": {
+   "sig": "fun internal(r: u64): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "not_implemented": {
+   "sig": "fun not_implemented(r: u64): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "unavailable": {
+   "sig": "fun unavailable(r: u64): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  }
+ },
+ "std::option": {
+  "none": {
+   "sig": "fun none<Element>(): Option<Element>",
+   "arity": 0,
+   "entry": false,
+   "view": false
+  },
+  "some": {
+   "sig": "fun some<Element>(e: Element): Option<Element>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "from_vec": {
+   "sig": "fun from_vec<Element>(vec: vector<Element>): Option<Element>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "is_none": {
+   "sig": "fun is_none<Element>(self: &Option<Element>): bool",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "is_some": {
+   "sig": "fun is_some<Element>(self: &Option<Element>): bool",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "contains": {
+   "sig": "fun contains<Element>(self: &Option<Element>, e_ref: &Element): bool",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "borrow": {
+   "sig": "fun borrow<Element>(self: &Option<Element>): &Element",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "borrow_with_default": {
+   "sig": "fun borrow_with_default<Element>(self: &Option<Element>, default_ref: &Element): &Element",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "get_with_default": {
+   "sig": "fun get_with_default<Element: copy + drop>(self: &Option<Element>, default: Element): Element",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "fill": {
+   "sig": "fun fill<Element>(self: &mut Option<Element>, e: Element)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "extract": {
+   "sig": "fun extract<Element>(self: &mut Option<Element>): Element",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "borrow_mut": {
+   "sig": "fun borrow_mut<Element>(self: &mut Option<Element>): &mut Element",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "swap": {
+   "sig": "fun swap<Element>(self: &mut Option<Element>, el: Element): Element",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "swap_or_fill": {
+   "sig": "fun swap_or_fill<Element>(self: &mut Option<Element>, e: Element): Option<Element>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "destroy_with_default": {
+   "sig": "fun destroy_with_default<Element: drop>(self: Option<Element>, default: Element): Element",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "destroy_some": {
+   "sig": "fun destroy_some<Element>(self: Option<Element>): Element",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "destroy_none": {
+   "sig": "fun destroy_none<Element>(self: Option<Element>)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "to_vec": {
+   "sig": "fun to_vec<Element>(self: Option<Element>): vector<Element>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "for_each": {
+   "sig": "fun for_each<Element>(self: Option<Element>, f: |Element|)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "for_each_ref": {
+   "sig": "fun for_each_ref<Element>(self: &Option<Element>, f: |&Element|)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "for_each_mut": {
+   "sig": "fun for_each_mut<Element>(self: &mut Option<Element>, f: |&mut Element|)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "fold": {
+   "sig": "fun fold<Accumulator, Element>(self: Option<Element>, init: Accumulator, f: |Accumulator, Element|Accumulator): Accumulator",
+   "arity": 4,
+   "entry": false,
+   "view": false
+  },
+  "map": {
+   "sig": "fun map<Element, OtherElement>(self: Option<Element>, f: |Element|OtherElement): Option<OtherElement>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "map_ref": {
+   "sig": "fun map_ref<Element, OtherElement>(self: &Option<Element>, f: |&Element|OtherElement): Option<OtherElement>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "filter": {
+   "sig": "fun filter<Element:drop>(self: Option<Element>, f: |&Element|bool): Option<Element>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "any": {
+   "sig": "fun any<Element>(self: &Option<Element>, p: |&Element|bool): bool",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "destroy": {
+   "sig": "fun destroy<Element>(self: Option<Element>, d: |Element|)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  }
+ },
+ "std::signer": {
+  "borrow_address": {
+   "sig": "fun borrow_address(self: &signer): &address",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "address_of": {
+   "sig": "fun address_of(self: &signer): address",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  }
+ },
+ "std::string": {
+  "utf8": {
+   "sig": "fun utf8(bytes: vector<u8>): String",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "try_utf8": {
+   "sig": "fun try_utf8(bytes: vector<u8>): Option<String>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "bytes": {
+   "sig": "fun bytes(self: &String): &vector<u8>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "into_bytes": {
+   "sig": "fun into_bytes(self: String): vector<u8>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "is_empty": {
+   "sig": "fun is_empty(self: &String): bool",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "length": {
+   "sig": "fun length(self: &String): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "append": {
+   "sig": "fun append(self: &mut String, r: String)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "append_utf8": {
+   "sig": "fun append_utf8(self: &mut String, bytes: vector<u8>)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "insert": {
+   "sig": "fun insert(self: &mut String, at: u64, o: String)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "sub_string": {
+   "sig": "fun sub_string(self: &String, i: u64, j: u64): String",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "index_of": {
+   "sig": "fun index_of(self: &String, r: &String): u64",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "internal_check_utf8": {
+   "sig": "fun internal_check_utf8(v: &vector<u8>): bool",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  }
+ },
+ "std::vector": {
+  "empty": {
+   "sig": "fun empty<Element>(): vector<Element>",
+   "arity": 0,
+   "entry": false,
+   "view": false
+  },
+  "length": {
+   "sig": "fun length<Element>(self: &vector<Element>): u64",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "borrow": {
+   "sig": "fun borrow<Element>(self: &vector<Element>, i: u64): &Element",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "push_back": {
+   "sig": "fun push_back<Element>(self: &mut vector<Element>, e: Element)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "borrow_mut": {
+   "sig": "fun borrow_mut<Element>(self: &mut vector<Element>, i: u64): &mut Element",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "pop_back": {
+   "sig": "fun pop_back<Element>(self: &mut vector<Element>): Element",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "destroy_empty": {
+   "sig": "fun destroy_empty<Element>(self: vector<Element>)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "swap": {
+   "sig": "fun swap<Element>(self: &mut vector<Element>, i: u64, j: u64)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "move_range": {
+   "sig": "fun move_range<T>(from: &mut vector<T>, removal_position: u64, length: u64, to: &mut vector<T>, insert_position: u64)",
+   "arity": 5,
+   "entry": false,
+   "view": false
+  },
+  "singleton": {
+   "sig": "fun singleton<Element>(e: Element): vector<Element>",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "last": {
+   "sig": "fun last<Element>(self: &vector<Element>): &Element",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "last_mut": {
+   "sig": "fun last_mut<Element>(self: &mut vector<Element>): &mut Element",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "reverse": {
+   "sig": "fun reverse<Element>(self: &mut vector<Element>)",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "reverse_slice": {
+   "sig": "fun reverse_slice<Element>(self: &mut vector<Element>, left: u64, right: u64)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "append": {
+   "sig": "fun append<Element>(self: &mut vector<Element>, other: vector<Element>)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "reverse_append": {
+   "sig": "fun reverse_append<Element>(self: &mut vector<Element>, other: vector<Element>)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "trim": {
+   "sig": "fun trim<Element>(self: &mut vector<Element>, new_len: u64): vector<Element>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "trim_reverse": {
+   "sig": "fun trim_reverse<Element>(self: &mut vector<Element>, new_len: u64): vector<Element>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "is_empty": {
+   "sig": "fun is_empty<Element>(self: &vector<Element>): bool",
+   "arity": 1,
+   "entry": false,
+   "view": false
+  },
+  "contains": {
+   "sig": "fun contains<Element>(self: &vector<Element>, e: &Element): bool",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "index_of": {
+   "sig": "fun index_of<Element>(self: &vector<Element>, e: &Element): (bool, u64)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "find": {
+   "sig": "fun find<Element>(self: &vector<Element>, f: |&Element|bool): (bool, u64)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "insert": {
+   "sig": "fun insert<Element>(self: &mut vector<Element>, i: u64, e: Element)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "remove": {
+   "sig": "fun remove<Element>(self: &mut vector<Element>, i: u64): Element",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "remove_value": {
+   "sig": "fun remove_value<Element>(self: &mut vector<Element>, val: &Element): vector<Element>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "swap_remove": {
+   "sig": "fun swap_remove<Element>(self: &mut vector<Element>, i: u64): Element",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "replace": {
+   "sig": "fun replace<Element>(self: &mut vector<Element>, i: u64, val: Element): Element",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "for_each": {
+   "sig": "fun for_each<Element>(self: vector<Element>, f: |Element|)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "for_each_reverse": {
+   "sig": "fun for_each_reverse<Element>(self: vector<Element>, f: |Element|)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "for_each_ref": {
+   "sig": "fun for_each_ref<Element>(self: &vector<Element>, f: |&Element|)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "zip": {
+   "sig": "fun zip<Element1, Element2>(self: vector<Element1>, v2: vector<Element2>, f: |Element1, Element2|)",
+   "arity": 4,
+   "entry": false,
+   "view": false
+  },
+  "zip_reverse": {
+   "sig": "fun zip_reverse<Element1, Element2>(self: vector<Element1>, v2: vector<Element2>, f: |Element1, Element2|)",
+   "arity": 4,
+   "entry": false,
+   "view": false
+  },
+  "zip_ref": {
+   "sig": "fun zip_ref<Element1, Element2>(self: &vector<Element1>, v2: &vector<Element2>, f: |&Element1, &Element2|)",
+   "arity": 4,
+   "entry": false,
+   "view": false
+  },
+  "enumerate_ref": {
+   "sig": "fun enumerate_ref<Element>(self: &vector<Element>, f: |u64, &Element|)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "for_each_mut": {
+   "sig": "fun for_each_mut<Element>(self: &mut vector<Element>, f: |&mut Element|)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "zip_mut": {
+   "sig": "fun zip_mut<Element1, Element2>(self: &mut vector<Element1>, v2: &mut vector<Element2>, f: |&mut Element1, &mut Element2|)",
+   "arity": 4,
+   "entry": false,
+   "view": false
+  },
+  "enumerate_mut": {
+   "sig": "fun enumerate_mut<Element>(self: &mut vector<Element>, f: |u64, &mut Element|)",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "fold": {
+   "sig": "fun fold<Accumulator, Element>(self: vector<Element>, init: Accumulator, f: |Accumulator, Element|Accumulator): Accumulator",
+   "arity": 4,
+   "entry": false,
+   "view": false
+  },
+  "foldr": {
+   "sig": "fun foldr<Accumulator, Element>(self: vector<Element>, init: Accumulator, f: |Element, Accumulator|Accumulator): Accumulator",
+   "arity": 4,
+   "entry": false,
+   "view": false
+  },
+  "map_ref": {
+   "sig": "fun map_ref<Element, NewElement>(self: &vector<Element>, f: |&Element|NewElement): vector<NewElement>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "zip_map_ref": {
+   "sig": "fun zip_map_ref<Element1, Element2, NewElement>(self: &vector<Element1>, v2: &vector<Element2>, f: |&Element1, &Element2|NewElement): vector<NewElement>",
+   "arity": 4,
+   "entry": false,
+   "view": false
+  },
+  "map": {
+   "sig": "fun map<Element, NewElement>(self: vector<Element>, f: |Element|NewElement): vector<NewElement>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "zip_map": {
+   "sig": "fun zip_map<Element1, Element2, NewElement>(self: vector<Element1>, v2: vector<Element2>, f: |Element1, Element2|NewElement): vector<NewElement>",
+   "arity": 4,
+   "entry": false,
+   "view": false
+  },
+  "filter": {
+   "sig": "fun filter<Element:drop>(self: vector<Element>, p: |&Element|bool): vector<Element>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "partition": {
+   "sig": "fun partition<Element>(self: &mut vector<Element>, pred: |&Element|bool): u64",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "rotate": {
+   "sig": "fun rotate<Element>(self: &mut vector<Element>, rot: u64): u64",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "rotate_slice": {
+   "sig": "fun rotate_slice<Element>(self: &mut vector<Element>, left: u64, rot: u64, right: u64): u64",
+   "arity": 4,
+   "entry": false,
+   "view": false
+  },
+  "stable_partition": {
+   "sig": "fun stable_partition<Element>(self: &mut vector<Element>, p: |&Element|bool): u64",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "any": {
+   "sig": "fun any<Element>(self: &vector<Element>, p: |&Element|bool): bool",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "all": {
+   "sig": "fun all<Element>(self: &vector<Element>, p: |&Element|bool): bool",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "destroy": {
+   "sig": "fun destroy<Element>(self: vector<Element>, d: |Element|)",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "range": {
+   "sig": "fun range(start: u64, end: u64): vector<u64>",
+   "arity": 2,
+   "entry": false,
+   "view": false
+  },
+  "range_with_step": {
+   "sig": "fun range_with_step(start: u64, end: u64, step: u64): vector<u64>",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  },
+  "slice": {
+   "sig": "fun slice<Element: copy>(self: &vector<Element>, start: u64, end: u64): vector<Element>",
+   "arity": 3,
+   "entry": false,
+   "view": false
+  }
+ }
+}

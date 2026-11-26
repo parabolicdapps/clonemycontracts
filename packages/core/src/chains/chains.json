@@ -1,0 +1,1051 @@
+[
+  {
+    "chainId": 1,
+    "name": "Ethereum",
+    "alias": "eth",
+    "testnet": false,
+    "kind": "evm",
+    "nativeCurrency": "ETH",
+    "rpcUrls": [
+      "https://ethereum-rpc.publicnode.com",
+      "https://eth.llamarpc.com",
+      "https://cloudflare-eth.com",
+      "https://eth.drpc.org"
+    ],
+    "explorer": {
+      "name": "Etherscan",
+      "url": "https://etherscan.io",
+      "etherscanV2": true,
+      "blockscoutApi": "https://eth.blockscout.com"
+    },
+    "push0": true,
+    "wrappedNative": {
+      "symbol": "WETH",
+      "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+    },
+    "wellKnown": {
+      "permit2": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+      "multicall3": "0xcA11bde05977b3631167028862bE2a173976CA11",
+      "createx": "0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed",
+      "uniswap-v2-router02": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+      "uniswap-v2-factory": "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
+      "uniswap-v3-swaprouter02": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45"
+    },
+    "latestHardfork": "osaka",
+    "opcodes": {
+      "PUSH0": true,
+      "MCOPY": true,
+      "TSTORE": true,
+      "TLOAD": true,
+      "BLOBHASH": true,
+      "BLOBBASEFEE": true,
+      "CLZ": true
+    },
+    "chainlinkFeeds": {
+      "ETH / USD": {
+        "address": "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
+        "decimals": 8
+      },
+      "BTC / USD": {
+        "address": "0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c",
+        "decimals": 8
+      },
+      "USDC / USD": {
+        "address": "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6",
+        "decimals": 8
+      },
+      "USDT / USD": {
+        "address": "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D",
+        "decimals": 8
+      },
+      "DAI / USD": {
+        "address": "0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9",
+        "decimals": 8
+      },
+      "LINK / USD": {
+        "address": "0x2c1d072e956AFFC0D435Cb7AC38EF18d24d9127c",
+        "decimals": 8
+      },
+      "EUR / USD": {
+        "address": "0xb49f677943BC038e9857d61E7d053CaA2C1734C1",
+        "decimals": 8
+      },
+      "ETH / BTC": {
+        "address": "0xAc559F25B1619171CbC396a50854A3240b6A4e99",
+        "decimals": 8
+      },
+      "BNB / USD": {
+        "address": "0x14e613AC84a31f709eadbdF89C6CC390fDc9540A",
+        "decimals": 8
+      },
+      "AVAX / USD": {
+        "address": "0xFF3EEb22B5E3dE6e705b44749C2559d704923FD7",
+        "decimals": 8
+      },
+      "AAVE / USD": {
+        "address": "0x547a514d5e3769680Ce22B2361c10Ea13619e8a9",
+        "decimals": 8
+      },
+      "UNI / USD": {
+        "address": "0x553303d460EE0afB37EdFf9bE42922D8FF63220e",
+        "decimals": 8
+      },
+      "STETH / USD": {
+        "address": "0xCfE54B5cD566aB89272946F602D76Ea879CAb4a8",
+        "decimals": 8
+      }
+    }
+  },
+  {
+    "chainId": 11155111,
+    "name": "Sepolia",
+    "alias": "sepolia",
+    "testnet": true,
+    "kind": "evm",
+    "nativeCurrency": "ETH",
+    "rpcUrls": [
+      "https://ethereum-sepolia-rpc.publicnode.com",
+      "https://rpc.sepolia.org"
+    ],
+    "explorer": {
+      "name": "Etherscan",
+      "url": "https://sepolia.etherscan.io",
+      "etherscanV2": true,
+      "blockscoutApi": "https://eth-sepolia.blockscout.com"
+    },
+    "push0": true,
+    "wrappedNative": {
+      "symbol": "WETH",
+      "address": "0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14"
+    },
+    "wellKnown": {
+      "permit2": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+      "multicall3": "0xcA11bde05977b3631167028862bE2a173976CA11",
+      "createx": "0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed"
+    },
+    "latestHardfork": "osaka",
+    "opcodes": {
+      "PUSH0": true,
+      "MCOPY": true,
+      "TSTORE": true,
+      "TLOAD": true,
+      "BLOBHASH": true,
+      "BLOBBASEFEE": true,
+      "CLZ": true
+    },
+    "chainlinkFeeds": {
+      "ETH / USD": {
+        "address": "0x694AA1769357215DE4FAC081bf1f309aDC325306",
+        "decimals": 8
+      },
+      "BTC / USD": {
+        "address": "0x1b44F3514812d835EB1BDB0acB33d3fA3351Ee43",
+        "decimals": 8
+      },
+      "USDC / USD": {
+        "address": "0xA2F78ab2355fe2f984D808B5CeE7FD0A93D5270E",
+        "decimals": 8
+      },
+      "DAI / USD": {
+        "address": "0x14866185B1962B63C3Ea9E03Bc1da838bab34C19",
+        "decimals": 8
+      },
+      "LINK / USD": {
+        "address": "0xc59E3633BAAC79493d908e63626716e204A45EdF",
+        "decimals": 8
+      },
+      "EUR / USD": {
+        "address": "0x1a81afB8146aeFfCFc5E50e8479e826E7D55b910",
+        "decimals": 8
+      }
+    }
+  },
+  {
+    "chainId": 8453,
+    "name": "Base",
+    "alias": "base",
+    "testnet": false,
+    "kind": "evm",
+    "nativeCurrency": "ETH",
+    "rpcUrls": [
+      "https://mainnet.base.org",
+      "https://base-rpc.publicnode.com"
+    ],
+    "explorer": {
+      "name": "Basescan",
+      "url": "https://basescan.org",
+      "etherscanV2": true,
+      "blockscoutApi": null
+    },
+    "push0": true,
+    "wrappedNative": {
+      "symbol": "WETH",
+      "address": "0x4200000000000000000000000000000000000006"
+    },
+    "wellKnown": {
+      "permit2": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+      "multicall3": "0xcA11bde05977b3631167028862bE2a173976CA11",
+      "createx": "0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed",
+      "uniswap-v2-router02": "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24",
+      "uniswap-v2-factory": "0x8909Dc15e40173Ff4699343b6eB8132c65e18eC6",
+      "uniswap-v3-swaprouter02": "0x2626664c2603336E57B271c5C0b26F421741e481"
+    },
+    "latestHardfork": "osaka",
+    "opcodes": {
+      "PUSH0": true,
+      "MCOPY": true,
+      "TSTORE": true,
+      "TLOAD": true,
+      "BLOBHASH": true,
+      "BLOBBASEFEE": true,
+      "CLZ": true
+    },
+    "chainlinkFeeds": {
+      "USDC / USD": {
+        "address": "0x7e860098F58bBFC8648a4311b374B1D669a2bc6B",
+        "decimals": 8
+      },
+      "USDT / USD": {
+        "address": "0xf19d560eB8d2ADf07BD6D13ed03e1D11215721F9",
+        "decimals": 8
+      },
+      "DAI / USD": {
+        "address": "0x591e79239a7d679378eC8c847e5038150364C78F",
+        "decimals": 8
+      },
+      "LINK / USD": {
+        "address": "0x17CAb8FE31E32f08326e5E27412894e49B0f9D65",
+        "decimals": 8
+      },
+      "EUR / USD": {
+        "address": "0xc91D87E81faB8f93699ECf7Ee9B44D11e1D53F0F",
+        "decimals": 8
+      },
+      "POL / USD": {
+        "address": "0x5E988c11a4f92155C30D9fb69Ed75597f712B113",
+        "decimals": 8
+      },
+      "BNB / USD": {
+        "address": "0x4b7836916781CAAfbb7Bd1E5FDd20ED544B453b1",
+        "decimals": 8
+      },
+      "AVAX / USD": {
+        "address": "0xE70f2D34Fd04046aaEC26a198A35dD8F2dF5cd92",
+        "decimals": 8
+      },
+      "AAVE / USD": {
+        "address": "0x3d6774EF702A10b20FCa8Ed40FC022f7E4938e07",
+        "decimals": 8
+      }
+    }
+  },
+  {
+    "chainId": 84532,
+    "name": "Base Sepolia",
+    "alias": "base-sepolia",
+    "testnet": true,
+    "kind": "evm",
+    "nativeCurrency": "ETH",
+    "rpcUrls": [
+      "https://sepolia.base.org",
+      "https://base-sepolia-rpc.publicnode.com"
+    ],
+    "explorer": {
+      "name": "Basescan",
+      "url": "https://sepolia.basescan.org",
+      "etherscanV2": true,
+      "blockscoutApi": "https://base-sepolia.blockscout.com"
+    },
+    "push0": true,
+    "wrappedNative": {
+      "symbol": "WETH",
+      "address": "0x4200000000000000000000000000000000000006"
+    },
+    "wellKnown": {
+      "permit2": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+      "multicall3": "0xcA11bde05977b3631167028862bE2a173976CA11",
+      "createx": "0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed"
+    },
+    "latestHardfork": "osaka",
+    "opcodes": {
+      "PUSH0": true,
+      "MCOPY": true,
+      "TSTORE": true,
+      "TLOAD": true,
+      "BLOBHASH": true,
+      "BLOBBASEFEE": true,
+      "CLZ": true
+    },
+    "chainlinkFeeds": {
+      "ETH / USD": {
+        "address": "0x4aDC67696bA383F43DD60A9e78F2C97Fbbfc7cb1",
+        "decimals": 8
+      },
+      "BTC / USD": {
+        "address": "0x0FB99723Aee6f420beAD13e6bBB79b7E6F034298",
+        "decimals": 8
+      },
+      "USDC / USD": {
+        "address": "0xd30e2101a97dcbAeBCBC04F14C3f624E67A35165",
+        "decimals": 8
+      },
+      "USDT / USD": {
+        "address": "0x3ec8593F930EA45ea58c968260e6e9FF53FC934f",
+        "decimals": 8
+      },
+      "DAI / USD": {
+        "address": "0xD1092a65338d049DB68D7Be6bD89d17a0929945e",
+        "decimals": 8
+      },
+      "LINK / USD": {
+        "address": "0xb113F5A928BCfF189C998ab20d753a47F9dE5A61",
+        "decimals": 8
+      }
+    }
+  },
+  {
+    "chainId": 42161,
+    "name": "Arbitrum One",
+    "alias": "arbitrum",
+    "testnet": false,
+    "kind": "evm",
+    "nativeCurrency": "ETH",
+    "rpcUrls": [
+      "https://arb1.arbitrum.io/rpc",
+      "https://arbitrum-one-rpc.publicnode.com"
+    ],
+    "explorer": {
+      "name": "Arbiscan",
+      "url": "https://arbiscan.io",
+      "etherscanV2": true,
+      "blockscoutApi": null
+    },
+    "push0": true,
+    "wrappedNative": {
+      "symbol": "WETH",
+      "address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"
+    },
+    "wellKnown": {
+      "permit2": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+      "multicall3": "0xcA11bde05977b3631167028862bE2a173976CA11",
+      "createx": "0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed",
+      "uniswap-v2-router02": "0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24",
+      "uniswap-v2-factory": "0xf1D7CC64Fb4452F05c498126312eBE29f30Fbcf9",
+      "uniswap-v3-swaprouter02": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45"
+    },
+    "latestHardfork": "osaka",
+    "opcodes": {
+      "PUSH0": true,
+      "MCOPY": true,
+      "TSTORE": true,
+      "TLOAD": true,
+      "BLOBHASH": true,
+      "BLOBBASEFEE": false,
+      "CLZ": true
+    },
+    "chainlinkFeeds": {
+      "ETH / USD": {
+        "address": "0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612",
+        "decimals": 8
+      },
+      "BTC / USD": {
+        "address": "0x6ce185860a4963106506C203335A2910413708e9",
+        "decimals": 8
+      },
+      "USDC / USD": {
+        "address": "0x50834F3163758fcC1Df9973b6e91f0F0F0434aD3",
+        "decimals": 8
+      },
+      "USDT / USD": {
+        "address": "0x3f3f5dF88dC9F13eac63DF89EC16ef6e7E25DdE7",
+        "decimals": 8
+      },
+      "DAI / USD": {
+        "address": "0xc5C8E77B397E531B8EC06BFb0048328B30E9eCfB",
+        "decimals": 8
+      },
+      "LINK / USD": {
+        "address": "0x86E53CF1B870786351Da77A57575e79CB55812CB",
+        "decimals": 8
+      },
+      "EUR / USD": {
+        "address": "0xA14d53bC1F1c0F31B4aA3BD109344E5009051a84",
+        "decimals": 8
+      },
+      "MATIC / USD": {
+        "address": "0x52099D4523531f678Dfc568a7B1e5038aadcE1d6",
+        "decimals": 8
+      },
+      "POL / USD": {
+        "address": "0x82BA56a2fADF9C14f17D08bc51bDA0bDB83A8934",
+        "decimals": 8
+      },
+      "BNB / USD": {
+        "address": "0x6970460aabF80C5BE983C6b74e5D06dEDCA95D4A",
+        "decimals": 8
+      },
+      "AVAX / USD": {
+        "address": "0x8bf61728eeDCE2F32c456454d87B5d6eD6150208",
+        "decimals": 8
+      },
+      "AAVE / USD": {
+        "address": "0xaD1d5344AaDE45F43E596773Bcc4c423EAbdD034",
+        "decimals": 8
+      },
+      "UNI / USD": {
+        "address": "0x9C917083fDb403ab5ADbEC26Ee294f6EcAda2720",
+        "decimals": 8
+      },
+      "STETH / USD": {
+        "address": "0x07C5b924399cc23c24a95c8743DE4006a32b7f2a",
+        "decimals": 8
+      }
+    }
+  },
+  {
+    "chainId": 421614,
+    "name": "Arbitrum Sepolia",
+    "alias": "arbitrum-sepolia",
+    "testnet": true,
+    "kind": "evm",
+    "nativeCurrency": "ETH",
+    "rpcUrls": [
+      "https://sepolia-rollup.arbitrum.io/rpc",
+      "https://arbitrum-sepolia-rpc.publicnode.com"
+    ],
+    "explorer": {
+      "name": "Arbiscan",
+      "url": "https://sepolia.arbiscan.io",
+      "etherscanV2": true,
+      "blockscoutApi": null
+    },
+    "push0": true,
+    "wrappedNative": {
+      "symbol": "WETH",
+      "address": "0x980B62Da83eFf3D4576C647993b0c1D7faf17c73"
+    },
+    "wellKnown": {
+      "permit2": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+      "multicall3": "0xcA11bde05977b3631167028862bE2a173976CA11",
+      "createx": "0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed"
+    },
+    "latestHardfork": "osaka",
+    "opcodes": {
+      "PUSH0": true,
+      "MCOPY": true,
+      "TSTORE": true,
+      "TLOAD": true,
+      "BLOBHASH": true,
+      "BLOBBASEFEE": false,
+      "CLZ": true
+    },
+    "chainlinkFeeds": {
+      "ETH / USD": {
+        "address": "0xd30e2101a97dcbAeBCBC04F14C3f624E67A35165",
+        "decimals": 8
+      },
+      "BTC / USD": {
+        "address": "0x56a43EB56Da12C0dc1D972ACb089c06a5dEF8e69",
+        "decimals": 8
+      },
+      "USDC / USD": {
+        "address": "0x0153002d20B96532C639313c2d54c3dA09109309",
+        "decimals": 8
+      },
+      "USDT / USD": {
+        "address": "0x80EDee6f667eCc9f63a0a6f55578F870651f06A4",
+        "decimals": 8
+      },
+      "DAI / USD": {
+        "address": "0xb113F5A928BCfF189C998ab20d753a47F9dE5A61",
+        "decimals": 8
+      },
+      "LINK / USD": {
+        "address": "0x0FB99723Aee6f420beAD13e6bBB79b7E6F034298",
+        "decimals": 8
+      },
+      "MATIC / USD": {
+        "address": "0x44a502d94c47f47aC6D65ebdFDf4c39500e72491",
+        "decimals": 8
+      },
+      "BNB / USD": {
+        "address": "0x53ab995fBb01C617aa1256698aD55b417168bfF9",
+        "decimals": 8
+      },
+      "AVAX / USD": {
+        "address": "0xe27498c9Cc8541033F265E63c8C29A97CfF9aC6D",
+        "decimals": 8
+      },
+      "AAVE / USD": {
+        "address": "0x20b1061Acd37302925D9A8c3fD94eb765039dBd5",
+        "decimals": 8
+      },
+      "UNI / USD": {
+        "address": "0x850A128C3f67C3D13B58a88AC2f4742D90705c0a",
+        "decimals": 8
+      }
+    }
+  },
+  {
+    "chainId": 10,
+    "name": "OP Mainnet",
+    "alias": "optimism",
+    "testnet": false,
+    "kind": "evm",
+    "nativeCurrency": "ETH",
+    "rpcUrls": [
+      "https://mainnet.optimism.io",
+      "https://optimism-rpc.publicnode.com"
+    ],
+    "explorer": {
+      "name": "Optimistic Etherscan",
+      "url": "https://optimistic.etherscan.io",
+      "etherscanV2": true,
+      "blockscoutApi": "https://explorer.optimism.io"
+    },
+    "push0": true,
+    "wrappedNative": {
+      "symbol": "WETH",
+      "address": "0x4200000000000000000000000000000000000006"
+    },
+    "wellKnown": {
+      "permit2": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+      "multicall3": "0xcA11bde05977b3631167028862bE2a173976CA11",
+      "createx": "0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed",
+      "uniswap-v3-swaprouter02": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45"
+    },
+    "latestHardfork": "osaka",
+    "opcodes": {
+      "PUSH0": true,
+      "MCOPY": true,
+      "TSTORE": true,
+      "TLOAD": true,
+      "BLOBHASH": true,
+      "BLOBBASEFEE": true,
+      "CLZ": true
+    },
+    "chainlinkFeeds": {
+      "ETH / USD": {
+        "address": "0x13e3Ee699D1909E989722E753853AE30b17e08c5",
+        "decimals": 8
+      },
+      "BTC / USD": {
+        "address": "0xD702DD976Fb76Fffc2D3963D037dfDae5b04E593",
+        "decimals": 8
+      },
+      "USDC / USD": {
+        "address": "0x16a9FA2FDa030272Ce99B29CF780dFA30361E0f3",
+        "decimals": 8
+      },
+      "USDT / USD": {
+        "address": "0xECef79E109e997bCA29c1c0897ec9d7b03647F5E",
+        "decimals": 8
+      },
+      "DAI / USD": {
+        "address": "0x8dBa75e83DA73cc766A7e5a0ee71F656BAb470d6",
+        "decimals": 8
+      },
+      "LINK / USD": {
+        "address": "0xCc232dcFAAE6354cE191Bd574108c1aD03f86450",
+        "decimals": 8
+      },
+      "EUR / USD": {
+        "address": "0x3626369857A10CcC6cc3A6e4f5C2f5984a519F20",
+        "decimals": 8
+      },
+      "ETH / BTC": {
+        "address": "0xe4b9bcD7d0AA917f19019165EB89BdbbF36d2cBe",
+        "decimals": 8
+      },
+      "POL / USD": {
+        "address": "0x22Ba046769b584c3B05530F7c50d0E8638bd71F1",
+        "decimals": 8
+      },
+      "BNB / USD": {
+        "address": "0xD38579f7cBD14c22cF1997575eA8eF7bfe62ca2c",
+        "decimals": 8
+      },
+      "AVAX / USD": {
+        "address": "0x5087Dc69Fd3907a016BD42B38022F7f024140727",
+        "decimals": 8
+      },
+      "AAVE / USD": {
+        "address": "0x338ed6787f463394D24813b297401B9F05a8C9d1",
+        "decimals": 8
+      },
+      "UNI / USD": {
+        "address": "0x11429eE838cC01071402f21C219870cbAc0a59A0",
+        "decimals": 8
+      },
+      "STETH / USD": {
+        "address": "0x41878779a388585509657CE5Fb95a80050502186",
+        "decimals": 8
+      }
+    }
+  },
+  {
+    "chainId": 11155420,
+    "name": "OP Sepolia",
+    "alias": "optimism-sepolia",
+    "testnet": true,
+    "kind": "evm",
+    "nativeCurrency": "ETH",
+    "rpcUrls": [
+      "https://sepolia.optimism.io",
+      "https://optimism-sepolia-rpc.publicnode.com"
+    ],
+    "explorer": {
+      "name": "Optimistic Etherscan",
+      "url": "https://sepolia-optimism.etherscan.io",
+      "etherscanV2": true,
+      "blockscoutApi": "https://testnet-explorer.optimism.io"
+    },
+    "push0": true,
+    "wrappedNative": {
+      "symbol": "WETH",
+      "address": "0x4200000000000000000000000000000000000006"
+    },
+    "wellKnown": {
+      "permit2": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+      "multicall3": "0xcA11bde05977b3631167028862bE2a173976CA11",
+      "createx": "0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed"
+    },
+    "latestHardfork": "osaka",
+    "opcodes": {
+      "PUSH0": true,
+      "MCOPY": true,
+      "TSTORE": true,
+      "TLOAD": true,
+      "BLOBHASH": true,
+      "BLOBBASEFEE": true,
+      "CLZ": true
+    },
+    "chainlinkFeeds": {
+      "ETH / USD": {
+        "address": "0x61Ec26aA57019C486B10502285c5A3D4A4750AD7",
+        "decimals": 8
+      },
+      "BTC / USD": {
+        "address": "0x3015aa11f5c2D4Bd0f891E708C8927961b38cE7D",
+        "decimals": 8
+      },
+      "USDC / USD": {
+        "address": "0x6e44e50E3cc14DD16e01C590DC1d7020cb36eD4C",
+        "decimals": 8
+      },
+      "USDT / USD": {
+        "address": "0xF83696ca1b8a266163bE252bE2B94702D4929392",
+        "decimals": 8
+      },
+      "DAI / USD": {
+        "address": "0x4beA21743541fE4509790F1606c37f2B2C312479",
+        "decimals": 8
+      },
+      "LINK / USD": {
+        "address": "0x53f91dA33120F44893CB896b12a83551DEDb31c6",
+        "decimals": 8
+      },
+      "EUR / USD": {
+        "address": "0x828eda6b1B7266AD4d04Eb18468B965fc70940bd",
+        "decimals": 8
+      },
+      "ETH / BTC": {
+        "address": "0x0D41087ab4b10889312cc70A2582788270811c07",
+        "decimals": 8
+      },
+      "BNB / USD": {
+        "address": "0x6e16840307DfC4C80e5081375DBA1887E610964b",
+        "decimals": 8
+      },
+      "AVAX / USD": {
+        "address": "0xcacB7778Cba5C5526E6EBbA0A1aE74B4c310084B",
+        "decimals": 8
+      },
+      "AAVE / USD": {
+        "address": "0xAc6DB6d5538Cd07f58afee9dA736ce192119017B",
+        "decimals": 8
+      },
+      "UNI / USD": {
+        "address": "0x7FcCDFD85f11BaFa09702DB78DcDE33feFb6a7AB",
+        "decimals": 8
+      },
+      "STETH / USD": {
+        "address": "0x0fFC5253bb7383b2E55D00E2fBed334Bec4AD1Bc",
+        "decimals": 8
+      }
+    }
+  },
+  {
+    "chainId": 137,
+    "name": "Polygon",
+    "alias": "polygon",
+    "testnet": false,
+    "kind": "evm",
+    "nativeCurrency": "POL",
+    "rpcUrls": [
+      "https://polygon-bor-rpc.publicnode.com",
+      "https://polygon-rpc.com"
+    ],
+    "explorer": {
+      "name": "Polygonscan",
+      "url": "https://polygonscan.com",
+      "etherscanV2": true,
+      "blockscoutApi": null
+    },
+    "push0": true,
+    "wrappedNative": {
+      "symbol": "WPOL",
+      "address": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270"
+    },
+    "wellKnown": {
+      "permit2": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+      "multicall3": "0xcA11bde05977b3631167028862bE2a173976CA11",
+      "createx": "0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed",
+      "uniswap-v3-swaprouter02": "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45"
+    },
+    "latestHardfork": "osaka",
+    "opcodes": {
+      "PUSH0": true,
+      "MCOPY": true,
+      "TSTORE": true,
+      "TLOAD": true,
+      "BLOBHASH": false,
+      "BLOBBASEFEE": false,
+      "CLZ": true
+    },
+    "chainlinkFeeds": {
+      "ETH / USD": {
+        "address": "0xF9680D99D6C9589e2a93a78A04A279e509205945",
+        "decimals": 8
+      },
+      "BTC / USD": {
+        "address": "0xc907E116054Ad103354f2D350FD2514433D57F6f",
+        "decimals": 8
+      },
+      "USDC / USD": {
+        "address": "0xfE4A8cc5b5B2366C1B58Bea3858e81843581b2F7",
+        "decimals": 8
+      },
+      "USDT / USD": {
+        "address": "0x0A6513e40db6EB1b165753AD52E80663aeA50545",
+        "decimals": 8
+      },
+      "DAI / USD": {
+        "address": "0x4746DeC9e833A82EC7C2C1356372CcF2cfcD2F3D",
+        "decimals": 8
+      },
+      "LINK / USD": {
+        "address": "0xd9FFdb71EbE7496cC440152d43986Aae0AB76665",
+        "decimals": 8
+      },
+      "EUR / USD": {
+        "address": "0x73366Fe0AA0Ded304479862808e02506FE556a98",
+        "decimals": 8
+      },
+      "MATIC / USD": {
+        "address": "0xAB594600376Ec9fD91F8e885dADF0CE036862dE0",
+        "decimals": 8
+      },
+      "BNB / USD": {
+        "address": "0x82a6c4AF830caa6c97bb504425f6A66165C2c26e",
+        "decimals": 8
+      },
+      "AVAX / USD": {
+        "address": "0xe01eA2fbd8D76ee323FbEd03eB9a8625EC981A10",
+        "decimals": 8
+      },
+      "AAVE / USD": {
+        "address": "0x72484B12719E23115761D5DA1646945632979bB6",
+        "decimals": 8
+      },
+      "UNI / USD": {
+        "address": "0xdf0Fb4e4F928d2dCB76f438575fDD8682386e13C",
+        "decimals": 8
+      }
+    }
+  },
+  {
+    "chainId": 56,
+    "name": "BNB Smart Chain",
+    "alias": "bnb",
+    "testnet": false,
+    "kind": "evm",
+    "nativeCurrency": "BNB",
+    "rpcUrls": [
+      "https://bsc-dataseed.bnbchain.org",
+      "https://bsc-rpc.publicnode.com"
+    ],
+    "explorer": {
+      "name": "BscScan",
+      "url": "https://bscscan.com",
+      "etherscanV2": true,
+      "blockscoutApi": null
+    },
+    "push0": true,
+    "wrappedNative": {
+      "symbol": "WBNB",
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
+    },
+    "wellKnown": {
+      "permit2": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+      "multicall3": "0xcA11bde05977b3631167028862bE2a173976CA11",
+      "createx": "0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed"
+    },
+    "latestHardfork": "osaka",
+    "opcodes": {
+      "PUSH0": true,
+      "MCOPY": true,
+      "TSTORE": true,
+      "TLOAD": true,
+      "BLOBHASH": true,
+      "BLOBBASEFEE": true,
+      "CLZ": true
+    },
+    "chainlinkFeeds": {
+      "ETH / USD": {
+        "address": "0x9ef1B8c0E4F7dc8bF5719Ea496883DC6401d5b2e",
+        "decimals": 8
+      },
+      "BTC / USD": {
+        "address": "0x264990fbd0A4796A3E3d8E37C4d5F87a3aCa5Ebf",
+        "decimals": 8
+      },
+      "USDC / USD": {
+        "address": "0x51597f405303C4377E36123cBc172b13269EA163",
+        "decimals": 8
+      },
+      "USDT / USD": {
+        "address": "0xB97Ad0E74fa7d920791E90258A6E2085088b4320",
+        "decimals": 8
+      },
+      "DAI / USD": {
+        "address": "0x132d3C0B1D2cEa0BC552588063bdBb210FDeecfA",
+        "decimals": 8
+      },
+      "LINK / USD": {
+        "address": "0xca236E327F629f9Fc2c30A4E95775EbF0B89fac8",
+        "decimals": 8
+      },
+      "EUR / USD": {
+        "address": "0x0bf79F617988C472DcA68ff41eFe1338955b9A80",
+        "decimals": 8
+      },
+      "POL / USD": {
+        "address": "0x081195B56674bb87b2B92F6D58F7c5f449aCE19d",
+        "decimals": 8
+      },
+      "BNB / USD": {
+        "address": "0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE",
+        "decimals": 8
+      },
+      "AVAX / USD": {
+        "address": "0x5974855ce31EE8E1fff2e76591CbF83D7110F151",
+        "decimals": 8
+      },
+      "AAVE / USD": {
+        "address": "0xA8357BF572460fC40f4B0aCacbB2a6A61c89f475",
+        "decimals": 8
+      },
+      "UNI / USD": {
+        "address": "0xb57f259E7C24e56a1dA00F66b55A5640d9f9E7e4",
+        "decimals": 8
+      }
+    }
+  },
+  {
+    "chainId": 43114,
+    "name": "Avalanche C-Chain",
+    "alias": "avalanche",
+    "testnet": false,
+    "kind": "evm",
+    "nativeCurrency": "AVAX",
+    "rpcUrls": [
+      "https://api.avax.network/ext/bc/C/rpc",
+      "https://avalanche-c-chain-rpc.publicnode.com"
+    ],
+    "explorer": {
+      "name": "Snowtrace",
+      "url": "https://snowtrace.io",
+      "etherscanV2": true,
+      "blockscoutApi": null
+    },
+    "push0": true,
+    "wrappedNative": {
+      "symbol": "WAVAX",
+      "address": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7"
+    },
+    "wellKnown": {
+      "permit2": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+      "multicall3": "0xcA11bde05977b3631167028862bE2a173976CA11",
+      "createx": "0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed"
+    },
+    "latestHardfork": "cancun",
+    "opcodes": {
+      "PUSH0": true,
+      "MCOPY": true,
+      "TSTORE": true,
+      "TLOAD": true,
+      "BLOBHASH": true,
+      "BLOBBASEFEE": true,
+      "CLZ": false
+    },
+    "chainlinkFeeds": {
+      "ETH / USD": {
+        "address": "0x976B3D034E162d8bD72D6b9C989d545b839003b0",
+        "decimals": 8
+      },
+      "BTC / USD": {
+        "address": "0x2779D32d5166BAaa2B2b658333bA7e6Ec0C65743",
+        "decimals": 8
+      },
+      "USDC / USD": {
+        "address": "0xF096872672F44d6EBA71458D74fe67F9a77a23B9",
+        "decimals": 8
+      },
+      "USDT / USD": {
+        "address": "0xEBE676ee90Fe1112671f19b6B7459bC678B67e8a",
+        "decimals": 8
+      },
+      "DAI / USD": {
+        "address": "0x51D7180edA2260cc4F6e4EebB82FEF5c3c2B8300",
+        "decimals": 8
+      },
+      "LINK / USD": {
+        "address": "0x49ccd9ca821EfEab2b98c60dC60F518E765EDe9a",
+        "decimals": 8
+      },
+      "EUR / USD": {
+        "address": "0x192f2DBA961Bb0277520C082d6bfa87D5961333E",
+        "decimals": 8
+      },
+      "POL / USD": {
+        "address": "0x7B0e7d292d414788B080EfCa58b04B6372789639",
+        "decimals": 8
+      },
+      "BNB / USD": {
+        "address": "0xBb92195Ec95DE626346eeC8282D53e261dF95241",
+        "decimals": 8
+      },
+      "AVAX / USD": {
+        "address": "0x0A77230d17318075983913bC2145DB16C7366156",
+        "decimals": 8
+      },
+      "AAVE / USD": {
+        "address": "0x3CA13391E9fb38a75330fb28f8cc2eB3D9ceceED",
+        "decimals": 8
+      },
+      "UNI / USD": {
+        "address": "0x9a1372f9b1B71B3A5a72E092AE67E172dBd7Daaa",
+        "decimals": 8
+      }
+    }
+  },
+  {
+    "chainId": 100,
+    "name": "Gnosis",
+    "alias": "gnosis",
+    "testnet": false,
+    "kind": "evm",
+    "nativeCurrency": "xDAI",
+    "rpcUrls": [
+      "https://rpc.gnosischain.com",
+      "https://gnosis-rpc.publicnode.com"
+    ],
+    "explorer": {
+      "name": "Gnosisscan",
+      "url": "https://gnosisscan.io",
+      "etherscanV2": true,
+      "blockscoutApi": null
+    },
+    "push0": true,
+    "wrappedNative": {
+      "symbol": "WXDAI",
+      "address": "0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d"
+    },
+    "wellKnown": {
+      "permit2": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+      "multicall3": "0xcA11bde05977b3631167028862bE2a173976CA11",
+      "createx": "0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed"
+    },
+    "latestHardfork": "osaka",
+    "opcodes": {
+      "PUSH0": true,
+      "MCOPY": true,
+      "TSTORE": true,
+      "TLOAD": true,
+      "BLOBHASH": true,
+      "BLOBBASEFEE": true,
+      "CLZ": true
+    },
+    "chainlinkFeeds": {
+      "ETH / USD": {
+        "address": "0xa767f745331D267c7751297D982b050c93985627",
+        "decimals": 8
+      },
+      "BTC / USD": {
+        "address": "0x6C1d7e76EF7304a40e8456ce883BC56d3dEA3F7d",
+        "decimals": 8
+      },
+      "USDC / USD": {
+        "address": "0x26C31ac71010aF62E6B486D1132E266D6298857D",
+        "decimals": 8
+      },
+      "USDT / USD": {
+        "address": "0x68811D7DF835B1c33e6EEae8E7C141eF48d48cc7",
+        "decimals": 8
+      },
+      "DAI / USD": {
+        "address": "0x678df3415fc31947dA4324eC63212874be5a82f8",
+        "decimals": 8
+      },
+      "LINK / USD": {
+        "address": "0xed322A5ac55BAE091190dFf9066760b86751947B",
+        "decimals": 8
+      },
+      "EUR / USD": {
+        "address": "0xab70BCB260073d036d1660201e9d5405F5829b7a",
+        "decimals": 8
+      },
+      "BNB / USD": {
+        "address": "0x6D42cc26756C34F26BEcDD9b30a279cE9Ea8296E",
+        "decimals": 8
+      },
+      "AVAX / USD": {
+        "address": "0x911e08A32A6b7671A80387F93147Ab29063DE9A2",
+        "decimals": 8
+      },
+      "AAVE / USD": {
+        "address": "0x2b481Dc923Aa050E009113Dca8dcb0daB4B68cDF",
+        "decimals": 8
+      },
+      "UNI / USD": {
+        "address": "0xd98735d78266c62277Bb4dBf3e3bCdd3694782F4",
+        "decimals": 8
+      },
+      "STETH / USD": {
+        "address": "0x229e486Ee0D35b7A9f668d10a1e6029eEE6B77E0",
+        "decimals": 8
+      }
+    }
+  },
+  {
+    "chainId": 324,
+    "name": "zkSync Era",
+    "alias": "zksync",
+    "testnet": false,
+    "kind": "zksync",
+    "nativeCurrency": "ETH",
+    "rpcUrls": [
+      "https://mainnet.era.zksync.io"
+    ],
+    "explorer": {
+      "name": "zkSync Explorer",
+      "url": "https://explorer.zksync.io",
+      "etherscanV2": false,
+      "blockscoutApi": null
+    },
+    "push0": false,
+    "wrappedNative": null,
+    "wellKnown": {}
+  }
+]

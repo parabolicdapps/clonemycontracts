@@ -1,0 +1,27 @@
+{
+  "name": "clonemycontracts",
+  "license": "Apache-2.0",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "workspaces": [
+    "packages/core",
+    "packages/translate",
+    "packages/cli",
+    "apps/api",
+    "apps/web"
+  ],
+  "scripts": {
+    "build": "tsc -b && npm run build -w @cmc/web",
+    "typecheck": "tsc -b",
+    "test": "tsc -b && vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

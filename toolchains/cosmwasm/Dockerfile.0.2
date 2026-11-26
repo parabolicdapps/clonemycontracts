@@ -1,0 +1,24 @@
+# cmc-toolchain-cosmwasm:0.2 = 0.1 + cmc-cosmwasm-runner (cw-multi-test, native, pre-warmed) + test/run-plan entries.
+# Build:  docker build -t cmc-toolchain-cosmwasm:0.2 -f cosmwasm/Dockerfile.0.2 cosmwasm
+FROM cmc-toolchain-cosmwasm:0.1
+LABEL org.opencontainers.image.source="https://github.com/parabolicdapps/clonemycontracts" \
+      org.opencontainers.image.licenses="Apache-2.0" \
+      org.opencontainers.image.description="CloneMyContracts sandbox toolchain"
+USER root
+RUN cp /usr/local/bin/cmc-entry /usr/local/bin/cmc-compile \
+ && mkdir -p /opt/runner /opt/runner-target && chown cmc /opt/runner /opt/runner-target
+USER cmc
+COPY --chown=cmc runner/Cargo.toml runner/Cargo.lock /opt/runner/
+COPY --chown=cmc runner/src /opt/runner/src
+COPY --chown=cmc runner-warm-app /opt/runner/app
+# Pre-warm: fetch + build everything (network is available at build time only) against the warm app.
+# 1.84.1 (already installed for tooling) is enough for cw-multi-test 2.5.1; wasm builds stay on 1.81.0.
+RUN cd /opt/runner && CARGO_TARGET_DIR=/opt/runner-target cargo +1.84.1 build --release --locked \
+ && /opt/runner-target/release/cmc-cosmwasm-runner --version
+COPY entry.sh /usr/local/bin/cmc-entry
+USER root
+RUN chmod 755 /usr/local/bin/cmc-entry
+USER cmc
+WORKDIR /work
+ENTRYPOINT ["/usr/local/bin/cmc-entry"]
+CMD ["compile"]

@@ -1,0 +1,87 @@
+{
+  "eigenPodManager": {
+    "name": "TransparentUpgradeableProxy",
+    "language": "Solidity",
+    "compilerVersion": "0.8.12+commit.f00d7308",
+    "fullyQualifiedName": "lib/openzeppelin-contracts/contracts/proxy/transparent/TransparentUpgradeableProxy.sol:TransparentUpgradeableProxy",
+    "implementations": [
+      "0xd22dd829779ADBf3869fb224F703452f7F95E9dB"
+    ],
+    "sources": {
+      "lib/openzeppelin-contracts/contracts/proxy/transparent/TransparentUpgradeableProxy.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n// synthetic fixture stub\ncontract TransparentUpgradeableProxy {}\n"
+      }
+    }
+  },
+  "lido": {
+    "name": "AppProxyUpgradeable",
+    "language": "Solidity",
+    "compilerVersion": "0.4.24+commit.e67f0147",
+    "fullyQualifiedName": "AppProxyUpgradeable.sol:AppProxyUpgradeable",
+    "implementations": [
+      "0x028271E30a695c0527A0C50cA30603feD004cDb0"
+    ],
+    "sources": {
+      "AppProxyUpgradeable.sol": {
+        "content": "pragma solidity ^0.4.24;\n// synthetic fixture stub without license header\ncontract AppProxyUpgradeable {}\n"
+      }
+    }
+  },
+  "lidoImpl": {
+    "name": "Lido",
+    "language": "Solidity",
+    "compilerVersion": "0.4.24+commit.e67f0147",
+    "fullyQualifiedName": "contracts/0.4.24/Lido.sol:Lido",
+    "implementations": [],
+    "sources": {
+      "contracts/0.4.24/Lido.sol": {
+        "content": "// SPDX-License-Identifier: GPL-3.0\npragma solidity ^0.4.24;\n// synthetic fixture stub\ncontract Lido {}\n"
+      },
+      "contracts/common/IERC20.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.4.24;\n// synthetic fixture stub\ninterface IERC20 {}\n"
+      }
+    }
+  },
+  "swapRouter02": {
+    "name": "SwapRouter02",
+    "language": "Solidity",
+    "compilerVersion": "0.7.6+commit.7338295f",
+    "fullyQualifiedName": "contracts/SwapRouter02.sol:SwapRouter02",
+    "implementations": [],
+    "sources": {
+      "SwapRouter02.sol": {
+        "content": "// SPDX-License-Identifier: GPL-2.0-or-later\npragma solidity 0.7.6;\n// synthetic fixture stub\ncontract SwapRouter02 {}\n"
+      }
+    }
+  },
+  "positionManager": {
+    "name": "NonfungiblePositionManager",
+    "language": "Solidity",
+    "compilerVersion": "0.7.6+commit.7338295f",
+    "fullyQualifiedName": "contracts/NonfungiblePositionManager.sol:NonfungiblePositionManager",
+    "implementations": [],
+    "sources": {
+      "NonfungiblePositionManager.sol": {
+        "content": "// SPDX-License-Identifier: GPL-2.0-or-later\npragma solidity 0.7.6;\n// synthetic fixture stub\ncontract NonfungiblePositionManager {}\n"
+      }
+    }
+  },
+  "eigenPodManagerImpl": {
+    "name": "EigenPodManager",
+    "language": "Solidity",
+    "compilerVersion": "0.8.30+commit.73712a01",
+    "fullyQualifiedName": "src/contracts/pods/EigenPodManager.sol:EigenPodManager",
+    "implementations": [],
+    "sources": {
+      "src/contracts/pods/EigenPodManager.sol": {
+        "content": "// SPDX-License-Identifier: BUSL-1.1\npragma solidity ^0.8.0;\n// synthetic fixture stub\ncontract EigenPodManager {}\n"
+      },
+      "src/contracts/libraries/Endian.sol": {
+        "content": "// SPDX-License-Identifier: CC0-1.0\npragma solidity ^0.8.0;\n// synthetic fixture stub\nlibrary Endian {}\n"
+      },
+      "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n// synthetic fixture stub\ninterface IERC20 {}\n"
+      }
+    }
+  }
+}

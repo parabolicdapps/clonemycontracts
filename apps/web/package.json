@@ -1,0 +1,17 @@
+{
+  "name": "@cmc/web",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "module",
+  "description": "CloneMyContracts web UI: plain HTML/CSS/ES modules, viem bundled locally with esbuild",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "viem": "^2.38.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0"
+  }
+}

@@ -1,0 +1,9 @@
+[package]
+name = "app"
+version = "0.1.0"
+
+[addresses]
+app = "0xcafe"
+
+[dependencies]
+AptosFramework = { local = "/opt/aptos-framework/aptos-framework" }

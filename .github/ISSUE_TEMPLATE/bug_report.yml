@@ -1,0 +1,51 @@
+name: Bug report
+description: Something does not work, or a translation produced a wrong result
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not report security vulnerabilities here. Email security@parabolicdapps.com (see SECURITY.md).
+        Never paste API keys, seed phrases or private keys.
+  - type: input
+    id: version
+    attributes:
+      label: CloneMyContracts version
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options: [macOS (Apple silicon), Linux x86_64, Linux aarch64, Other]
+    validations:
+      required: true
+  - type: input
+    id: runtime
+    attributes:
+      label: Container runtime and version
+      placeholder: "Docker 29.1, Podman 5.x, Colima ..."
+  - type: dropdown
+    id: target
+    attributes:
+      label: Target chain
+      options: [Solana, CosmWasm, Aptos, Tezos, Not applicable]
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Include the contract address and chain (or a minimal source file) if relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or output
+      render: text

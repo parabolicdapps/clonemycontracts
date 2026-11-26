@@ -1,0 +1,20 @@
+// usage: vite-node scripts/aptos-recheck.ts <rewrite-out-dir>: re-runs compile + all scenarios of a saved Aptos rewrite with the current design/adapter/compare (no model calls)
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { AptosPack } from '../src/targets/aptos/pack.js';
+import { readTree } from '../src/pipeline/container.js';
+const dir = process.argv[2]!;
+const spec = JSON.parse(readFileSync(join(dir, 'spec.json'), 'utf8'));
+const set = JSON.parse(readFileSync(join(dir, 'scenarios.json'), 'utf8'));
+const pack = new AptosPack();
+const saved = JSON.parse(readFileSync(join(dir, 'design.json'), 'utf8'));
+const design = saved.mode === 'template' ? saved : pack.design(spec, {});
+const files = Object.fromEntries(Object.entries(readTree(join(dir, 'project'))).filter(([k]) => !k.startsWith('tests/')).map(([k, v]) => [k, v.toString('utf8')]));
+const c = await pack.compile(files);
+console.log('compiles:', c.ok);
+const run = await pack.runScenarios(files, c, design, spec, set);
+if (run.fatal) console.log('FATAL', run.fatal);
+const n = (s: string) => run.outcomes.filter((o) => o.status === s).length;
+console.log(`scenarios ${run.outcomes.length}: passed ${n('passed')}, failed ${n('failed')}, not runnable ${n('not-runnable')}, documented ${n('documented-difference')}`);
+for (const f of run.outcomes.filter((o) => o.status === 'failed').slice(0, 6)) console.log('FAILED', f.id, JSON.stringify(f.mismatches[0]).slice(0, 250));
+for (const f of run.outcomes.filter((o) => o.status === 'not-runnable').slice(0, 3)) console.log('NR', f.id, f.notRunnable[0]);

@@ -1,0 +1,17 @@
+{
+  "name": "@cmc/api",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "module",
+  "description": "CloneMyContracts HTTP API + static server for apps/web (LAN only; no keys on the server)",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "node dist/main.js"
+  },
+  "dependencies": {
+    "@cmc/core": "0.1.0",
+    "viem": "^2.38.0",
+    "@cmc/translate": "0.1.0"
+  }
+}

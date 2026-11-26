@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CloneMyContracts tool: clone a verified EVM contract to another chain. Inspect, plan, simulate on a fork, then deploy with your own wallet.">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="color-scheme" content="light dark">
+  <title>CloneMyContracts — Clone a contract</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./settings.css">
+  <script src="./theme.js"></script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a href="#main-content" class="skip-link visually-hidden">Skip to main content</a>
+    <div class="container header-inner">
+      <a href="./" class="brand" id="top">
+        <svg class="brand-mark" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <rect x="4" y="4" width="56" height="56" rx="14" fill="currentColor" opacity="0.1"/>
+          <rect x="13" y="15" width="22" height="22" rx="5" stroke="currentColor" stroke-width="3.4"/>
+          <rect x="29" y="27" width="22" height="22" rx="5" stroke="var(--accent-primary)" stroke-width="3.4"/>
+          <path d="M24 26h8m0 0-3-3m3 3-3 3" stroke="var(--accent-secondary)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>CloneMyContracts</span>
+        <span class="brand-tag" id="brand-tag" hidden></span>
+      </a>
+
+      <div class="header-actions">
+        <button type="button" class="btn ghost compact icon-only" id="theme-toggle" aria-label="Switch to dark theme" title="Toggle light/dark mode">
+          <span id="theme-icon" aria-hidden="true">&#9728;</span>
+        </button>
+        <button type="button" class="btn compact" id="open-settings">Settings</button>
+        <button type="button" class="btn primary compact" id="open-cli-dialog">CLI command</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div id="live-status" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+
+    <section class="tool-head">
+      <div class="container tool-head-inner">
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span><span id="tool-eyebrow">EVM to EVM · Solidity</span></p>
+        <h1 id="main-content" tabindex="-1">Clone a verified contract onto another chain</h1>
+        <p class="tool-lead">Enter a verified contract and a destination. The tool fetches the exact source, builds a plan, simulates it on a local fork of the destination and deploys with your own wallet. Nothing is signed by the app.</p>
+
+        <ol class="stepper" id="stepper" aria-label="Progress">
+          <li data-stage="fetch" data-state="active" aria-current="step"><span class="stage-num" aria-hidden="true">1</span><span class="stage-name">Fetch</span><span class="visually-hidden stage-state">in progress</span></li>
+          <li data-stage="analyse" data-state="todo"><span class="stage-num" aria-hidden="true">2</span><span class="stage-name">Analyse</span><span class="visually-hidden stage-state">not started</span></li>
+          <li data-stage="plan" data-state="todo"><span class="stage-num" aria-hidden="true">3</span><span class="stage-name" id="stage-name-plan">Plan</span><span class="visually-hidden stage-state">not started</span></li>
+          <li data-stage="produce" data-state="todo"><span class="stage-num" aria-hidden="true">4</span><span class="stage-name" id="stage-name-produce">Produce</span><span class="visually-hidden stage-state">not started</span></li>
+          <li data-stage="deploy" data-state="todo"><span class="stage-num" aria-hidden="true">5</span><span class="stage-name" id="stage-name-deploy">Deploy</span><span class="visually-hidden stage-state">not started</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="container flow">
+      <!-- 1. FORM -->
+      <section aria-labelledby="form-title">
+        <form id="clone-form" class="card highlight" action="./" method="get" novalidate>
+          <span class="card-kicker">1 · WHAT TO CLONE</span>
+          <h2 id="form-title">Contract and chains</h2>
+          <div class="form-grid">
+            <div class="field field-wide">
+              <label for="address">Contract address</label>
+              <input id="address" name="address" type="text" required autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="text" maxlength="42" placeholder="0x6B175474E89094C44Da98b954EedeAC495271d0F" aria-describedby="address-hint">
+              <p class="hint" id="address-hint">Verified on the source chain. 0x followed by 40 hex characters.</p>
+            </div>
+            <div class="field">
+              <label for="from">Source chain</label>
+              <select id="from" name="from" required></select>
+            </div>
+            <div class="field">
+              <label for="to">Destination chain</label>
+              <select id="to" name="to" required aria-describedby="to-hint"></select>
+              <p class="hint" id="to-hint">Testnets are listed first. Other chain languages are under "Rewrite to another language".</p>
+            </div>
+          </div>
+          <p id="form-error" class="form-error" role="alert" hidden></p>
+          <div id="fetch-progress" class="fetch-progress" role="status" hidden>
+            <p><span class="spinner" aria-hidden="true"></span> <span id="fetch-stage"></span> <span class="hint" id="fetch-elapsed"></span></p>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn primary" id="go-btn">Inspect and plan</button>
+            <button type="button" class="btn" id="retry-btn" hidden>Try again</button>
+            <span class="hint">State is never copied: a clone is a fresh contract.</span>
+          </div>
+        </form>
+      </section>
+
+      <!-- 2. INSPECT -->
+      <section id="inspect-section" class="card" aria-labelledby="inspect-title" hidden>
+        <span class="card-kicker">2 · WHAT WAS FOUND</span>
+        <h2 id="inspect-title" tabindex="-1">Inspection</h2>
+        <dl class="specimen-meta" id="inspect-meta"></dl>
+        <div id="inspect-notes"></div>
+        <form id="gate-form" class="gate" hidden>
+          <fieldset>
+            <legend>Licence check</legend>
+            <p id="gate-text"></p>
+            <label class="check"><input type="checkbox" name="rights" id="rights" required> <span>I hold the rights to redeploy this code.</span></label>
+          </fieldset>
+          <button type="submit" class="btn primary">Continue to plan</button>
+        </form>
+      </section>
+
+      <!-- 3. PLAN -->
+      <section id="plan-section" class="specimen-shell" aria-labelledby="plan-title" hidden>
+        <div class="specimen-chrome">
+          <span class="specimen-title"><span class="badge teal">Plan</span> <span id="plan-title" tabindex="-1">Clone plan</span></span>
+          <span class="specimen-note" id="plan-route"></span>
+        </div>
+        <form id="plan-form" class="specimen-body" novalidate>
+          <dl class="specimen-meta" id="plan-meta"></dl>
+          <div class="info-row">
+            <button type="button" class="info-trigger" popovertarget="pop-actions">What do keep, remap and needs input mean?</button>
+          </div>
+          <div id="plan-notices" class="plan-notices"></div>
+          <div id="plan-literals" class="step-list" hidden></div>
+          <div id="plan-steps" class="step-list"></div>
+          <p id="plan-error" class="form-error" role="alert" hidden></p>
+          <div class="form-actions">
+            <button type="submit" class="btn primary" id="replan-btn">Update plan</button>
+            <button type="button" class="btn" id="reset-btn" hidden>Reset changes</button>
+            <button type="button" class="btn" id="download-btn">Download project (.zip)</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- 4. SIMULATE -->
+      <section id="sim-section" class="card" aria-labelledby="sim-title" hidden>
+        <span class="card-kicker">4 · PRODUCE</span>
+        <h2 id="sim-title" tabindex="-1">Recompile and simulate on a fork</h2>
+        <p>Recompiles with the exact original settings, compares with the on-chain code, then deploys the plan on a local fork of the destination and runs smoke checks.</p>
+        <div class="form-actions">
+          <button type="button" class="btn primary" id="sim-btn">Run simulation</button>
+          <button type="button" class="btn compact" id="sim-cancel-btn" hidden>Cancel</button>
+          <span class="badge" id="sim-status" hidden></span>
+        </div>
+        <figure class="terminal-block" id="sim-log-wrap" hidden>
+          <figcaption class="terminal-bar" id="sim-log-cap"><span>Progress</span></figcaption>
+          <pre id="sim-log" role="log" aria-labelledby="sim-log-cap" tabindex="0"></pre>
+        </figure>
+        <div id="sim-checks" class="check-groups" aria-label="Simulation checks"></div>
+        <p id="sim-error" class="form-error" role="alert" hidden></p>
+      </section>
+
+      <!-- 5. DEPLOY -->
+      <section id="deploy-section" class="card" aria-labelledby="deploy-title" hidden>
+        <span class="card-kicker">5 · DEPLOY</span>
+        <h2 id="deploy-title" tabindex="-1">Deploy with your wallet</h2>
+        <p>Your wallet signs and sends every transaction. This app never sees a key and cannot deploy for you.</p>
+        <div id="wallet-list" class="wallet-list" role="group" aria-label="Detected wallets"></div>
+        <dl class="specimen-meta" id="wallet-meta" hidden></dl>
+        <div id="no-wallet" hidden>
+          <p>No browser wallet was detected. Run the same clone from a terminal with your own key instead:</p>
+          <figure class="terminal-block">
+            <figcaption class="terminal-bar" id="nw-cap"><span>Deploy from the CLI</span><button type="button" class="copy-btn" data-copy-from="nw-code" aria-label="Copy the CLI deploy command">Copy</button></figcaption>
+            <pre role="region" aria-labelledby="nw-cap" tabindex="0"><code id="nw-code"></code></pre>
+          </figure>
+        </div>
+        <ol id="deploy-steps" class="deploy-steps" aria-label="Deployment steps"></ol>
+        <div class="form-actions">
+          <button type="button" class="btn primary" id="deploy-btn" hidden>Deploy</button>
+        </div>
+        <p id="deploy-error" class="form-error" role="alert" hidden></p>
+      </section>
+
+      <!-- REWRITE: PLAN -->
+      <section id="rw-plan-section" class="specimen-shell" aria-labelledby="rw-plan-title" hidden>
+        <div class="specimen-chrome">
+          <span class="specimen-title"><span class="badge teal">Rewrite plan</span> <span id="rw-plan-title" tabindex="-1">What will happen</span></span>
+          <span class="specimen-note" id="rw-plan-route"></span>
+        </div>
+        <div class="specimen-body">
+          <dl class="specimen-meta" id="rw-plan-meta"></dl>
+          <ul class="specimen-checks" id="rw-notices" aria-label="Always read"></ul>
+          <div id="rw-plan-extra" class="rw-extra"></div>
+          <p id="rw-plan-error" class="form-error" role="alert" hidden></p>
+          <div id="rw-health"></div>
+          <div class="form-actions">
+            <button type="button" class="btn primary" id="rw-start-btn" disabled>Start rewrite</button>
+            <span class="hint">Uses a local language model and a build sandbox: one rewrite runs at a time.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- REWRITE: RUN AND RESULT -->
+      <section id="rw-run-section" class="card" aria-labelledby="rw-run-title" hidden>
+        <span class="card-kicker">4 · REWRITE</span>
+        <h2 id="rw-run-title" tabindex="-1">Rewrite, compile and check</h2>
+        <div class="form-actions">
+          <span class="badge" id="rw-status"></span>
+          <span class="hint" id="rw-elapsed" aria-label="Elapsed time"></span>
+          <button type="button" class="btn compact" id="rw-cancel-btn" hidden>Cancel</button>
+        </div>
+        <div id="rw-verdict" class="rw-verdict-slot"></div>
+        <ol id="rw-stages" class="rw-stages" aria-label="Rewrite stages"></ol>
+        <p id="rw-error" class="form-error" role="alert" hidden></p>
+        <div id="rw-result" class="rw-result" hidden></div>
+      </section>
+
+      <!-- REWRITE: DOWNLOAD AND DEPLOY COMMANDS -->
+      <section id="rw-deliver-section" class="card" aria-labelledby="rw-deliver-title" hidden>
+        <span class="card-kicker">5 · DOWNLOAD AND DEPLOY</span>
+        <h2 id="rw-deliver-title" tabindex="-1">Project and deploy commands</h2>
+        <p>This tool does not deploy rewrites. Download the project, review it, and run the commands yourself with your own key.</p>
+        <div class="form-actions"><a class="btn primary" id="rw-download" href="#" download>Download project (.zip)</a></div>
+        <figure class="terminal-block">
+          <figcaption class="terminal-bar" id="rw-deploy-cap"><span><span id="rw-deploy-title">Deploy</span> · not executed by this tool</span><button type="button" class="copy-btn" data-copy-from="rw-deploy-code" aria-label="Copy the deploy commands">Copy</button></figcaption>
+          <pre role="region" aria-labelledby="rw-deploy-cap" tabindex="0"><code id="rw-deploy-code"></code></pre>
+        </figure>
+        <h3>Generated files</h3>
+        <div class="code-viewer">
+          <ul id="rw-files" class="file-list" aria-label="Files of the rewrite"></ul>
+          <div class="code-pane">
+            <p class="mono" id="rw-file-name"></p>
+            <pre id="rw-code" tabindex="0" aria-label="File content (read only)"></pre>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-meta">
+        <p><strong>CloneMyContracts</strong> tool<span id="footer-scope" hidden> (<span id="footer-note"></span>)</span>. State is not copied: a clone is a fresh contract.</p>
+        <p>Unaudited. Review the source, the plan and the report before deploying anything that holds real funds. Check the licence: restricted or missing licences may not be yours to redeploy.</p>
+      </div>
+    </div>
+  </footer>
+
+  <div id="pop-actions" popover="auto">
+    <div class="popover-head">
+      <span class="popover-title">Argument actions</span>
+      <button type="button" class="btn ghost compact" popovertarget="pop-actions" popovertargetaction="hide">Close</button>
+    </div>
+    <p><strong>Keep</strong>: the original value works on the destination. <strong>Remap</strong>: the original points at a well-known contract (wrapped native token, factory, router, chain id) and a counterpart on the destination was suggested. <strong>Needs input</strong>: no counterpart is known, so you must supply a value. Edit any value and press Update plan to re-plan.</p>
+  </div>
+
+  <dialog id="token-dialog" class="modal" closedby="closerequest" aria-labelledby="token-title">
+    <form method="dialog" id="token-form">
+      <div class="modal-header">
+        <h2 id="token-title">Access token</h2>
+      </div>
+      <div class="modal-body">
+        <p id="token-intro">This engine asks for an access token. It is kept for this browser tab only.</p>
+        <p id="token-error" class="form-error" role="alert" hidden></p>
+        <div class="field">
+          <label for="token-input">Token</label>
+          <input id="token-input" name="token" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" required>
+        </div>
+      </div>
+      <div class="modal-footer confirm-footer">
+        <button type="submit" class="btn ghost" value="cancel" formnovalidate>Cancel</button>
+        <button type="submit" class="btn primary" value="ok" id="token-ok">Continue</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="cli-dialog" class="modal" closedby="any" aria-labelledby="cli-dialog-title">
+    <div class="modal-header">
+      <h2 id="cli-dialog-title">The same clone with the CLI</h2>
+      <form method="dialog"><button type="submit" class="btn ghost compact" value="close">Close</button></form>
+    </div>
+    <div class="modal-body">
+      <p id="cli-dialog-intro">Fill in the form first to see the command for your contract.</p>
+      <figure class="terminal-block">
+        <figcaption class="terminal-bar" id="cli-sim-cap"><span>Plan and simulate</span><button type="button" class="copy-btn" data-copy-from="cli-sim-code" aria-label="Copy the simulate command">Copy</button></figcaption>
+        <pre role="region" aria-labelledby="cli-sim-cap" tabindex="0"><code id="cli-sim-code">cmc clone &lt;address&gt; --from eth --to base-sepolia --simulate</code></pre>
+      </figure>
+      <figure class="terminal-block" id="cli-dep-fig">
+        <figcaption class="terminal-bar" id="cli-dep-cap"><span>Deploy with your own key</span><button type="button" class="copy-btn" data-copy-from="cli-dep-code" aria-label="Copy the deploy command">Copy</button></figcaption>
+        <pre role="region" aria-labelledby="cli-dep-cap" tabindex="0"><code id="cli-dep-code"></code></pre>
+      </figure>
+    </div>
+    <div class="modal-footer">
+      <form method="dialog"><button type="submit" class="btn primary" value="done">Done</button></form>
+    </div>
+  </dialog>
+
+  <dialog id="confirm-dialog" class="modal" closedby="closerequest" aria-labelledby="confirm-title">
+    <form method="dialog" id="confirm-form">
+      <div class="modal-header">
+        <h2 id="confirm-title">Deploy to a mainnet</h2>
+      </div>
+      <div class="modal-body">
+        <p id="confirm-text"></p>
+        <div class="field">
+          <label for="confirm-input">Type <code id="confirm-word">DEPLOY</code> to confirm</label>
+          <input id="confirm-input" name="confirm" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" required>
+        </div>
+      </div>
+      <div class="modal-footer confirm-footer">
+        <button type="submit" class="btn ghost" value="cancel" formnovalidate>Cancel</button>
+        <button type="submit" class="btn primary" value="confirm" id="confirm-ok">Deploy for real</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>

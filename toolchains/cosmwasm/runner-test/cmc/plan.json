@@ -1,0 +1,42 @@
+{
+  "version": 1, "clock_start": 1700000000, "bech32_prefix": "cosmwasm",
+  "actors": ["deployer", "alice", "bob", "carol", "mallory"],
+  "native_denom": "untrn", "actor_native": "1000000000000000000000",
+  "scenarios": [
+    { "id": "escrow", "steps": [
+      {"op":"instantiate","id":"tok","code":"cw20-base","name":"tok","sender":"actor:deployer",
+       "msg":{"name":"Test Token","symbol":"TST","decimals":6,
+              "initial_balances":[{"address":"actor:alice","amount":"1000000"},{"address":"actor:bob","amount":"500"}],
+              "mint":{"minter":"actor:deployer","cap":"100000000"}}},
+      {"op":"instantiate","id":"app","code":"app","sender":"actor:deployer",
+       "msg":{"cw20":"name:tok","denom":"untrn","unlock_time":1700001000}},
+      {"op":"execute","id":"allow","contract":"name:tok","sender":"actor:alice",
+       "msg":{"increase_allowance":{"spender":"app","amount":"400000"}}},
+      {"op":"execute","id":"pull","contract":"app","sender":"actor:alice","msg":{"pull_cw20":{"amount":"250000"}}},
+      {"op":"query","id":"alice_cw20","contract":"name:tok","msg":{"balance":{"address":"actor:alice"}}},
+      {"op":"query","id":"app_cw20","contract":"name:tok","msg":{"balance":{"address":"app"}}},
+      {"op":"execute","id":"pull_too_much","contract":"app","sender":"actor:alice","msg":{"pull_cw20":{"amount":"200000"}}},
+      {"op":"execute","id":"deposit","contract":"app","sender":"actor:bob","msg":{"deposit_native":{}},"funds":[{"denom":"untrn","amount":"5000"}]},
+      {"op":"fund","id":"fund_bob","to":"actor:bob","denom":"ufoo","amount":"10"},
+      {"op":"execute","id":"deposit_bad","contract":"app","sender":"actor:bob","msg":{"deposit_native":{}},"funds":[{"denom":"ufoo","amount":"1"}]},
+      {"op":"balance","id":"app_bal","address":"app","denom":"untrn"},
+      {"op":"query","id":"dep","contract":"app","msg":{"deposit":{"addr":"actor:bob"}}},
+      {"op":"execute","id":"early","contract":"app","sender":"actor:bob","msg":{"withdraw":{}}},
+      {"op":"warp","id":"w","unix_timestamp":1700002000},
+      {"op":"execute","id":"late","contract":"app","sender":"actor:bob","msg":{"withdraw":{}}},
+      {"op":"balance","id":"bob_bal","address":"actor:bob","denom":"untrn"},
+      {"op":"execute","id":"again","contract":"app","sender":"actor:bob","msg":{"withdraw":{}}},
+      {"op":"execute","id":"fail","contract":"app","sender":"actor:carol","msg":{"fail":{}}},
+      {"op":"execute","id":"bump","contract":"app","sender":"actor:carol","msg":{"bump":{}}},
+      {"op":"execute","id":"boom","contract":"app","sender":"actor:carol","msg":{"boom":{}}},
+      {"op":"query","id":"cfg","contract":"app","msg":{"config":{}}},
+      {"op":"execute","id":"badref","contract":"name:nope","sender":"actor:carol","msg":{"bump":{}}},
+      {"op":"fund","id":"fund","to":"actor:carol","denom":"ufoo","amount":"77"},
+      {"op":"balance","id":"carol_foo","address":"actor:carol","denom":"ufoo"},
+      {"op":"advance","id":"adv","seconds":0}
+    ]},
+    { "id": "fresh", "steps": [
+      {"op":"query","id":"noapp","contract":"app","msg":{"counter":{}}}
+    ]}
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "_note": "Per-1M-token list prices in USD, copied by hand from each provider's pricing page on the date below. They WILL go stale: treat every figure as an estimate and check the provider's own page. Prices for custom/local endpoints and the Claude Code connector are not listed (Claude Code reports its own notional cost).",
+  "asOf": "2026-11-25",
+  "sources": {
+    "anthropic": "https://platform.claude.com/docs/en/about-claude/pricing",
+    "openai": "https://developers.openai.com/api/docs/pricing",
+    "gemini": "https://aistudio.google.com/docs/pricing",
+    "openrouter": "https://openrouter.ai/models (OpenRouter charges the underlying provider's price plus its own fees; the figures here are the direct-provider prices)"
+  },
+  "models": [
+    { "provider": "anthropic", "model": "claude-opus-5-5", "label": "Claude Opus 5.5", "inPerM": 4.0, "outPerM": 20.0, "maxOutput": 128000 },
+    { "provider": "anthropic", "model": "claude-sonnet-5-5", "label": "Claude Sonnet 5.5", "inPerM": 2.0, "outPerM": 10.0, "maxOutput": 128000 },
+    { "provider": "anthropic", "model": "claude-haiku-5-5", "label": "Claude Haiku 5.5 (prompts up to 100K tokens)", "inPerM": 0.1, "outPerM": 0.5, "maxOutput": 128000 },
+    { "provider": "anthropic", "model": "claude-fable-5-2", "label": "Claude Fable 5.2", "inPerM": 8.0, "outPerM": 40.0, "maxOutput": 128000 },
+    { "provider": "openai", "model": "gpt-6.2-astra", "label": "GPT-6.2 Astra (flagship)", "inPerM": 8.0, "outPerM": 40.0 },
+    { "provider": "openai", "model": "gpt-6.2-sol", "label": "GPT-6.2 Sol", "inPerM": 2.0, "outPerM": 10.0 },
+    { "provider": "openai", "model": "gpt-6.1-terra", "label": "GPT-6.1 Terra", "inPerM": 1.0, "outPerM": 5.0 },
+    { "provider": "openai", "model": "gpt-6-luna", "label": "GPT-6 Luna (cheapest)", "inPerM": 0.1, "outPerM": 0.5 },
+    { "provider": "gemini", "model": "gemini-3.8-flash", "label": "Gemini 3.8 Flash (price rises 2027-01-01 to 1.50/7.50)", "inPerM": 0.75, "outPerM": 3.75 },
+    { "provider": "gemini", "model": "gemini-3.1-pro-preview", "label": "Gemini 3.1 Pro preview (up to 200k prompt)", "inPerM": 2.0, "outPerM": 12.0 },
+    { "provider": "gemini", "model": "gemini-3.5-flash-lite", "label": "Gemini 3.5 Flash-Lite", "inPerM": 0.3, "outPerM": 2.5 },
+    { "provider": "gemini", "model": "gemini-4-neon", "label": "Gemini 4 Neon (price not found)", "inPerM": null, "outPerM": null },
+    { "provider": "openrouter", "model": "anthropic/claude-sonnet-5.5", "label": "Claude Sonnet 5.5 via OpenRouter", "inPerM": 2.0, "outPerM": 10.0 },
+    { "provider": "openrouter", "model": "anthropic/claude-haiku-5.5", "label": "Claude Haiku 5.5 via OpenRouter", "inPerM": 0.1, "outPerM": 0.5 },
+    { "provider": "openrouter", "model": "google/gemini-3.8-flash", "label": "Gemini 3.8 Flash via OpenRouter", "inPerM": 0.825, "outPerM": 4.125 },
+    { "provider": "openrouter", "model": "openai/gpt-6.2-sol", "label": "GPT-6.2 Sol via OpenRouter", "inPerM": 2.0, "outPerM": 10.0 }
+  ]
+}
