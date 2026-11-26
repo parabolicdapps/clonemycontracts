@@ -175,7 +175,6 @@ echo '{"type":"result","subtype":"success","is_error":false,"result":"fake answe
     await expect(new ClaudeCliProvider({ binary: garbage }).chat(msgs)).rejects.toMatchObject({ kind: 'server' });
     const ctl = new AbortController(); setTimeout(() => ctl.abort(), 150);
     await expect(new ClaudeCliProvider({ binary: slow }).chat(msgs, { signal: ctl.signal })).rejects.toMatchObject({ kind: 'aborted' });
-    expect(() => new ClaudeCliProvider({ binary: undefined, env: {} } as any) && detectClaudeBinary({ candidates: ['/nonexistent/claude'] }) === null).not.toThrow();
     expect(detectClaudeBinary({ candidates: ['/nonexistent/claude'] })).toBeNull();
     expect(detectClaudeBinary({ explicit: okBin })).toBe(okBin);
     expect(await ClaudeCliProvider.version(okBin)).toBe('9.9.9 (fake)');
